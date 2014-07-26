@@ -1,0 +1,103 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    
+    <style name="AlarmDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+    	<item name="android:background">@android:color/transparent</item>
+    	<item name="android:windowBackground">@android:color/transparent</item>
+    	<item name="android:windowIsFloating">true</item>
+    	<item name="android:backgroundDimEnabled">false</item>
+    	<item name="android:windowContentOverlay">@null</item>
+    	<item name="android:textColor">@color/white</item>
+    </style>    
+    
+    
+    <style name="test">
+        <item name="android:textColor">@color/blue</item>
+    </style>
+    
+    <style name="actionbar">
+        <item name="android:background">#33B5E5</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+    
+    <style name="actionbarText">
+		<item name="android:textColor">@color/orange</item>
+        <item name="android:textSize">20sp</item>    
+        <item name="android:textStyle">bold</item> 
+     </style>
+    
+    <style name="timeText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item> 
+        <item name="android:textColor">@color/black</item> 
+    </style>
+    
+    <style name="timeTextForList">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item> 
+        <item name="android:textColor">@color/black</item> 
+    </style>
+    
+    <style name="micro">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    
+    <style name="small">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="normal">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+    
+    <style name="grayText">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+    
+    <style name="widgetTitle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>    
+        <item name="android:textStyle">bold</item> 
+     </style>
+         
+    <style name="listItemStyle">
+        <item name="android:padding">5dip</item>
+    </style>
+    
+    <style name="expireText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item> 
+        <item name="android:textColor">@color/orange</item> 
+    </style>
+    
+        <style name="reminderTitle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>    
+        <item name="android:textStyle">bold</item> 
+     </style>
+    
+    
+</resources>

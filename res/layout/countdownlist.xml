@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+  	android:layout_width="match_parent" 
+    android:layout_height="match_parent"
+    android:orientation="vertical">    
+    <RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"> 
+    <TextView
+        android:id="@+id/from_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/from_1"
+        android:layout_alignParentLeft="true"
+        style="@style/actionbarText"/>
+    <TextView
+        android:id="@+id/topTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/from_1"
+        style="@style/actionbarText"/>
+     <TextView
+        android:id="@+id/from_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/from_2"
+        android:layout_toRightOf="@id/topTitle"
+        style="@style/actionbarText"/>
+     <TextView
+        android:id="@+id/topDate_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/topDate_label"
+        android:layout_below="@id/from_1"
+        android:layout_alignParentLeft="true"
+        style="@style/actionbarText"/>
+     <TextView
+        android:id="@+id/topDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/from_1"
+        android:layout_toRightOf="@id/topDate_label"
+        style="@style/actionbarText"/>
+     <TextView
+        android:id="@+id/leftDay_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/days"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        style="@style/actionbarText"/>
+     <TextView
+        android:id="@+id/topLeftDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/leftDay_label"
+        android:layout_centerVertical="true"
+        style="@style/actionbarText"/>
+    
+    
+    
+</RelativeLayout>
+<!-- <LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/header"
+    android:orientation="horizontal"> 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_label"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        style="@style/actionbarText"/>
+    
+    <Button
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="right"
+        android:background="@drawable/add_selector"
+        android:paddingRight="50dip"/>     
+</LinearLayout> -->
+<ListView android:id="@+id/list"
+    android:layout_width="match_parent"
+    android:layout_height="0dip"
+    android:layout_weight="1"
+    android:background="@color/white"/>
+   					     		
+</LinearLayout>
+
+

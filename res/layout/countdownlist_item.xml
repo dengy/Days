@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/listItemStyle">
+    <!-- <TextView
+        android:id="@+id/priority"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="10dip"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"/> -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="@string/app_label"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:paddingRight="180dip"/>
+    
+	<!-- <android.first.countdown.util.SlipButton
+            android:id="@+id/finish"
+            android:layout_width="60dip"
+            android:layout_height="30dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/> -->
+    <CheckBox android:id="@+id/finish"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:focusable="false"/>
+
+	<ImageView
+	        android:id="@+id/remindBellImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/alarm"
+            android:layout_below="@id/title"
+            android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:id="@+id/enddate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_label"
+        android:layout_toLeftOf="@id/finish"
+        style="@style/grayText"/>
+    
+    <LinearLayout 
+    android:id="@+id/countdownLayout"
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_toLeftOf="@id/finish"
+    android:layout_below="@id/title">  
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/left"
+        android:paddingRight="5dip"
+        style="@style/small"/> 
+        
+    <TextView
+        android:id="@+id/days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/timeTextForList"/>
+    
+    <TextView
+        android:id="@+id/days_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/days"
+        style="@style/micro" />
+    
+    <TextView
+        android:id="@+id/hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/timeTextForList"/>
+    
+    <TextView
+        android:id="@+id/hours_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hours"
+        style="@style/micro"/>
+    
+    <TextView
+        android:id="@+id/minutes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/timeTextForList"/>
+    
+    <TextView
+        android:id="@+id/minutes_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/minutes"
+        style="@style/micro"/>
+    
+    <!--  <TextView
+        android:id="@+id/seconds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/timeTextForList"
+        android:visibility="gone"/>
+    
+    <TextView
+        android:id="@+id/seconds_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/seconds"
+        style="@style/micro"
+        android:visibility="gone"/>-->
+        
+    </LinearLayout>
+    
+    <TextView
+        android:id="@+id/expire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/finish"
+        android:layout_below="@id/title"
+        android:visibility="gone"
+        style="@style/expireText"/>
+</RelativeLayout>

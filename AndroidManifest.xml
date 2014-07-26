@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="android.first.countdown"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_label"
+        android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
+        <provider
+            android:name=".CountDownProvider"
+            android:authorities="android.first.countdown.CountDown" />
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!--
+            <intent-filter>
+                <data
+                    android:host="android.first.countdown.ItemList"
+                    android:scheme="aone" />
+            </intent-filter>
+            -->
+        </activity>
+        <activity
+            android:name=".CountDownEdit"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.dir/countdown" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.item/countdown" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AlarmExecutor"
+            android:label="@string/countDownReminder"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+
+        <receiver android:name=".AlarmReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.DATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".AlarmWakeUpReceiver"
+            android:process=".countDownAlarmWake" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".CountDownAppWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="countdown.widget.UPDATE" />
+                <action android:name="countdown.widget.DELETE" />
+                <action android:name="countdown.widget.FINISH" />
+                <action android:name="android.intent.action.SCREEN_OFF" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget" />
+        </receiver>
+
+        <activity
+            android:name=".WidgetConfigure"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ItemList"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <service android:name=".UpdateWidgetService" >
+        </service>
+
+        <activity
+            android:name=".TypeActivity"
+            android:label="@string/title_activity_type" >
+        </activity>
+    </application>
+
+</manifest>

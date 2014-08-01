@@ -280,23 +280,24 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	
 	private void priorityDialog() {
 		//when edit,show the current priority
-		int index = 0;
+		int checkedIndex = 0;
 	    String[] priority = SharedPrefsUtil.getAllTypes(this);
 	    final String[] usedPriority = new String[priority.length -1];
 
 		String currentPriority = priorityTextView.getText().toString();
 		if(currentPriority != null && !"".equals(currentPriority)) {
 			for(int i = 1; i < priority.length; i++) {
-				usedPriority[i-1] = priority[i];//remove the first item--all
+				int currentIndex = i - 1;
+				usedPriority[currentIndex] = priority[i];//remove the first item--all
 				if(currentPriority.equals(priority[i])) {
-					index = i;
+					checkedIndex = currentIndex;
 				}
 			}
 		}
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.select_priority_label).
-		setSingleChoiceItems(usedPriority, index, new DialogInterface.OnClickListener() {
+		setSingleChoiceItems(usedPriority, checkedIndex, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				priorityTextView.setText(usedPriority[which]);

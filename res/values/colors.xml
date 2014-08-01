@@ -43,5 +43,8 @@
     <color name="blue">#33B5E5</color>
     <color name="black">#130c0e</color>
     <color name="orange">#f47920</color>
+    
+    <color name="color_black_333333_90_transparent">#e5333333</color>
+    <color name="color_black_000000_88_transparent">#e0000000</color>
 
 </resources>

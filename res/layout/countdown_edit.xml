@@ -7,15 +7,21 @@
     <RelativeLayout 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/header">
-    <Button 
+    android:background="@drawable/abc_ab_bottom_solid_dark_holo">
+    
+    <!--  <Button 
     android:id="@+id/add_cancel"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/cancel_selector"
     android:layout_alignParentLeft="true"
     android:layout_centerVertical="true"
-    android:layout_marginLeft="5dip"/>  
+    android:layout_marginLeft="5dip"
+    android:background="@drawable/cancel"/>  -->
+    <ImageView
+	        android:id="@+id/add_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cancel"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +33,7 @@
     android:id="@+id/add_ok"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/okay_selector"
+    android:background="@drawable/okay"
     android:layout_alignParentRight="true"
     android:layout_centerVertical="true"
     android:layout_marginRight="5dip"/>

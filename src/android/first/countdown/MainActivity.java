@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
         initViews();
 
         // set a custom shadow that overlays the main content when the drawer opens
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mTypes));
@@ -142,6 +142,10 @@ public class MainActivity extends Activity {
         switch(item.getItemId()) {
         case R.id.action_add:
             Intent intent = new Intent(Intent.ACTION_INSERT,getIntent().getData());
+			startActivity(intent);
+            return true;
+        case R.id.action_menumore:
+        	intent = new Intent(this, MenuMore.class);
 			startActivity(intent);
             return true;
         default:

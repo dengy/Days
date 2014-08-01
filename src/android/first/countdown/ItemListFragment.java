@@ -138,7 +138,7 @@ public class ItemListFragment extends Fragment implements OnClickListener{
 			endDate = "2014-07-26";
 			ContentValues values = new ContentValues();
 			values.put(CountDown.TITLE, title);
-			values.put(CountDown.PRIORITY, R.string.default_priority);
+			values.put(CountDown.PRIORITY, Constant.DEFAULT_PRIORITY);
 			values.put(CountDown.END_DATE, endDate);
 			values.put(CountDown.END_TIME, "");
 			values.put(CountDown.REMIND_DATE, "");

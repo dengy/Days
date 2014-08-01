@@ -5,10 +5,9 @@
     style="@style/listItemStyle">    
     <ImageView
 	        android:id="@+id/delete_custom_type"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="25dp"
-            android:src="@drawable/delete"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/delete_type"/>
     <FrameLayout
      android:layout_width="0dp"
      android:layout_weight="5"
@@ -28,7 +27,7 @@
         android:layout_height="25dp"
         android:layout_marginRight="10dp"
         android:layout_gravity="right|center_vertical"
-        android:background="@drawable/delete" />
+        android:background="@drawable/clear" />
    </FrameLayout>
    <TextView
         android:id="@+id/really_delete_button"

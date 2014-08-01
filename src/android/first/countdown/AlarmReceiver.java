@@ -19,7 +19,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-		context.startActivity(intent);
+		//context.startActivity(intent);
 		
 	}
 }

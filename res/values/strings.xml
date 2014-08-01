@@ -82,7 +82,8 @@
     <string name="index_label">置顶</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="action_websearch">Web search</string>
+    <string name="action_add">添加</string>
+    <string name="action_more">设置</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     <string name="from_1">距离&#160;&#160;</string>
     <string name="from_2">还有</string>

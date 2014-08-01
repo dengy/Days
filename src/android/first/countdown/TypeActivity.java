@@ -94,7 +94,7 @@ public class TypeActivity extends Activity {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("typeKey", (i+1)+"");
 	        map.put("type", customTypes[i]);
-	        map.put("icon", R.drawable.delete);
+	        map.put("icon", R.drawable.delete_type);
 	        list.add(map);			 
 		}
         return list;

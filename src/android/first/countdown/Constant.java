@@ -19,6 +19,7 @@ public class Constant {
 	public static final String PRIORITY_M = "一般";
 	public static final String PRIORITY_L = "较低";
 	public static final String ALL_PRIORITY = "全部";
+	public static final String DEFAULT_PRIORITY = PRIORITY_M;
 	
 	public static final Integer INTERVAL_SEC = 1000;
 	public static final Integer INTERVAL_MIN = 60000;

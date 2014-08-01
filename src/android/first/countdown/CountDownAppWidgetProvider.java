@@ -228,7 +228,7 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
             		}
             	}
             	
-            	//start updateWidgetService
+            	
             	Intent intent  = setIntentForAlarm(context, mAppWidgetId,
                 		_ID, title, priority, endDate, endDateTime.getTimeInMillis(), remind_state);
                 context.startService(intent); 
@@ -299,8 +299,21 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
 		String[] date = endDate.split("-");
 		if(date.length == 3) {
     		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+    		Date currentDate = new Date(System.currentTimeMillis());
+    		String currentDateStr = sf.format(currentDate);
 			try {
-				int days = Days.daysBetween(new DateTime(new Date()), new DateTime(sf.parse(endDate))).getDays();
+				long difference = 0l;
+        		difference = sf.parse(endDate).getTime() - sf.parse(currentDateStr).getTime();
+				int days = (int) ((difference / 1000) / 86400);
+
+				/*int hours = (int) (((difference / 1000) - (days
+		                * 86400)) / 3600);
+		        int minutes = (int) (((difference / 1000) - ((days
+		                * 86400) + (hours * 3600))) / 60);
+		        
+		        if(hours != 0 || minutes != 0) {
+		        	days += 1;
+		        }*/
 				return days;
 			} catch (ParseException e) {
 				e.printStackTrace();

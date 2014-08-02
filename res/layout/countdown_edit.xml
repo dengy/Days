@@ -2,12 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
   	android:layout_width="match_parent" 
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/edit_bg">
+    android:orientation="vertical">
     <RelativeLayout 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/abc_ab_bottom_solid_dark_holo">
+    android:background="@drawable/abc_ab_solid_light_holo">
     
     <!--  <Button 
     android:id="@+id/add_cancel"

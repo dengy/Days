@@ -231,6 +231,11 @@ public class MenuMore extends Activity implements OnClickListener{
 		case R.id.feedback:
 			showFeedbackDialog();
 			break;
+		case R.id.more_back:
+			finish();
+			break;
+		default:
+			break;
 		}
 		
 	}

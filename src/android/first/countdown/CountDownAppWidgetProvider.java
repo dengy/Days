@@ -53,24 +53,6 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
         	int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, CountDownAppWidgetProvider.class));
         	this.onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds);
         	
-//        	Bundle extras = intent.getExtras();
-//        	if (extras != null) {
-//        		String strAppWidgetId = extras.getString(AppWidgetManager.EXTRA_APPWIDGET_ID);
-//            	
-//        		if(strAppWidgetId != null && !"".equals(strAppWidgetId)) {
-//        			int appWidgetId = Integer.parseInt(strAppWidgetId);
-//        			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-//            		//if widget exist
-//        			if(!validateWidget(appWidgetId, appWidgetManager)) {
-//        				return;
-//        			}
-//                	
-//            		if(appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-//            			updateAppWidget(context, appWidgetManager, appWidgetId);
-//            		}
-//        		}
-//        		
-//            }
         } else if(Constant.DELETE_WIDGET.equals(intent.getAction())) {
         	Log.i(TAG, Constant.DELETE_WIDGET);
         	Bundle extras = intent.getExtras();
@@ -87,14 +69,15 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
                 	
             		if(mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
             			//update remind task state
-            			WidgetConfigure.updateRemindStateInPreference(context, mAppWidgetId, Constant.DELETED_STATE);
+            			WidgetConfigure.updateTaskStateInPreference(context, mAppWidgetId, Constant.DELETED_STATE);
             			//nofify widget to update
             			this.updateAppWidget(context, appWidgetManager, mAppWidgetId);
                     	
             		}
         		}
             }
-        } else if(Constant.FINISH_WIDGET.equals(intent.getAction())) {
+        } 
+        /**else if(Constant.FINISH_WIDGET.equals(intent.getAction())) {
         	Log.i(TAG, Constant.FINISH_WIDGET);
         	Bundle extras = intent.getExtras();
         	if (extras != null) {
@@ -117,7 +100,7 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
         		}
         		
             }
-        }
+        }**/
     }
     
     @Override
@@ -133,7 +116,7 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     
     public void deleteData(Context context ,int mAppWidgetId) {
     	//delete countdownTimder object in the map
-    	cancelUpdateWidgetAlarmer(context, mAppWidgetId);
+    	//cancelUpdateWidgetAlarmer(context, mAppWidgetId);
     	
     	//delete the data in SharedPreferences
     	WidgetConfigure.deleteFromPreference(context, mAppWidgetId);
@@ -146,10 +129,10 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     	appWidgetManager.updateAppWidget(mAppWidgetId, views);
     	
     	//cancel alarmManager
-    	cancelUpdateWidgetAlarmer(context, mAppWidgetId);
+    	//cancelUpdateWidgetAlarmer(context, mAppWidgetId);
     }
     
-    public static void finishAppWidget(AppWidgetManager appWidgetManager, Context context, int mAppWidgetId, 
+    /**public static void finishAppWidget(AppWidgetManager appWidgetManager, Context context, int mAppWidgetId, 
     		String title, String endDate) {
     	//RemoteViews views = getRemoteViews(priority, context, _ID);
     	RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.reminder_widget_finish);;    	
@@ -164,25 +147,27 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     	
     	//cancel alarmManager
     	cancelUpdateWidgetAlarmer(context, mAppWidgetId);
-    }
+    }**/
     
     
-    public static void refreshAppWidget(Context context, RemoteViews views, long millisUntilFinished, int mAppWidgetId, 
+    public static void refreshAppWidget(Context context, RemoteViews views, String endDate, int mAppWidgetId, 
     		AppWidgetManager appWidgetManager) {
-    	int days = (int) ((millisUntilFinished / 1000) / 86400);
-
-		int hours = (int) (((millisUntilFinished / 1000) - (days
-                * 86400)) / 3600);
-        int minutes = (int) (((millisUntilFinished / 1000) - ((days
-                * 86400) + (hours * 3600))) / 60);
-//        int seconds = (int) ((millisUntilFinished / 1000) % 60);
+    	int days = getDayDiff(endDate);
+    	if(days < 0) {
+    		days *= -1;
+    		views.setViewVisibility(R.id.itemLeftDayLabel, View.GONE);
+    		views.setTextViewText(R.id.itemLeftDayStatus, Constant.DAY_STATUS_PASSED);
+    	} else {
+    		views.setViewVisibility(R.id.itemLeftDayLabel, View.VISIBLE);
+    		views.setTextViewText(R.id.itemLeftDayStatus, Constant.DAY_STATUS_LEFT);
+    	}
         views.setTextViewText(R.id.days, days + "");
-        views.setTextViewText(R.id.hours, hours + "");
-        views.setTextViewText(R.id.minutes, minutes + "");
+//        views.setTextViewText(R.id.hours, hours + "");
+//        views.setTextViewText(R.id.minutes, minutes + "");
 //        views.setTextViewText(R.id.seconds, seconds + "");
 
-        views.setViewVisibility(R.id.expire, View.GONE);
-        views.setViewVisibility(R.id.countdownLayout, View.VISIBLE);
+//        views.setViewVisibility(R.id.expire, View.GONE);
+        //views.setViewVisibility(R.id.countdownLayout, View.VISIBLE);
     	
     	// Tell the widget manager
         appWidgetManager.updateAppWidget(mAppWidgetId, views);
@@ -198,51 +183,22 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     	if(title != null && !"".equals(title)) {
     		String priority = prefs.getString(StringUtil.appendAppWidgetId(CountDown.PRIORITY, mAppWidgetId), "");
         	String endDate = prefs.getString(StringUtil.appendAppWidgetId(CountDown.END_DATE, mAppWidgetId), "");
-        	String remind_state = prefs.getString(StringUtil.appendAppWidgetId(Constant.REMIND_STATE, mAppWidgetId), "");
+        	String remind_state = prefs.getString(StringUtil.appendAppWidgetId(Constant.TASK_STATE, mAppWidgetId), "");
         	
-        	if(Constant.FINISHED_STATE.equals(remind_state)) {
-        		this.finishAppWidget(appWidgetManager, context, mAppWidgetId, title, endDate);
-        	} else if(Constant.DELETED_STATE.equals(remind_state)) {
-        		this.deleteAppWidget(appWidgetManager, context, mAppWidgetId);
+        	if(Constant.DELETED_STATE.equals(remind_state)) {
+        		deleteAppWidget(appWidgetManager, context, mAppWidgetId);
         	} else {
         		//set alarmManager to control service to update widget
-            	String[] str1 = endDate.split(" ");
-            	Calendar endDateTime = Calendar.getInstance();
-            	long difference = 0;
-            	if(str1.length == 2) {
-            		String[] date = str1[0].split("-");
-            		if(date.length == 3) {
-            			String[] time = str1[1].split(":");
-            			if(time.length == 2) {
-            				endDateTime.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]),
-        	        				Integer.parseInt(time[0]), Integer.parseInt(time[1]));
-        	    			difference = endDateTime.getTimeInMillis() - System.currentTimeMillis();
-        		    	} 
-            		}
-            	} else if(str1.length == 1) {
-            		String[] date = str1[0].split("-");
-            		if(date.length == 3) {
-            			endDateTime.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]),
-                				0, 0);
-                		difference = endDateTime.getTimeInMillis() - System.currentTimeMillis();
-            		}
-            	}
-            	
-            	
             	Intent intent  = setIntentForAlarm(context, mAppWidgetId,
-                		_ID, title, priority, endDate, endDateTime.getTimeInMillis(), remind_state);
+                		_ID, title, priority, endDate, remind_state);
                 context.startService(intent); 
         	}
-        	        	
-        	
-    	}
-    	
-    	    
+    	}    	    
 
     }
     
     public static Intent setIntentForAlarm(Context context , int mAppWidgetId, int _ID, String title, String priority, 
-    		String endDate, long endDateTime, String remind_state) {
+    		String endDate, String remind_state) {
 		Intent intent = new Intent(context, UpdateWidgetService.class);
 		
 		//transfer data to receiver
@@ -252,8 +208,7 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
 		extras.putString(CountDown.TITLE, title);
 		extras.putString(CountDown.PRIORITY, priority);
 		extras.putString(CountDown.END_DATE, endDate);
-		extras.putLong(Constant.END_DATE_TIME, endDateTime);
-		extras.putString(Constant.REMIND_STATE, remind_state);
+		extras.putString(Constant.TASK_STATE, remind_state);
 		
 		intent.putExtras(extras);
 		
@@ -276,21 +231,24 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     }
     
     public static RemoteViews getRemoteViews(String priority, Context context, int _ID) {
-    	RemoteViews views;
+    	RemoteViews views = null;
     	int viewId;
-		if(Constant.PRIORITY_H.equals(priority)) {
-			viewId = R.layout.reminder_widget_high;
-			views = new RemoteViews(context.getPackageName(), viewId);
-	    } else if(Constant.PRIORITY_M.equals(priority)) {
-	    	viewId = R.layout.reminder_widget_medium;
-	    	views = new RemoteViews(context.getPackageName(), viewId);
-	    } else if(Constant.PRIORITY_L.equals(priority)) {
-	    	viewId = R.layout.reminder_widget_low;
-	    	views = new RemoteViews(context.getPackageName(), viewId);
-	    } else {
-	    	viewId = R.layout.reminder_widget_medium;
-	    	views = new RemoteViews(context.getPackageName(), viewId);
-	    }
+    	
+    	viewId = R.layout.reminder_widget;
+		views = new RemoteViews(context.getPackageName(), viewId);
+//		if(Constant.PRIORITY_H.equals(priority)) {
+//			viewId = R.layout.reminder_widget_high;
+//			views = new RemoteViews(context.getPackageName(), viewId);
+//	    } else if(Constant.PRIORITY_M.equals(priority)) {
+//	    	viewId = R.layout.reminder_widget_medium;
+//	    	views = new RemoteViews(context.getPackageName(), viewId);
+//	    } else if(Constant.PRIORITY_L.equals(priority)) {
+//	    	viewId = R.layout.reminder_widget_low;
+//	    	views = new RemoteViews(context.getPackageName(), viewId);
+//	    } else {
+//	    	viewId = R.layout.reminder_widget_medium;
+//	    	views = new RemoteViews(context.getPackageName(), viewId);
+//	    }
 
 		return views;
     }
@@ -324,7 +282,7 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
 	}
     
     
-    private  static void cancelUpdateWidgetAlarmer(Context context, int mAppWidgetId) {    	
+    /**private  static void cancelUpdateWidgetAlarmer(Context context, int mAppWidgetId) {    	
     	Intent intent = new Intent(context, UpdateWidgetService.class);
 		PendingIntent operation = PendingIntent.getService(context,
 				mAppWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -332,6 +290,6 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
 		//cancel alarm
 		AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		am.cancel(operation);
-    	}
+      }**/
         
 }

@@ -9,8 +9,8 @@
     <string name="add_label">Add</string>
     <string name="edit_title">编辑标题</string>
     <string name="edit_content">编辑內容</string>
-    <string name="ok_label">确定</string>
-    <string name="cancel_label">取消</string>
+    <string name="ok_label">保存</string>
+    <string name="cancel_label">返回</string>
     <string name="title_label">标题</string>
     <string name="priority_label">分类</string>
     <string name="default_priority">一般</string>
@@ -27,7 +27,7 @@
     <string name="default_num">00</string>
     <string name="remind_bell_label">提醒</string>
     <string name="remark_label">备注</string>
-    <string name="delete_action">删除</string>
+    <string name="delete_action">删除数据</string>
     <string name="state_opened">Opened</string>
     <string name="state_closed">Closed</string>
     <string name="select_bell_label">SD Card</string>
@@ -36,9 +36,11 @@
     <string name="endLessThanCurrent">截止日期不能小于当前时间</string>
     <string name="endDateMust">截止日期不能为空</string>
     <string name="titleMust">标题不能为空</string>
+    <string name="typeMust">分类不能为空</string>
     <string name="loadDataError">数据加载错误...</string>
     <string name="finishTask">恭喜!您完成了:</string>
-    <string name="deleteError">删除数据失败</string>
+    <string name="operationSuccess">操作成功!</string>
+    <string name="deleteError">删除数据失败!</string>
     <string name="days">天&#160;&#160;&#160;</string>
     <string name="hours">时&#160;&#160;&#160;</string>
     <string name="minutes">分</string>
@@ -79,18 +81,24 @@
     <string name="noDataForWidget">提示:没有正在运行的倒计时任务!</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="hello_world">Hello world!</string>
-    <string name="index_label">置顶</string>
+    <string name="top_label">置顶</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_add">添加</string>
-    <string name="action_more">设置</string>
+    <string name="menu_more_title">更多内容</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
-    <string name="from_1">距离&#160;&#160;</string>
-    <string name="from_2">还有</string>
+    <string name="leftDayLabel">距离</string>
     <string name="topDate_label">目标日:</string>
-    <string name="edit_type">edit type</string>
-    <string name="title_activity_type">编辑分类</string>
+    <string name="edit_type">编辑分类</string>
     <string name="add_type_label">添加分类</string>
     <string name="type_not_empty">分类不能为空!</string>
+    
+    <string name="type_all">全部</string>
+    <string name="type_life">生活</string>
+    <string name="type_work">工作</string>
+    <string name="type_study">学习</string>
+    <string name="type_memorial_day">纪念日</string>
+    <string name="select_type_dialog">选择分类</string>
+    <string name="add_widget_tips">请选择以下的事件，显示到桌面!</string>
 
 </resources>

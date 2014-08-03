@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+  	android:layout_width="match_parent" 
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_widget"
+    android:id="@+id/reminderWidget">
+    
+    <TextView
+        android:id="@+id/itemLeftDayLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:gravity="center"
+        android:layout_marginLeft="10dip"
+        android:text="@string/leftDayLabel"
+        style="@style/listItemText.widget"/>
+    
+    <TextView
+        android:id="@+id/widget_title"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_toRightOf="@id/itemLeftDayLabel"
+        android:gravity="center"
+        android:layout_marginLeft="10dip"
+        android:text="@string/app_label"
+        android:singleLine="true"
+        android:ellipsize="end"
+        style="@style/listItemText.widget"/>
+        
+    <TextView
+        android:id="@+id/days_label"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:text="@string/days"
+        android:gravity="center"
+        style="@style/listItemLeftDayLabel.widget"/>
+    
+    <TextView
+        android:id="@+id/days"
+        android:layout_width="70dip"
+        android:layout_height="fill_parent"
+        android:layout_toLeftOf="@id/days_label"
+        style="@style/listItemLeftDay.widget"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/itemLeftDayStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_toLeftOf="@id/days"
+        android:gravity="center"
+        android:layout_marginRight="10dip"
+        style="@style/listItemText.widget"/>
+</RelativeLayout>

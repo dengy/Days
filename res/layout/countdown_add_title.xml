@@ -9,9 +9,8 @@
         android:layout_width="match_parent"
         android:padding="10dip"
         android:text="@string/edit_title"
-        android:gravity="left"
-        android:textColor="@color/white"/>
-            
+        android:gravity="center"
+        style="@style/dialogTitle" />           
     <EditText
     android:id="@+id/input_title"
     android:layout_width="match_parent"

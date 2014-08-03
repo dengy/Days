@@ -142,6 +142,8 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		addOkButton.setOnClickListener(this);
 		View addCancelButton = findViewById(R.id.add_cancel);
 		addCancelButton.setOnClickListener(this);
+		View deleteButton = findViewById(R.id.delete_action);
+		deleteButton.setOnClickListener(this);
 		topSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -278,6 +280,36 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		d.show();
 	}
 	
+	private void showDeleteConfirmDialog(String title) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    // Get the layout inflater
+	    LayoutInflater inflater = this.getLayoutInflater();
+	    
+	    View layout = inflater.inflate(R.layout.confirm_dialog, null);
+	    TextView confirmTitle = (TextView)layout.findViewById(R.id.confirmTitle);
+	    confirmTitle.setText(title); 
+	    
+	    builder.setView(layout)
+	    .setPositiveButton("É¾³ý", new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				deleteAction();
+			}
+			
+	    }).setNegativeButton("·ÅÆú", new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+	    });
+	    
+	    Dialog d = builder.create();
+		d.setCanceledOnTouchOutside(false);
+		d.show();
+	}
+	
 	private void priorityDialog() {
 		//when edit,show the current priority
 		int checkedIndex = 0;
@@ -296,7 +328,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		}
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.select_priority_label).
+		builder.setTitle(R.string.select_type_dialog).
 		setSingleChoiceItems(usedPriority, checkedIndex, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -310,107 +342,88 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		d.show();
 	}
 	
-	private void bellDialog() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		LayoutInflater inflater = this.getLayoutInflater();
-		View layout = inflater.inflate(R.layout.bell_dialog, null);
-		final CheckBox vibrator = (CheckBox)layout.findViewById(R.id.vibrator);
-		final RadioButton mute = (RadioButton)layout.findViewById(R.id.mute);
-		final RadioButton bell1 = (RadioButton)layout.findViewById(R.id.bell1);
-		final RadioButton bell2 = (RadioButton)layout.findViewById(R.id.bell2);
-		final RadioButton bell3 = (RadioButton)layout.findViewById(R.id.bell3);
-		
-		String reminder = reminderTextView.getText().toString();
-		if(reminder != null && !"".equals(reminder)) {
-			String[] arr = reminder.split("\\+");
-			if(arr.length == 1) {
-				if(getResources().getString(R.string.mute).equals(arr[0])) {
-					mute.setChecked(true);
-				} else if(getResources().getString(R.string.bell1).equals(arr[0])) {
-					bell1.setChecked(true);
-				} else if(getResources().getString(R.string.bell2).equals(arr[0])) {
-					bell2.setChecked(true);
-				} else if(getResources().getString(R.string.bell3).equals(arr[0])) {
-					bell3.setChecked(true);
-				} 
-				
-				if(getResources().getString(R.string.vibrator).equals(arr[0])) {
-					vibrator.setChecked(true);
-				} else {
-					vibrator.setChecked(false);
-				}
-			} else if(arr.length == 2) {
-				vibrator.setChecked(true);
-				
-				if(getResources().getString(R.string.mute).equals(arr[1])) {
-					mute.setChecked(true);
-				} else if(getResources().getString(R.string.bell1).equals(arr[1])) {
-					bell1.setChecked(true);
-				} else if(getResources().getString(R.string.bell2).equals(arr[1])) {
-					bell2.setChecked(true);
-				} else if(getResources().getString(R.string.bell3).equals(arr[1])) {
-					bell3.setChecked(true);
-				}
-				
-			}
-			/*for(String s : arr) {
-				if(getResources().getString(R.string.mute).equals(s)) {
-					mute.setChecked(true);
-				} else if(getResources().getString(R.string.bell1).equals(s)) {
-					bell1.setChecked(true);
-				} else if(getResources().getString(R.string.bell2).equals(s)) {
-					bell2.setChecked(true);
-				} else if(getResources().getString(R.string.bell3).equals(s)) {
-					bell3.setChecked(true);
-				} 
-				
-				if(getResources().getString(R.string.vibrator).equals(s)) {
-					vibrator.setChecked(true);
-				} else {
-					vibrator.setChecked(false);
-				}
-			}*/
-		}
-		
-		builder.setTitle(R.string.select_reminder);
-		builder.setView(layout);
-		builder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener(){
-
-			@Override
-			public void onClick(DialogInterface dialog, int arg1) {
-				StringBuilder sb = new StringBuilder();
-				if(vibrator.isChecked()) {
-					sb.append(vibrator.getText()).append("+");
-				}
-				if(mute.isChecked()) {
-				    sb.append(mute.getText());
-				} else if(bell1.isChecked()) {
-					sb.append(bell1.getText());
-				} else if(bell2.isChecked()) {
-					sb.append(bell2.getText());
-				} else if(bell3.isChecked()) {
-					sb.append(bell3.getText());
-				}
-				
-				reminderTextView.setText(sb.toString());
-			}
-			
-		}).setNegativeButton(R.string.cancel_label, new DialogInterface.OnClickListener(){
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				
-			}
-			
-		});
-		
-		Dialog d = builder.create();
-		d.setCanceledOnTouchOutside(true);//cancel window when touch outside
-		d.show();
-		
-		
-	}
+//	private void bellDialog() {
+//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//		LayoutInflater inflater = this.getLayoutInflater();
+//		View layout = inflater.inflate(R.layout.bell_dialog, null);
+//		final CheckBox vibrator = (CheckBox)layout.findViewById(R.id.vibrator);
+//		final RadioButton mute = (RadioButton)layout.findViewById(R.id.mute);
+//		final RadioButton bell1 = (RadioButton)layout.findViewById(R.id.bell1);
+//		final RadioButton bell2 = (RadioButton)layout.findViewById(R.id.bell2);
+//		final RadioButton bell3 = (RadioButton)layout.findViewById(R.id.bell3);
+//		
+//		String reminder = reminderTextView.getText().toString();
+//		if(reminder != null && !"".equals(reminder)) {
+//			String[] arr = reminder.split("\\+");
+//			if(arr.length == 1) {
+//				if(getResources().getString(R.string.mute).equals(arr[0])) {
+//					mute.setChecked(true);
+//				} else if(getResources().getString(R.string.bell1).equals(arr[0])) {
+//					bell1.setChecked(true);
+//				} else if(getResources().getString(R.string.bell2).equals(arr[0])) {
+//					bell2.setChecked(true);
+//				} else if(getResources().getString(R.string.bell3).equals(arr[0])) {
+//					bell3.setChecked(true);
+//				} 
+//				
+//				if(getResources().getString(R.string.vibrator).equals(arr[0])) {
+//					vibrator.setChecked(true);
+//				} else {
+//					vibrator.setChecked(false);
+//				}
+//			} else if(arr.length == 2) {
+//				vibrator.setChecked(true);
+//				
+//				if(getResources().getString(R.string.mute).equals(arr[1])) {
+//					mute.setChecked(true);
+//				} else if(getResources().getString(R.string.bell1).equals(arr[1])) {
+//					bell1.setChecked(true);
+//				} else if(getResources().getString(R.string.bell2).equals(arr[1])) {
+//					bell2.setChecked(true);
+//				} else if(getResources().getString(R.string.bell3).equals(arr[1])) {
+//					bell3.setChecked(true);
+//				}
+//				
+//			}
+//		}
+//		
+//		builder.setTitle(R.string.select_reminder);
+//		builder.setView(layout);
+//		builder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener(){
+//
+//			@Override
+//			public void onClick(DialogInterface dialog, int arg1) {
+//				StringBuilder sb = new StringBuilder();
+//				if(vibrator.isChecked()) {
+//					sb.append(vibrator.getText()).append("+");
+//				}
+//				if(mute.isChecked()) {
+//				    sb.append(mute.getText());
+//				} else if(bell1.isChecked()) {
+//					sb.append(bell1.getText());
+//				} else if(bell2.isChecked()) {
+//					sb.append(bell2.getText());
+//				} else if(bell3.isChecked()) {
+//					sb.append(bell3.getText());
+//				}
+//				
+//				reminderTextView.setText(sb.toString());
+//			}
+//			
+//		}).setNegativeButton(R.string.cancel_label, new DialogInterface.OnClickListener(){
+//
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				dialog.dismiss();
+//				
+//			}
+//			
+//		});
+//		
+//		Dialog d = builder.create();
+//		d.setCanceledOnTouchOutside(true);//cancel window when touch outside
+//		d.show();
+//	}
 	
 	/**
 	 * show datepicker dialog according to id of the element
@@ -606,7 +619,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			
 			if(count == 1) {
 	            //set countdown reminder
-	            setCountDownReminder();
+//	            setCountDownReminder();
 	            
 	            if(mState == STATE_EDIT) {
 	            	//update widget 
@@ -618,9 +631,6 @@ public class CountDownEdit extends Activity implements OnClickListener {
 				mCursor.close();
 				mCursor = null;
 				
-//				Intent intent = new Intent(this, ItemList.class);
-//				startActivity(intent);
-				//shutdown this activity
 				finish();
 			}
 			
@@ -650,123 +660,169 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			
 			//shutdown this activity
 			finish();
+			//to main page
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
 		}
 	}
 	
 	/**
 	 * delete countdown record
 	 */
-	private void deleteRecord() {
+	private int deleteRecordAndWidgets(Cursor cursor) {
+		int result = getContentResolver().delete(mUri, null, null);
+		String widgetIds = cursor.getString(cursor.getColumnIndex(CountDown.WIDGET_IDS));
+		if(result == 1) {
+			//notice widget to delete itself
+			if(widgetIds != null && !"".equals(widgetIds)) {
+				String[] appWidgetIds = widgetIds.split(",");
+				for(String mAppWidgetId : appWidgetIds) {
+					Intent intent = new Intent(Constant.DELETE_WIDGET);
+					Bundle extras = new Bundle();
+					extras.putString(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+					intent.putExtras(extras);
+					this.sendBroadcast(intent);
+				}
+			}
+						
+		} else {
+			Toast.makeText(getApplicationContext(), R.string.deleteError, Toast.LENGTH_SHORT).show();
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * delete action
+	 */
+	private void deleteAction() {
+		if(deleteRecordAndWidgets(mCursor) == 1) {
+			finish();
+			Toast.makeText(this, R.string.operationSuccess, Toast.LENGTH_SHORT).show();
+			//to main page
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
+		} else {
+			Toast.makeText(this, R.string.deleteError, Toast.LENGTH_SHORT).show();
+		}
+		
+	}
+	
+	/**
+	 * delete countdown record
+	 */
+	private int deleteRecord() {
 		if (mCursor != null) {
-            getContentResolver().delete(mUri, null, null);
+            return getContentResolver().delete(mUri, null, null);
         }
+		return -1;
 	}
 	
 	/**
 	 * set countdown reminder
 	 */
-	private void setCountDownReminder() {
-		if(mCursor != null && mCursor.moveToFirst()) {
-			Integer _ID = Integer.parseInt(mCursor.getString(mCursor.getColumnIndex(CountDown._ID)));
-//			Integer _ID = mCursor.getInt(mCursor.getColumnIndex(CountDown._ID));
-			String title = titleTextView.getText().toString();
-			String endDate = endDateTextView.getText().toString();
-			String endTime = StringUtil.underLineFilter(endTimeTextView.getText().toString());
-			String remindDate = StringUtil.underLineFilter(remindDateTextView.getText().toString());
-			String reminder = reminderTextView.getText().toString();
-			
-		    Calendar calendar = Calendar.getInstance();
-		    if(endDate != null && !"".equals(endDate)) {
-		    	
-		    	String[] date = endDate.split("-");
-		    	if(date.length == 3) {
-		    		if(endTime != null && !"".equals(endTime)) {
-				    	String[] time = endTime.split(":");
-				    	if(time.length == 2) {
-			    			calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]),
-			        				Integer.parseInt(time[0]), Integer.parseInt(time[1]));
-			    		}
-
-				  } else {
-//					    calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]),
-//		        				0, 0);
-					    calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
-				  }
-		    	}			    	
-		    	 
-//		    	//set countdown reminder
+//	private void setCountDownReminder() {
+//		if(mCursor != null && mCursor.moveToFirst()) {
+//			Integer _ID = Integer.parseInt(mCursor.getString(mCursor.getColumnIndex(CountDown._ID)));
+////			Integer _ID = mCursor.getInt(mCursor.getColumnIndex(CountDown._ID));
+//			String title = titleTextView.getText().toString();
+//			String endDate = endDateTextView.getText().toString();
+//			String endTime = StringUtil.underLineFilter(endTimeTextView.getText().toString());
+//			String remindDate = StringUtil.underLineFilter(remindDateTextView.getText().toString());
+//			String reminder = reminderTextView.getText().toString();
+//			
+//		    Calendar calendar = Calendar.getInstance();
+//		    if(endDate != null && !"".equals(endDate)) {
+//		    	
+//		    	String[] date = endDate.split("-");
+//		    	if(date.length == 3) {
+//		    		if(endTime != null && !"".equals(endTime)) {
+//				    	String[] time = endTime.split(":");
+//				    	if(time.length == 2) {
+//			    			calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]),
+//			        				Integer.parseInt(time[0]), Integer.parseInt(time[1]));
+//			    		}
 //
-//				Intent intent = new Intent(this, AlarmReceiver.class);
+//				  } else {
+////					    calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]),
+////		        				0, 0);
+//					    calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
+//				  }
+//		    	}			    	
+//		    	 
+////		    	//set countdown reminder
+////
+////				Intent intent = new Intent(this, AlarmReceiver.class);
+////				
+////				//transfer data to receiver
+////				Bundle extras = new Bundle();
+////				extras.putInt(CountDown._ID, _ID);
+////				extras.putString(CountDown.TITLE, title);
+////				extras.putString(CountDown.REMIND_BELL, reminder);
+////				extras.putString(CountDown.END_DATE, endDate);
+////				
+////				intent.putExtras(extras);
 //				
-//				//transfer data to receiver
-//				Bundle extras = new Bundle();
-//				extras.putInt(CountDown._ID, _ID);
-//				extras.putString(CountDown.TITLE, title);
-//				extras.putString(CountDown.REMIND_BELL, reminder);
-//				extras.putString(CountDown.END_DATE, endDate);
-//				
-//				intent.putExtras(extras);
-				
-		        PendingIntent sender = PendingIntent.getBroadcast(this,
-		        		_ID, setIntentForAlarm(this, _ID, title, reminder ,endDate), 
-		        		PendingIntent.FLAG_UPDATE_CURRENT);
-		        // Schedule the alarm!
-		        AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
-		        long firstTime = 0;//remind time
-		        if(remindDate == null || "".equals(remindDate)) {
-		        	 firstTime = calendar.getTimeInMillis();
-		        	 am.set(AlarmManager.RTC_WAKEUP, firstTime, sender);
-		        } else {
-		        	String[] str = remindDate.split("-");
-		        	if(str.length == 3) {
-		        		Calendar remind = Calendar.getInstance();
-		        		remind.set(Integer.parseInt(str[0]), Integer.parseInt(str[1]) -1, Integer.parseInt(str[2]),
-		        				11, 50, 0);
-		        		
-		        		System.out.println(remind.getTime().toLocaleString());
-		        		System.out.println(calendar.getTime().toLocaleString());
-		        		
-		        		long currentTime = System.currentTimeMillis();
-		        		long remindTime = remind.getTimeInMillis();
-		        		long endDateTime = calendar.getTimeInMillis();
-		        		
-		        		if(endDateTime < remindTime) {
-//		        			firstTime = endDateTime - currentTime ;
-		        			firstTime = endDateTime;
-		        		}else {
-//		        			firstTime = remindTime - currentTime ;
-		        			firstTime = remindTime;
-		        		}
-		        		
-		        		//remind every day from remindDate to endDate
-			            am.setRepeating(AlarmManager.RTC_WAKEUP,
-			            		firstTime, AlarmManager.INTERVAL_DAY, sender);
-			            
-		        	}
-		        }
-		        
-		        //save alarm data for boot_up
-		        saveAlarmData(_ID, true, firstTime, title, reminder, endDate);
-
-		    }
-		}
-		
-	}
+//		        PendingIntent sender = PendingIntent.getBroadcast(this,
+//		        		_ID, setIntentForAlarm(this, _ID, title, reminder ,endDate), 
+//		        		PendingIntent.FLAG_UPDATE_CURRENT);
+//		        // Schedule the alarm!
+//		        AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+//		        long firstTime = 0;//remind time
+//		        if(remindDate == null || "".equals(remindDate)) {
+//		        	 firstTime = calendar.getTimeInMillis();
+//		        	 am.set(AlarmManager.RTC_WAKEUP, firstTime, sender);
+//		        } else {
+//		        	String[] str = remindDate.split("-");
+//		        	if(str.length == 3) {
+//		        		Calendar remind = Calendar.getInstance();
+//		        		remind.set(Integer.parseInt(str[0]), Integer.parseInt(str[1]) -1, Integer.parseInt(str[2]),
+//		        				11, 50, 0);
+//		        		
+//		        		System.out.println(remind.getTime().toLocaleString());
+//		        		System.out.println(calendar.getTime().toLocaleString());
+//		        		
+//		        		long currentTime = System.currentTimeMillis();
+//		        		long remindTime = remind.getTimeInMillis();
+//		        		long endDateTime = calendar.getTimeInMillis();
+//		        		
+//		        		if(endDateTime < remindTime) {
+////		        			firstTime = endDateTime - currentTime ;
+//		        			firstTime = endDateTime;
+//		        		}else {
+////		        			firstTime = remindTime - currentTime ;
+//		        			firstTime = remindTime;
+//		        		}
+//		        		
+//		        		//remind every day from remindDate to endDate
+//			            am.setRepeating(AlarmManager.RTC_WAKEUP,
+//			            		firstTime, AlarmManager.INTERVAL_DAY, sender);
+//			            
+//		        	}
+//		        }
+//		        
+//		        //save alarm data for boot_up
+//		        saveAlarmData(_ID, true, firstTime, title, reminder, endDate);
+//
+//		    }
+//		}
+//		
+//	}
 	
-	public static Intent setIntentForAlarm(Context context , int _ID, String title, String reminder, String endDate) {
-		Intent intent = new Intent(context, AlarmReceiver.class);
-		
-		//transfer data to receiver
-		Bundle extras = new Bundle();
-		extras.putInt(CountDown._ID, _ID);
-		extras.putString(CountDown.TITLE, title);
-		extras.putString(CountDown.REMIND_BELL, reminder);
-		extras.putString(CountDown.END_DATE, endDate);
-		
-		intent.putExtras(extras);
-		
-		return intent;
-	} 
+//	public static Intent setIntentForAlarm(Context context , int _ID, String title, String reminder, String endDate) {
+//		Intent intent = new Intent(context, AlarmReceiver.class);
+//		
+//		//transfer data to receiver
+//		Bundle extras = new Bundle();
+//		extras.putInt(CountDown._ID, _ID);
+//		extras.putString(CountDown.TITLE, title);
+//		extras.putString(CountDown.REMIND_BELL, reminder);
+//		extras.putString(CountDown.END_DATE, endDate);
+//		
+//		intent.putExtras(extras);
+//		
+//		return intent;
+//	} 
 	
 	/**
 	 * save alarm data for system boot-up
@@ -774,7 +830,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	 * @param remindDate
 	 * @param firstTime
 	 */
-	private void saveAlarmData(int _ID, boolean remindDate, long firstTime,
+	/**private void saveAlarmData(int _ID, boolean remindDate, long firstTime,
 			String title, String reminder, String endDate) {
 		SharedPreferences.Editor prefs = this.getSharedPreferences(Constant.ALARM_DATA_FILE, Context.MODE_PRIVATE).edit();
 
@@ -787,7 +843,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		prefs.putString(StringUtil.appendAppWidgetId(CountDown._ID, _ID), sb.toString());
 		
 		prefs.commit();
-	}
+	}**/
 	
 	private void updateWidget() {
 		if(mCursor != null) {
@@ -838,17 +894,19 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		case R.id.remindFromDate:
 			datePicker(R.id.remindFromDate);
 			break;
-		case R.id.reminder:
-			bellDialog();
-			break;
+//		case R.id.reminder:
+//			bellDialog();
+//			break;
 		case R.id.add_cancel:
 			cancel();
-			
-//			Intent intent = new Intent(this, ItemList.class);
-//			startActivity(intent);
 			break;
 		case R.id.add_ok:
 			save();
+			break;
+		case R.id.delete_action:
+			showDeleteConfirmDialog(Constant.DELETE_TASK_CONFIRM);
+			break;
+		default:
 			break;
 		}
 	}

@@ -10,5 +10,10 @@
     
     <!-- 圆角 -->  
     <corners  
-        android:radius="6dp"/>    
+        android:radius="4dp"/>    
+        
+    <stroke  
+        android:dashGap="0dp"  
+        android:width="4dp"  
+        android:color="@android:color/white" /> 
 </shape> 

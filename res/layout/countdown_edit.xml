@@ -3,10 +3,10 @@
   	android:layout_width="match_parent" 
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <RelativeLayout 
+   <RelativeLayout 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/abc_ab_solid_light_holo">
+    style="@style/MyActionBar">
     
     <!--  <Button 
     android:id="@+id/add_cancel"
@@ -16,11 +16,17 @@
     android:layout_centerVertical="true"
     android:layout_marginLeft="5dip"
     android:background="@drawable/cancel"/>  -->
-    <ImageView
-	        android:id="@+id/add_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cancel"/>
+
+    <Button
+    android:id="@+id/add_cancel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_centerVertical="true"
+    android:layout_marginLeft="5dip"
+    android:drawableLeft="@drawable/cancel"
+    android:text="@string/cancel_label"/>
+    
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,14 +34,16 @@
         android:gravity="center"
         android:layout_centerVertical="true"
         style="@style/actionbarText"/>
+    
     <Button
     android:id="@+id/add_ok"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/okay"
     android:layout_alignParentRight="true"
     android:layout_centerVertical="true"
-    android:layout_marginRight="5dip"/>
+    android:layout_marginRight="5dip"
+    android:text="@string/ok_label"/>
+    
     
     </RelativeLayout>  
       
@@ -63,7 +71,7 @@
         android:layout_width="wrap_content"
         android:scrollHorizontally="false"
         android:singleLine="false"
-        android:layout_weight="0.8"
+        android:layout_weight="0.9"
         android:layout_span="2"/>
     </TableRow>
     <TableRow  
@@ -83,8 +91,8 @@
         android:id="@+id/priority"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/default_priority"
-        android:layout_weight="0.8"
+        android:text="@string/type_life"
+        android:layout_weight="0.9"
         android:layout_span="2"/>
     </TableRow>
     <TableRow  
@@ -105,7 +113,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/default_underline"
-        android:layout_weight="0.8"
+        android:layout_weight="0.9"
         android:layout_span="2"/>
     </TableRow>
     <TableRow  
@@ -118,7 +126,7 @@
         android:layout_height="wrap_content"
         android:gravity="right" 
         android:paddingRight="10dip"
-        android:text="@string/index_label"
+        android:text="@string/top_label"
         android:layout_weight="0.1"/>
 
      <Switch   
@@ -142,7 +150,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/default_underline"
-        android:layout_weight="0.8"
+        android:layout_weight="0.9"
         android:layout_span="2"
         android:visibility="gone"/>
     </TableRow>
@@ -175,7 +183,8 @@
             android:layout_width="fill_parent"  
             android:layout_height="wrap_content"  
             android:background="@drawable/edit_row_bg_middle"  
-            android:padding="10dip">  
+            android:padding="10dip"
+            android:visibility="gone">  
   	<TextView
         android:id="@+id/remind_bell_label"
         android:layout_width="wrap_content"
@@ -190,7 +199,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/default_reminder"
-        android:layout_weight="0.8"
+        android:layout_weight="0.9"
         android:layout_span="2"/>
     
     <!-- <android.first.countdown.util.SlipButton
@@ -201,11 +210,11 @@
     <TableRow  
             android:layout_width="fill_parent"  
             android:layout_height="wrap_content"  
-            android:background="@drawable/edit_row_bg_bottom"  
+            android:background="@drawable/edit_row_bg_middle"  
             android:padding="10dip">  
   	<TextView
         android:layout_height="wrap_content"
-        android:gravity="right" 
+        android:gravity="right"
         android:paddingRight="10dip"
         android:text="@string/remark_label"
         android:layout_weight="0.1"/>
@@ -217,8 +226,23 @@
    	    android:maxLines="6"
         android:lines="3"
         android:layout_width="match_parent"
-        android:layout_weight="0.8"
+        android:layout_weight="0.9"
         android:layout_span="2"/>  
+    </TableRow>
+    
+    <TableRow  
+            android:layout_width="fill_parent"  
+            android:layout_height="wrap_content"  
+            android:background="@drawable/edit_row_bg_bottom"  
+            android:padding="10dip">  
+  	 <Button
+    android:id="@+id/delete_action"
+    android:layout_width="fill_parent"
+    android:layout_weight="0.1"
+    android:layout_height="wrap_content"
+    android:text="@string/delete_action"
+    android:background="@drawable/delete_btn_bg_selector"
+    android:drawableRight="@drawable/delete_icon"/>
     </TableRow>
     </TableLayout>
 </LinearLayout>

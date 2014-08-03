@@ -16,7 +16,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_label"
-        android:theme="@android:style/Theme.Holo.Light" >
+        android:theme="@style/MyTheme" >
         <provider
             android:name=".CountDownProvider"
             android:authorities="android.first.countdown.CountDown" />
@@ -110,7 +110,7 @@
 
         <activity
             android:name=".TypeActivity"
-            android:label="@string/title_activity_type" >
+            android:label="@string/edit_type" >
         </activity>
        
     </application>

@@ -26,45 +26,11 @@ public class AlarmWakeUpReceiver extends BroadcastReceiver {
 			Set<String> set = all.keySet();
 			Iterator<String> it = set.iterator();
 			while(it.hasNext()) {
-				Log.i(TAG, "loop.......");
-				String key = it.next();
-				String value = all.get(key).toString();
-				resetAlarm(value , context);
+//				Log.i(TAG, "loop.......");
+//				String key = it.next();
+//				String value = all.get(key).toString();
+//				resetAlarm(value , context);
 			}
-		}
-		
-		
-	}
-	
-	private void resetAlarm(String value, Context context) {
-		Log.i(TAG, "resetAlarm");
-		if(value != null && !"".equals(value)) {
-			String[] strs = value.split(Constant.SPLIT_SEMICOLON);
-			if(strs.length != 6)
-				return;
-			
-			Boolean remindDate = Boolean.parseBoolean(strs[1]);
-			Long firstTime = Long.parseLong(strs[2]);
-			Integer _ID = Integer.parseInt(strs[0]);
-			String title = strs[3];
-			String reminder = strs[4];
-			String endDate = strs[5];
-			
-			PendingIntent operation = PendingIntent.getBroadcast(context,
-					_ID, CountDownEdit.setIntentForAlarm(context, _ID, title, reminder, endDate),
-					PendingIntent.FLAG_UPDATE_CURRENT);
-			
-			//reset alarm
-			AlarmManager am = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
-			if(remindDate) {
-				am.setRepeating(AlarmManager.RTC_WAKEUP,
-	            		firstTime, AlarmManager.INTERVAL_DAY, operation);
-				Log.i(TAG, "startAlarm1");
-			} else {
-				am.set(AlarmManager.RTC_WAKEUP, firstTime, operation);
-				Log.i(TAG, "startAlarm2");
-			}
-			
 		}
 		
 		

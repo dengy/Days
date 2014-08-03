@@ -37,7 +37,7 @@ public class WidgetConfigure extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.countdownlist_widget);
 		
         list = (ListView) findViewById(R.id.list);
@@ -146,7 +146,7 @@ public class WidgetConfigure extends Activity{
 			prefs.putString(StringUtil.appendAppWidgetId(CountDown.END_DATE, mAppWidgetId), endDate);
 		}
 		
-		prefs.putString(StringUtil.appendAppWidgetId(Constant.REMIND_STATE, mAppWidgetId), Constant.RUNNING_STATE);
+		prefs.putString(StringUtil.appendAppWidgetId(Constant.TASK_STATE, mAppWidgetId), Constant.RUNNING_STATE);
 		
 		prefs.putString(StringUtil.appendAppWidgetId(CountDown.PRIORITY, mAppWidgetId), priority);
 		
@@ -157,10 +157,10 @@ public class WidgetConfigure extends Activity{
 	 * @param context
 	 * @param mAppWidgetId
 	 */
-	public static void updateRemindStateInPreference(Context context, int mAppWidgetId, String remindState) {
+	public static void updateTaskStateInPreference(Context context, int mAppWidgetId, String remindState) {
 		SharedPreferences.Editor prefs = context
     			.getSharedPreferences(Constant.WIDGET_DATA_FILE, Context.MODE_PRIVATE).edit();
-		prefs.putString(StringUtil.appendAppWidgetId(Constant.REMIND_STATE, mAppWidgetId), remindState);
+		prefs.putString(StringUtil.appendAppWidgetId(Constant.TASK_STATE, mAppWidgetId), remindState);
     	prefs.commit();
 	}
 	
@@ -176,7 +176,7 @@ public class WidgetConfigure extends Activity{
     	prefs.remove(StringUtil.appendAppWidgetId(CountDown.TITLE, mAppWidgetId));
     	prefs.remove(StringUtil.appendAppWidgetId(CountDown.END_DATE, mAppWidgetId));
     	prefs.remove(StringUtil.appendAppWidgetId(CountDown.PRIORITY, mAppWidgetId));
-    	prefs.remove(StringUtil.appendAppWidgetId(Constant.REMIND_STATE, mAppWidgetId));
+    	prefs.remove(StringUtil.appendAppWidgetId(Constant.TASK_STATE, mAppWidgetId));
     	prefs.commit();
 	}
 	
@@ -264,11 +264,11 @@ public class WidgetConfigure extends Activity{
 				String remindBell = c.getString(c.getColumnIndex(CountDown.REMIND_BELL));
 				
 				//show remindBell image
-				if(remindBell == null || getResources().getString(R.string.mute).equals(remindBell)) {
-					viewHolder.remindBellImage.setVisibility(View.GONE);
-				} else {
-					viewHolder.remindBellImage.setVisibility(View.VISIBLE);
-				}
+//				if(remindBell == null || getResources().getString(R.string.mute).equals(remindBell)) {
+//					viewHolder.remindBellImage.setVisibility(View.GONE);
+//				} else {
+//					viewHolder.remindBellImage.setVisibility(View.VISIBLE);
+//				}
 				
 			    //show priority
 //			    String priority = c.getString(c.getColumnIndex(CountDown.PRIORITY));

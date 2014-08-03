@@ -20,6 +20,9 @@ public class ViewHolder{
 	public View countdownLayout;
 	public Integer _ID;
 	
+	public TextView itemLeftDayLabelView;
+	public TextView itemLeftDayStatusView;
+	
 	public SharedPreferences.Editor prefs;
 	
 }

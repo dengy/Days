@@ -170,7 +170,7 @@ public class CountDownProvider extends ContentProvider {
         }
         
         if (values.containsKey(CountDown.PRIORITY) == false) {
-            values.put(CountDown.PRIORITY,  Constant.PRIORITY_M);
+            values.put(CountDown.PRIORITY,  Constant.DEFAULT_TYPE);
         }
         
         if (values.containsKey(CountDown.STARRED) == false) {

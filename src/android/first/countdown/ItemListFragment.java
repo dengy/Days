@@ -1,47 +1,26 @@
 package android.first.countdown;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.Fragment;
-import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.first.countdown.util.StringUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.ResourceCursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ItemListFragment extends Fragment implements OnClickListener{
+public class ItemListFragment extends Fragment{
 	private static final String TAG = "ItemList";
 	private ListView list;
-	private View settings;
-	private Button runningButton;
-	private Button completeButton;
-	private Button settingButton;
 	
 	//Activity act = getActivity();
     private Activity act;
@@ -86,20 +65,6 @@ public class ItemListFragment extends Fragment implements OnClickListener{
         	
 		});
         
-        //item long click
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> adapter, View v,
-					int position, long id) {
-				TextView titleTextView = (TextView)v.findViewById(R.id.title);
-				Cursor cursor = ((CustomCursorAdapter)adapter.getAdapter()).getCursor();
-				//showActionDialog(titleTextView.getText().toString(), ((Long)id).intValue(), cursor);
-				return false;
-			}
-        	
-        });
-        
         //setWidgetUpdateAlarmManager();
         
         return rootView;
@@ -138,7 +103,7 @@ public class ItemListFragment extends Fragment implements OnClickListener{
 			endDate = "2014-07-26";
 			ContentValues values = new ContentValues();
 			values.put(CountDown.TITLE, title);
-			values.put(CountDown.PRIORITY, Constant.DEFAULT_PRIORITY);
+			values.put(CountDown.PRIORITY, this.getResources().getString(R.string.type_life));
 			values.put(CountDown.END_DATE, endDate);
 			values.put(CountDown.END_TIME, "");
 			values.put(CountDown.REMIND_DATE, "");
@@ -148,6 +113,13 @@ public class ItemListFragment extends Fragment implements OnClickListener{
 		}
 		
 		topLeftDays = CountDownAppWidgetProvider.getDayDiff(endDate);
+		TextView dayStatus = (TextView)rootView.findViewById(R.id.dayStatus);
+		if(topLeftDays < 0) {
+			dayStatus.setText(Constant.DAY_STATUS_PASSED);
+			topLeftDays*=-1;
+		} else {
+			dayStatus.setText(Constant.DAY_STATUS_LEFT);
+		}
 		((TextView)rootView.findViewById(R.id.topTitle)).setText(title);
 		((TextView)rootView.findViewById(R.id.topDate)).setText(endDate);
 		((TextView)rootView.findViewById(R.id.topLeftDays)).setText(topLeftDays + "");
@@ -162,7 +134,7 @@ public class ItemListFragment extends Fragment implements OnClickListener{
 		
 		//uri = Uri.withAppendedPath(uri, mType);
 		Cursor cursor = null;
-		if(Constant.ALL_PRIORITY.equals(mType)) {
+		if(Constant.ALL_TYPE.equals(mType)) {
 			cursor = act.managedQuery(uri, new String[] {CountDown._ID, CountDown.TITLE, CountDown.STARRED, 
 		        	CountDown.END_DATE, CountDown.END_TIME, CountDown.REMIND_BELL, CountDown.STATE, CountDown.PRIORITY, 
 		        	CountDown.WIDGET_IDS}, null, null,
@@ -179,8 +151,8 @@ public class ItemListFragment extends Fragment implements OnClickListener{
 	}
 	
 	class CustomCursorAdapter extends ResourceCursorAdapter {
-		private HashMap<Integer, MyCountDownTimer> timerHashMap 
-		= new HashMap<Integer, MyCountDownTimer>();
+//		private HashMap<Integer, MyCountDownTimer> timerHashMap 
+//		= new HashMap<Integer, MyCountDownTimer>();
 		
 		public CustomCursorAdapter(Context context, int layout, Cursor c) {
 			super(context, layout, c);
@@ -192,16 +164,18 @@ public class ItemListFragment extends Fragment implements OnClickListener{
 			ViewHolder viewHolder = new ViewHolder();
 			viewHolder.titleView = (TextView)view.findViewById(R.id.title);
 //			viewHolder.priorityView = (TextView)view.findViewById(R.id.priority);
-			viewHolder.remindBellImage = view.findViewById(R.id.remindBellImage);
+//			viewHolder.remindBellImage = view.findViewById(R.id.remindBellImage);
 //			viewHolder.finishSlipButton = (SlipButton)view.findViewById(R.id.finish);
-			viewHolder.finishCheckBox = (CheckBox)view.findViewById(R.id.finish);
+//			viewHolder.finishCheckBox = (CheckBox)view.findViewById(R.id.finish);
 			viewHolder.enddateView = (TextView)view.findViewById(R.id.enddate);
 			viewHolder.daysView = (TextView)view.findViewById(R.id.days);
-			viewHolder.hoursView = (TextView)view.findViewById(R.id.hours);
-			viewHolder.minutesView = (TextView)view.findViewById(R.id.minutes);
+//			viewHolder.hoursView = (TextView)view.findViewById(R.id.hours);
+//			viewHolder.minutesView = (TextView)view.findViewById(R.id.minutes);
 //			viewHolder.secondsView = (TextView)view.findViewById(R.id.seconds);
-			viewHolder.expireView = (TextView)view.findViewById(R.id.expire);
+//			viewHolder.expireView = (TextView)view.findViewById(R.id.expire);
 			viewHolder.countdownLayout = view.findViewById(R.id.countdownLayout);
+			viewHolder.itemLeftDayLabelView = (TextView)view.findViewById(R.id.itemLeftDayLabel);
+			viewHolder.itemLeftDayStatusView = (TextView)view.findViewById(R.id.itemLeftDayStatus);
 			view.setTag(viewHolder);
 			
 			return view;
@@ -217,95 +191,38 @@ public class ItemListFragment extends Fragment implements OnClickListener{
 			} else {
 				final String title = c.getString(c.getColumnIndex(CountDown.TITLE));
 				viewHolder.titleView.setText(title);
-				String remindBell = c.getString(c.getColumnIndex(CountDown.REMIND_BELL));
+//				String remindBell = c.getString(c.getColumnIndex(CountDown.REMIND_BELL));
 				
 				//show remindBell image
-				if(remindBell == null || getResources().getString(R.string.mute).equals(remindBell)) {
+				/**if(remindBell == null || getResources().getString(R.string.mute).equals(remindBell)) {
 					viewHolder.remindBellImage.setVisibility(View.GONE);
 				} else {
 					viewHolder.remindBellImage.setVisibility(View.VISIBLE);
-				}
+				}**/
 				
-			    String state = c.getString(c.getColumnIndex(CountDown.STATE));
+//			    String state = c.getString(c.getColumnIndex(CountDown.STATE));
 			    final int id = c.getInt(c.getColumnIndex(CountDown._ID));//primary key
 			    //for delete alarm data after countdown finish
 			    viewHolder._ID = id;
 			    viewHolder.prefs = context.getSharedPreferences(Constant.ALARM_DATA_FILE, Context.MODE_PRIVATE).edit();
 			    final String widgetIds = c.getString(c.getColumnIndex(CountDown.WIDGET_IDS));
-/*			    viewHolder.finishSlipButton.SetOnChangedListener(new SlipButton.OnChangedListener() {
-					
-					@Override
-					public void OnChanged(boolean checkState) {
-						Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
-						updateState(uri, checkState);
-					}
-				});
-			    
-			    if(CountDown.STATE_OPENED.equals(state)) {
-			    	viewHolder.finishSlipButton.setCheck(true);//slipbutton check
-			    } else {
-			    	viewHolder.finishSlipButton.setCheck(false);//slipbutton uncheck
-			    }
-*/			    
-			    //show checkbox
-			    if(CountDown.STATE_OPENED.equals(state)) {
-			    	viewHolder.finishCheckBox.setChecked(false);
-			    } else if(CountDown.STATE_CLOSED.equals(state)){
-			    	viewHolder.finishCheckBox.setChecked(true);
-			    }
-			    
-			    boolean checked = viewHolder.finishCheckBox.isChecked();
 
-			    if(checked) {
-			    	//set clickable true
-//			    	view.setClickable(true);
-			    	view.setLongClickable(true);
-			    	
-			    	//if task finished,then disable checkbox
-			    	viewHolder.finishCheckBox.setEnabled(false);
-			    	viewHolder.countdownLayout.setVisibility(View.GONE);
-			    	viewHolder.expireView.setVisibility(View.VISIBLE);
-			    	viewHolder.expireView.setText(R.string.finished);
-			    	
-			    	//cancel all countdownTimers
-			    	cancelAllCountDownTimers(timerHashMap);
-			    } else {
-			    	//set clickable false
-//			    	view.setClickable(false);
-			    	view.setLongClickable(false);
-			    	
-			    	//enable checkbox
-			    	viewHolder.finishCheckBox.setEnabled(true);
-			    	
-			    	viewHolder.finishCheckBox.setOnClickListener(new OnClickListener() {
-					
-			    		@Override
-						public void onClick(View v) {
-							boolean isChecked = ((CheckBox) v).isChecked();
-							 if(isChecked) {
-								 //update state
-//								 Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
-//								 updateState(uri, isChecked);
-//								 
-//								//cancel alarm & notice widget if exists
-//							     deleteOrFinish(id, widgetIds, Constant.FINISH_WIDGET);
-//								
-//							     Toast.makeText(getApplicationContext(), getResources().getString(R.string.finishTask) + title, Toast.LENGTH_SHORT).show();
-							 }
-						}
-			    	});
-			    }
-			    
-			    
+			    //show checkbox
+//			    if(CountDown.STATE_OPENED.equals(state)) {
+//			    	viewHolder.finishCheckBox.setChecked(false);
+//			    } else if(CountDown.STATE_CLOSED.equals(state)){
+//			    	viewHolder.finishCheckBox.setChecked(true);
+//			    }
+			    			    
 			    //show priority
 			    String priority = c.getString(c.getColumnIndex(CountDown.PRIORITY));
 //			    setPriority(priority, viewHolder);
 			    
 			    //show countdown time
 			    String endDate = c.getString(c.getColumnIndex(CountDown.END_DATE));
-			    String endTime = StringUtil.underLineFilter(c.getString(c.getColumnIndex(CountDown.END_TIME)));
-			    viewHolder.enddateView.setText(endDate + " " + endTime);
-			    if(endDate != null && !"".equals(endDate) && !checked) {
+//			    String endTime = StringUtil.underLineFilter(c.getString(c.getColumnIndex(CountDown.END_TIME)));
+//			    viewHolder.enddateView.setText(endDate + " " + endTime);
+			    if(endDate != null && !"".equals(endDate)) {
 			    	//createCountDownTimer(endDate, endTime, viewHolder, id);
 			    	showCountDown(endDate, viewHolder);
 			    }
@@ -317,16 +234,16 @@ public class ItemListFragment extends Fragment implements OnClickListener{
 		private void showCountDown(String endDate, ViewHolder viewHolder) {
 			int daysDiff = CountDownAppWidgetProvider.getDayDiff(endDate);
 			if(Constant.ERROR_DAYS != daysDiff) {
-				viewHolder.countdownLayout.setVisibility(View.VISIBLE);
-				//hidden expire textview
-				viewHolder.expireView.setVisibility(View.GONE);
-				
+				if(daysDiff < 0) {
+					daysDiff *= -1;
+					viewHolder.itemLeftDayLabelView.setVisibility(View.GONE);
+					viewHolder.itemLeftDayStatusView.setText(Constant.DAY_STATUS_PASSED);
+				} else {
+					viewHolder.itemLeftDayLabelView.setVisibility(View.VISIBLE);
+					viewHolder.itemLeftDayStatusView.setText(Constant.DAY_STATUS_LEFT);
+				}
 		    	viewHolder.daysView.setText(daysDiff + "");
-			} else {
-				viewHolder.countdownLayout.setVisibility(View.VISIBLE);
-				//hidden expire textview
-				viewHolder.expireView.setVisibility(View.GONE);
-				
+			} else {				
 		    	viewHolder.daysView.setText("³ö´íÁË");
 			}
 		}
@@ -338,7 +255,7 @@ public class ItemListFragment extends Fragment implements OnClickListener{
 		 * @param viewHolder
 		 * @param id
 		 */
-		private void createCountDownTimer(String endDate, String endTime, ViewHolder viewHolder, int id) {
+		/**private void createCountDownTimer(String endDate, String endTime, ViewHolder viewHolder, int id) {
 			Calendar calendar = Calendar.getInstance();
 			String[] date = endDate.split("-");
 	    	if(date.length == 3) {
@@ -369,26 +286,26 @@ public class ItemListFragment extends Fragment implements OnClickListener{
 	    	timerHashMap.put(id, timer);
 	    	
 	    }			  
-	}
+	}**/
 		
 		/**
 		 * cancel all old countDownTimers
 		 * @param timerHashMap
 		 */
-		private void cancelAllCountDownTimers(HashMap<Integer, MyCountDownTimer> timerHashMap) {
-			Set<Integer> keySet = timerHashMap.keySet();
-			Iterator<Integer> it = keySet.iterator();
-			while(it.hasNext()) {
-				Integer key = it.next();
-				MyCountDownTimer timer = timerHashMap.get(key);
-				if(timer != null) {
-					timer.cancel();
-				}
-			}
-			
-			//clean all data
-			timerHashMap.clear();
-		}
+//		private void cancelAllCountDownTimers(HashMap<Integer, MyCountDownTimer> timerHashMap) {
+//			Set<Integer> keySet = timerHashMap.keySet();
+//			Iterator<Integer> it = keySet.iterator();
+//			while(it.hasNext()) {
+//				Integer key = it.next();
+//				MyCountDownTimer timer = timerHashMap.get(key);
+//				if(timer != null) {
+//					timer.cancel();
+//				}
+//			}
+//			
+//			//clean all data
+//			timerHashMap.clear();
+//		}
 		
 		/**
 		 * update state
@@ -408,13 +325,4 @@ public class ItemListFragment extends Fragment implements OnClickListener{
 		}
 		
 	}
-	
-	
-	@Override
-	public void onClick(View v) {
-		switch(v.getId()) {
-		}
-		
-	}
-
 }

@@ -1,7 +1,5 @@
 package android.first.countdown;
 
-import java.util.Calendar;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -9,15 +7,12 @@ import android.appwidget.AppWidgetManager;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.first.countdown.util.StringUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.View;
 import android.widget.RemoteViews;
 
 public class UpdateWidgetService extends Service {
@@ -48,14 +43,13 @@ public class UpdateWidgetService extends Service {
     	if(title != null && !"".equals(title)) {
     		String priority = bundle.getString(CountDown.PRIORITY);
         	String endDate = bundle.getString(CountDown.END_DATE);
-        	String remind_state = bundle.getString(Constant.REMIND_STATE);
+        	String task_state = bundle.getString(Constant.TASK_STATE);
         	
         	AppWidgetManager am = AppWidgetManager.getInstance(this); 
-        	long millisUntilFinished = bundle.getLong(Constant.END_DATE_TIME) - System.currentTimeMillis();
             RemoteViews views = CountDownAppWidgetProvider.getRemoteViews(priority, this, _ID);
             
           //仅当widget所对应的任务属于Running状态的时候，可以编辑
-    		if(Constant.RUNNING_STATE.equals(remind_state)) {
+    		if(Constant.RUNNING_STATE.equals(task_state)) {
     			//add click event
     			Uri uri = ContentUris.withAppendedId(CountDown.CONTENT_URI, _ID);
     			Intent updateIntent = new Intent(Intent.ACTION_EDIT, uri);
@@ -64,10 +58,10 @@ public class UpdateWidgetService extends Service {
     		}		
         	
         	views.setTextViewText(R.id.widget_title, title);
-        	views.setTextViewText(R.id.widget_end_date, endDate);
+        	//views.setTextViewText(R.id.widget_end_date, endDate);
         	
         	//update widget
-        	CountDownAppWidgetProvider.refreshAppWidget(this, views, millisUntilFinished, mAppWidgetId, am);
+        	CountDownAppWidgetProvider.refreshAppWidget(this, views, endDate, mAppWidgetId, am);
     	}
     	
         }

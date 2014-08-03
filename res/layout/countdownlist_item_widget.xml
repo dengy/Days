@@ -2,31 +2,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/listItemStyle">
+    android:background="@drawable/list_item_bg_selector"
+    android:padding="7dip">
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:text="@string/app_label"
-        android:singleLine="true"
-        android:ellipsize="end"
-        android:paddingRight="180dip"/>
+		android:layout_marginLeft="10dip"
+		style="@style/widgetListItem"/>
 	<ImageView
 	        android:id="@+id/remindBellImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/alarm"
             android:layout_below="@id/title"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:visibility="gone"/>
 
     <TextView
         android:id="@+id/enddate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_label"
         android:layout_alignParentRight="true"
-        style="@style/grayText"/>
+        android:layout_marginRight="10dip"
+        style="@style/widgetListItem.endDate"/>
 </RelativeLayout>
 
 

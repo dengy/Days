@@ -6,57 +6,74 @@
     <RelativeLayout 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/layout_border_bottom"> 
-    <TextView
+    android:background="@drawable/top_item_bg"
+    android:padding="10dip"> 
+    <!-- <TextView
         android:id="@+id/from_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/from_1"
         android:layout_alignParentLeft="true"
-        style="@style/actionbarText"/>
+        style="@style/actionbarText"/> -->
+    <TextView
+        android:id="@+id/topLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="@string/top_label"
+        style="@style/day_label"/>
+    
     <TextView
         android:id="@+id/topTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/from_1"
-        style="@style/actionbarText"/>
-     <TextView
-        android:id="@+id/from_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/from_2"
-        android:layout_toRightOf="@id/topTitle"
-        style="@style/actionbarText"/>
-     <TextView
+        android:layout_toRightOf="@id/topLabel"
+        android:layout_marginLeft="5dip"
+        style="@style/normal"/>
+
+     <!-- <TextView
         android:id="@+id/topDate_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/topDate_label"
-        android:layout_below="@id/from_1"
+        android:layout_below="@id/topTitle"
         android:layout_alignParentLeft="true"
-        style="@style/actionbarText"/>
+        style="@style/actionbarText"/> -->
      <TextView
         android:id="@+id/topDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/from_1"
-        android:layout_toRightOf="@id/topDate_label"
-        style="@style/actionbarText"/>
+        android:layout_below="@id/topTitle"
+        android:layout_alignParentLeft="true"
+        style="@style/small"/>
+     
      <TextView
         android:id="@+id/leftDay_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/days"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        style="@style/actionbarText"/>
+        android:layout_below="@id/topTitle"
+        style="@style/day_label"
+        android:layout_gravity="center"/>
+     
      <TextView
         android:id="@+id/topLeftDays"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/leftDay_label"
         android:layout_centerVertical="true"
-        style="@style/actionbarText"/>
+        android:layout_marginRight="5dip"
+        style="@style/large"/>
+     
+     <TextView
+        android:id="@+id/dayStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topTitle"
+        android:layout_toLeftOf="@id/topLeftDays"
+        android:layout_marginRight="5dip"
+        style="@style/small"/>
     
     
     
@@ -85,9 +102,20 @@
 </LinearLayout> -->
 <ListView android:id="@+id/list"
     android:layout_width="match_parent"
-    android:layout_height="0dip"
-    android:layout_weight="1"
-    android:background="@color/white"/>
+    android:layout_height="match_parent"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="5dip"
+    android:layout_marginTop="5dip"
+    android:layout_marginLeft="5dip"
+    android:layout_marginRight="5dip"
+    
+    android:fadeScrollbars="false"
+    android:scrollX="0px"
+    android:scrollY="0px"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbarSize="20dip"
+    android:scrollbarStyle="outsideOverlay"
+    android:scrollbars="vertical"/>
    					     		
 </LinearLayout>
 

@@ -2,25 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
   	android:layout_width="match_parent" 
     android:layout_height="match_parent"
-    android:orientation="vertical">    
-    <RelativeLayout 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/header"> 
-    <TextView
+    android:orientation="vertical">   
+    <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_label"
-        android:gravity="center"
-        android:layout_centerVertical="true"
-        style="@style/actionbarText"/>         
-</RelativeLayout>
+        android:layout_marginTop="3dip"
+        
+        android:layout_marginLeft="5dip"
+    	android:layout_marginRight="5dip"
+        android:text="@string/add_widget_tips"
+        style="@style/widget_tips"/>
 
 <ListView android:id="@+id/list"
     android:layout_width="match_parent"
-    android:layout_height="0dip"
-    android:layout_weight="1.0"
-    android:background="@color/white"/>
+    android:layout_height="fill_parent"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="5dip"
+    android:layout_marginTop="5dip"
+    android:layout_marginLeft="5dip"
+    android:layout_marginRight="5dip"/>
 </LinearLayout>
 
 

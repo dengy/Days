@@ -2,14 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/listItemStyle">
+    android:background="@drawable/list_item_bg_selector"
+    android:padding="10dip">
     <ImageView
         android:id="@+id/default_type_icon"
         android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"/>
     <TextView
         android:id="@+id/default_type"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        style="@style/listItemText"/>    
 </LinearLayout>

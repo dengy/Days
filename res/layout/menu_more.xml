@@ -6,23 +6,61 @@
     <RelativeLayout 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/layout_border_bottom">
-    <ImageView
-	        android:id="@+id/add_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cancel"/>
+    style = "@style/MyActionBar">
+    <Button
+    android:id="@+id/more_back"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_centerVertical="true"
+    android:layout_marginLeft="5dip"
+    android:drawableLeft="@drawable/cancel"
+    android:text="@string/cancel_label"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/edit_content"
+        android:text="@string/menu_more_title"
         android:gravity="center"
         android:layout_centerVertical="true"
+        
         style="@style/actionbarText"/>    
-    </RelativeLayout>  
+    </RelativeLayout>   
+    <LinearLayout
+  	android:layout_width="match_parent" 
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dip"
+    android:background="@drawable/list_item_bg_selector"  > 
+    <TextView
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"
+        android:text="@string/setting_rate"/>
+    <ImageView
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:src="@drawable/p_arrow_r"/>
+    </LinearLayout>   
+    <RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_item_bg_selector">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setting_rate"
+        android:layout_alignParentLeft="true"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/p_arrow_r"
+        android:layout_alignParentRight="true"/> 
+      </RelativeLayout>
 <TableLayout  
         android:layout_width="match_parent"  
-        android:layout_height="wrap_content"  
+        android:layout_height="match_parent"  
         android:paddingLeft="5dip"
         android:paddingRight="5dip"
         android:id="@+id/settings"
@@ -35,17 +73,19 @@
         android:paddingTop="5dip"
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
-        android:paddingBottom="10dip">  
-    <TextView
-        android:layout_weight="1"
+        android:paddingBottom="10dip"> 
+        
+          <TextView
+android:layout_weight="0.9"
         android:layout_height="wrap_content"
         android:text="@string/setting_rate"/>
-    <TextView
-        android:layout_weight="1"
-        android:gravity="right"
+          <ImageView
+        android:layout_weight="0.1"
         android:layout_height="wrap_content"
-        android:text="@string/setting_symbol"
-        android:textStyle="bold"/>
+        android:src="@drawable/p_arrow_r"
+        android:layout_gravity="right"/>
+          
+    
     </TableRow>
     <TableRow  
         android:layout_width="match_parent"  

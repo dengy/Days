@@ -174,7 +174,9 @@ public class MainActivity extends Activity {
 
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
-        setTitle(mTypes[position]);
+        StringBuilder title = new StringBuilder();
+        title.append(getResources().getString(R.string.app_name)).append(".").append(mTypes[position]);
+        setTitle(title.toString());
         mDrawerLayout.closeDrawer(mDrawerLeft);
     }
 

@@ -5,6 +5,6 @@
           android:showAsAction="ifRoom|withText" />
     <item android:id="@+id/action_menumore"
           android:icon="@drawable/more"
-          android:title="@string/action_more"
+          android:title="@string/menu_more_title"
           android:showAsAction="ifRoom|withText" />
 </menu>

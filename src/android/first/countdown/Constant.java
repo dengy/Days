@@ -51,7 +51,7 @@ public class Constant {
 	public static final String DAY_STATUS_LEFT = "还有";
 	public static final String DAY_STATUS_PASSED = "已过";
 	
-	public static final String DELETE_TASK_CONFIRM = "确定删除此任务?";
-	public static final String DELETE_TYPE_WITH_TASKS_CONFIRM = "该类型下面关联任务，确认删除?";
+	public static final String DELETE_TASK_CONFIRM = "确定删除此事件?";
+	public static final String DELETE_TYPE_WITH_TASKS_CONFIRM = "当前分类下尚有事件，是否要继续删除?";
 			
 }

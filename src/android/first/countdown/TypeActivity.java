@@ -74,17 +74,22 @@ public class TypeActivity extends Activity {
 		String[] mTypes = SharedPrefsUtil.getDefaultTypes(this);
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("type", mTypes[0]);
-        map.put("icon", R.drawable.type_icon);
-        list.add(map);
-        
-        map = new HashMap<String, Object>();
         map.put("type", mTypes[1]);
         map.put("icon", R.drawable.type_icon);
         list.add(map);
         
         map = new HashMap<String, Object>();
         map.put("type", mTypes[2]);
+        map.put("icon", R.drawable.type_icon);
+        list.add(map);
+        
+        map = new HashMap<String, Object>();
+        map.put("type", mTypes[3]);
+        map.put("icon", R.drawable.type_icon);
+        list.add(map);
+        
+        map = new HashMap<String, Object>();
+        map.put("type", mTypes[4]);
         map.put("icon", R.drawable.type_icon);
         list.add(map);
         return list;
@@ -194,7 +199,7 @@ public class TypeActivity extends Activity {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				updateCountDownType(cursor, type);
+				updateCountDownType(cursor, Constant.DEFAULT_TYPE);
 				delete(typeKey);
 			}
 			

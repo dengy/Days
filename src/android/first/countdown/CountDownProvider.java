@@ -23,7 +23,7 @@ public class CountDownProvider extends ContentProvider {
 	private static final String TAG = "ContentProvider";
 
 	private static final String DATABASE_NAME = "count_down.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     
     private static final int COUNTDOWN = 1;
     private static final int COUNTDOWN_ID = 2;
@@ -50,7 +50,7 @@ public class CountDownProvider extends ContentProvider {
                     + CountDown._ID + " INTEGER PRIMARY KEY,"
                     + CountDown.TITLE + " TEXT,"
                     + CountDown.STARRED + " INTEGER,"
-                    + CountDown.PRIORITY + " INTEGER,"
+                    + CountDown.PRIORITY + " TEXT,"
                     + CountDown.END_DATE + " TEXT,"
                     + CountDown.END_TIME + " TEXT,"
                     + CountDown.REMIND_DATE + " TEXT,"
@@ -290,7 +290,7 @@ public class CountDownProvider extends ContentProvider {
 				//when only update top_index
 				StringBuilder sql = new StringBuilder();
 				sql.append("update ").append(COUNTDOWN_TABLE_NAME).append(" set ").append(CountDown.PRIORITY).
-				append("=").append(values.getAsInteger(CountDown.PRIORITY)).append(" where ").append(CountDown._ID).
+				append("=").append("'").append(values.getAsString(CountDown.PRIORITY)).append("'").append(" where ").append(CountDown._ID).
 				append("=").append(countdownId);
 				db.execSQL(sql.toString());
 			} else {

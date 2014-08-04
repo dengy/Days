@@ -8,18 +8,21 @@ import java.util.Map;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.first.countdown.util.SharedPrefsUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -164,6 +167,70 @@ public class TypeActivity extends Activity {
 	}
 	
 	private void deleteType(String typeKey) {
+		SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(this , Constant.CUSTOM_TYPE_LIST_PREF);
+		String type = prefs.getString(typeKey, null);
+		if(type != null) {
+			Cursor cursor = getCountDownByType(type);
+			boolean hasData = cursor.moveToFirst();
+			if(hasData) {
+				showDeleteConfirmDialog(Constant.DELETE_TYPE_WITH_TASKS_CONFIRM, cursor, typeKey, type);
+			} else {
+				delete(typeKey);
+			}
+		}
+	}
+	
+	private void showDeleteConfirmDialog(String title, final Cursor cursor, final String typeKey, final String type) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    // Get the layout inflater
+	    LayoutInflater inflater = this.getLayoutInflater();
+	    
+	    View layout = inflater.inflate(R.layout.confirm_dialog, null);
+	    TextView confirmTitle = (TextView)layout.findViewById(R.id.confirmTitle);
+	    confirmTitle.setText(title); 
+	    
+	    builder.setView(layout)
+	    .setPositiveButton("È·ÈÏÉ¾³ý", new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				updateCountDownType(cursor, type);
+				delete(typeKey);
+			}
+			
+	    }).setNegativeButton("·ÅÆú", new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+	    });
+	    
+	    Dialog d = builder.create();
+		d.setCanceledOnTouchOutside(false);
+		d.show();
+	}
+	
+	private void updateCountDownType(Cursor cursor, String type) {
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(CountDown.PRIORITY, type);
+		while(cursor.moveToNext()) {
+			Integer id = cursor.getInt(cursor.getColumnIndex(CountDown._ID));
+			Uri uri = ContentUris.withAppendedId(CountDown.CONTENT_URI, id);
+			getContentResolver().update(uri, contentValues, null, null);
+		}
+	}
+	
+	private Cursor getCountDownByType(String type)  {
+		Cursor cursor = this.managedQuery(CountDown.CONTENT_TYPE_URI, new String[] {CountDown._ID, CountDown.TITLE, CountDown.STARRED, 
+	        	CountDown.END_DATE, CountDown.END_TIME, CountDown.REMIND_BELL, CountDown.STATE, CountDown.PRIORITY, 
+	        	CountDown.WIDGET_IDS}, CountDown.PRIORITY + "=?", new String[]{type},
+	                CountDown.DEFAULT_SORT_ORDER); 
+		
+		return cursor;
+	}
+	
+	private void delete(String typeKey) {
 		SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(this , Constant.CUSTOM_TYPE_LIST_PREF);
 		Editor editor = prefs.edit();
 		editor.remove(typeKey);

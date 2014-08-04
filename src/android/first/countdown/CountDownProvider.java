@@ -286,6 +286,13 @@ public class CountDownProvider extends ContentProvider {
 				append("=").append(values.getAsInteger(CountDown.TOP_INDEX)).append(" where ").append(CountDown._ID).
 				append("=").append(countdownId);
 				db.execSQL(sql.toString());
+			} else if(values.size() == 1 && values.containsKey(CountDown.PRIORITY)) {
+				//when only update top_index
+				StringBuilder sql = new StringBuilder();
+				sql.append("update ").append(COUNTDOWN_TABLE_NAME).append(" set ").append(CountDown.PRIORITY).
+				append("=").append(values.getAsInteger(CountDown.PRIORITY)).append(" where ").append(CountDown._ID).
+				append("=").append(countdownId);
+				db.execSQL(sql.toString());
 			} else {
 				count = db.update(COUNTDOWN_TABLE_NAME, values, CountDown._ID + "=" + countdownId
 	                    + (!TextUtils.isEmpty(where) ? " AND (" + where + ')' : ""), whereArgs);

@@ -43,100 +43,204 @@
     android:layout_centerVertical="true"
     android:layout_marginRight="5dip"
     android:text="@string/ok_label"/>
-    
-    
     </RelativeLayout>  
+    
+   <RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:paddingLeft="20dip"
+    android:paddingRight="20dip"
+    android:paddingTop="12dip"
+    android:paddingBottom="12dip"
+    android:layout_marginTop="10dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:background="@drawable/edit_item_bg_top_selector"
+    android:id="@+id/title_row">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_label"
+        android:layout_alignParentLeft="true"/> 
+        
+    <TextView
+        android:id="@+id/title"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_toLeftOf="@+id/arrow_title"/>
+    
+    <ImageView
+        android:id="@+id/arrow_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/p_arrow_r"
+        android:layout_marginLeft="5dip"
+        android:layout_alignParentRight="true"/>
+      </RelativeLayout>
+      
+   <RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:paddingLeft="20dip"
+    android:paddingRight="20dip"
+    android:paddingTop="12dip"
+    android:paddingBottom="12dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:background="@drawable/edit_item_bg_middle_selector"
+    android:id="@+id/type_row">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/priority_label"
+        android:layout_alignParentLeft="true"/> 
+        
+    <TextView
+        android:id="@+id/priority"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/type_life"
+        android:layout_toLeftOf="@+id/arrow_priority"/>
+    
+    <ImageView
+        android:id="@+id/arrow_priority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/p_arrow_r"
+        android:layout_marginLeft="5dip"
+        android:layout_alignParentRight="true"/>
+      </RelativeLayout>
+      
+   <RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:paddingLeft="20dip"
+    android:paddingRight="20dip"
+    android:paddingTop="12dip"
+    android:paddingBottom="12dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:background="@drawable/edit_item_bg_middle_selector"
+    android:id="@+id/enddate_row">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enddate_label"
+        android:layout_alignParentLeft="true"/> 
+        
+    <TextView
+        android:id="@+id/enddate"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/default_underline"
+        android:layout_toLeftOf="@+id/arrow_enddate"/>
+    
+    <ImageView
+        android:id="@+id/arrow_enddate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/p_arrow_r"
+        android:layout_marginLeft="5dip"
+        android:layout_alignParentRight="true"/>
+      </RelativeLayout>
+      
+   <RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:paddingLeft="20dip"
+    android:paddingRight="20dip"
+    android:paddingTop="12dip"
+    android:paddingBottom="12dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:background="@drawable/edit_item_bg_middle_selector">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/top_label"
+        android:layout_alignParentLeft="true"/> 
+    <Switch   
+       android:id="@+id/topSwitch"  
+       android:layout_width="wrap_content"  
+       android:layout_height="wrap_content"  
+       android:textOn="是"  
+       android:textOff="否"
+       android:layout_alignParentRight="true"/>
+      </RelativeLayout>
+      
+   <RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:paddingLeft="20dip"
+    android:paddingRight="20dip"
+    android:paddingTop="12dip"
+    android:paddingBottom="12dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:background="@drawable/edit_item_bg_middle_selector">
+    <TextView
+        android:id="@+id/remark_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/remark_label"
+        android:layout_alignParentLeft="true"/>   
+    <EditText
+        android:id="@+id/remark"
+        android:singleLine="false"
+        android:gravity="top"
+        android:minLines="3"
+   	    android:maxLines="6"
+        android:lines="3"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/remark_label"
+        android:hint="@string/remark_hint"/>  
+      </RelativeLayout>
+      
+   <RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:paddingLeft="20dip"
+    android:paddingRight="20dip"
+    android:paddingTop="12dip"
+    android:paddingBottom="12dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:background="@drawable/edit_row_bg_bottom">
+    <Button
+    android:id="@+id/delete_action"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/delete_action"
+    android:textColor="@drawable/red"
+    android:background="@drawable/delete_btn_bg_selector"
+    android:drawableRight="@drawable/delete_icon"/>
+
+      </RelativeLayout>
       
     <TableLayout  
         android:layout_width="match_parent"  
         android:layout_height="wrap_content"  
         android:padding="10dip"
         android:focusable="true"  
-        android:focusableInTouchMode="true" >  
-   <TableRow  
-            android:layout_width="match_parent"  
-            android:layout_height="wrap_content"  
-            android:background="@drawable/edit_row_bg_top"  
-            android:padding="10dip" >  
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:gravity="right" 
-        android:text="@string/title_label"
-        android:paddingRight="10dip"
-        android:layout_weight="0.1"/>
-    <TextView
-        android:id="@+id/title"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:scrollHorizontally="false"
-        android:singleLine="false"
-        android:layout_weight="0.9"
-        android:layout_span="2"/>
-    </TableRow>
-    <TableRow  
-            android:layout_width="fill_parent"  
-            android:layout_height="wrap_content"  
-            android:background="@drawable/edit_row_bg_middle"  
-            android:padding="10dip" >  
-   <TextView
-        android:id="@+id/priority_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="right" 
-        android:paddingRight="10dip"
-        android:text="@string/priority_label"
-        android:layout_weight="0.1"/>
-    <TextView
-        android:id="@+id/priority"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/type_life"
-        android:layout_weight="0.9"
-        android:layout_span="2"/>
-    </TableRow>
-    <TableRow  
-            android:layout_width="fill_parent"  
-            android:layout_height="wrap_content"  
-            android:background="@drawable/edit_row_bg_middle"  
-            android:padding="10dip" >  
-  	<TextView
-        android:id="@+id/enddate_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="right" 
-        android:paddingRight="10dip"
-        android:text="@string/enddate_label"
-        android:layout_weight="0.1"/>
-    <TextView
-        android:id="@+id/enddate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/default_underline"
-        android:layout_weight="0.9"
-        android:layout_span="2"/>
-    </TableRow>
-    <TableRow  
-            android:layout_width="fill_parent"  
-            android:layout_height="wrap_content"  
-            android:background="@drawable/edit_row_bg_middle"  
-            android:padding="10dip" >  
-     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="right" 
-        android:paddingRight="10dip"
-        android:text="@string/top_label"
-        android:layout_weight="0.1"/>
+        android:focusableInTouchMode="true"
+        android:visibility="gone" >  
 
-     <Switch   
-       android:id="@+id/topSwitch"  
-       android:layout_width="wrap_content"  
-       android:layout_height="wrap_content"  
-       android:textOn="是"  
-       android:textOff="否"  
-       android:layout_weight="0.4"/> 
-  	
+    
+
+    <TableRow  
+            android:layout_width="fill_parent"  
+            android:layout_height="wrap_content"  
+            android:background="@drawable/edit_row_bg_middle"  
+            android:padding="10dip" >  
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -201,48 +305,6 @@
         android:text="@string/default_reminder"
         android:layout_weight="0.9"
         android:layout_span="2"/>
-    
-    <!-- <android.first.countdown.util.SlipButton
-            android:id="@+id/remindBell"
-            android:layout_width="match_parent"
-            android:layout_height="30dip"/> -->
-    </TableRow>
-    <TableRow  
-            android:layout_width="fill_parent"  
-            android:layout_height="wrap_content"  
-            android:background="@drawable/edit_row_bg_middle"  
-            android:padding="10dip">  
-  	<TextView
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:paddingRight="10dip"
-        android:text="@string/remark_label"
-        android:layout_weight="0.1"/>
-    <EditText
-        android:id="@+id/remark"
-        android:singleLine="false"
-        android:gravity="top"
-        android:minLines="3"
-   	    android:maxLines="6"
-        android:lines="3"
-        android:layout_width="match_parent"
-        android:layout_weight="0.9"
-        android:layout_span="2"/>  
-    </TableRow>
-    
-    <TableRow  
-            android:layout_width="fill_parent"  
-            android:layout_height="wrap_content"  
-            android:background="@drawable/edit_row_bg_bottom"  
-            android:padding="10dip">  
-  	 <Button
-    android:id="@+id/delete_action"
-    android:layout_width="fill_parent"
-    android:layout_weight="0.1"
-    android:layout_height="wrap_content"
-    android:text="@string/delete_action"
-    android:background="@drawable/delete_btn_bg_selector"
-    android:drawableRight="@drawable/delete_icon"/>
     </TableRow>
     </TableLayout>
 </LinearLayout>

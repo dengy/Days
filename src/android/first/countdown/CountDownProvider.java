@@ -181,13 +181,11 @@ public class CountDownProvider extends ContentProvider {
             values.put(CountDown.END_DATE,  "");
         }
         
-        if (values.containsKey(CountDown.END_TIME) == false || 
-        		CountDown.DEFAULT_FOR_DATE.equals(values.get(CountDown.END_TIME))) {
+        if (values.containsKey(CountDown.END_TIME) == false) {
             values.put(CountDown.END_TIME,  "");
         }
         
-        if (values.containsKey(CountDown.REMIND_DATE) == false ||
-        		CountDown.DEFAULT_FOR_DATE.equals(values.get(CountDown.REMIND_DATE))) {
+        if (values.containsKey(CountDown.REMIND_DATE) == false) {
             values.put(CountDown.REMIND_DATE,  "");
         }
         

@@ -61,7 +61,7 @@ public class UpdateWidgetService extends Service {
         	//views.setTextViewText(R.id.widget_end_date, endDate);
         	
         	//update widget
-        	CountDownAppWidgetProvider.refreshAppWidget(this, views, endDate, mAppWidgetId, am);
+        	CountDownAppWidgetProvider.refreshAppWidget(this, views, endDate, priority, mAppWidgetId, am);
     	}
     	
         }

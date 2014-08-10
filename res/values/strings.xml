@@ -23,10 +23,11 @@
     <string name="endtime_label">截止时间</string>
     <string name="remind_label_1">从</string>
     <string name="remind_label_2">开始提醒我</string>
-    <string name="default_underline">_</string>
+    <string name="default_underline">____</string>
     <string name="default_num">00</string>
     <string name="remind_bell_label">提醒</string>
     <string name="remark_label">备注</string>
+    <string name="remark_hint">添加备注</string>
     <string name="delete_action">删除数据</string>
     <string name="state_opened">Opened</string>
     <string name="state_closed">Closed</string>
@@ -36,7 +37,7 @@
     <string name="endLessThanCurrent">截止日期不能小于当前时间</string>
     <string name="endDateMust">截止日期不能为空</string>
     <string name="titleMust">标题不能为空</string>
-    <string name="typeMust">分类不能为空</string>
+    <string name="typeMust">添加失败，分类不能为空!</string>
     <string name="loadDataError">数据加载错误...</string>
     <string name="finishTask">恭喜!您完成了:</string>
     <string name="operationSuccess">操作成功!</string>
@@ -90,7 +91,7 @@
     <string name="leftDayLabel">距离</string>
     <string name="topDate_label">目标日:</string>
     <string name="edit_type">编辑分类</string>
-    <string name="add_type_label">添加分类</string>
+    <string name="add_type_label">+添加</string>
     <string name="type_not_empty">分类不能为空!</string>
     
     <string name="type_all">全部</string>
@@ -100,5 +101,10 @@
     <string name="type_memorial_day">纪念日</string>
     <string name="select_type_dialog">选择分类</string>
     <string name="add_widget_tips">请选择以下的事件，显示到桌面!</string>
+    
+    <string name="type_edit_hint">编辑分类</string>
+    <string name="type_delete_hint">删除分类</string>
+    
+    <string name="add_day">+添加新日子</string>
 
 </resources>

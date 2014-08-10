@@ -158,6 +158,9 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			}
 			
 		});
+		findViewById(R.id.title_row).setOnClickListener(this);
+		findViewById(R.id.type_row).setOnClickListener(this);
+		findViewById(R.id.enddate_row).setOnClickListener(this);
 				
 	}
 	
@@ -250,7 +253,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	    // Get the layout inflater
 	    LayoutInflater inflater = this.getLayoutInflater();
 	    
-	    View layout = inflater.inflate(R.layout.countdown_add_title, null);
+	    final View layout = inflater.inflate(R.layout.countdown_add_title, null);
 	    final EditText inputTitleEditText = (EditText)layout.findViewById(R.id.input_title);
 	    String currentTitle = titleTextView.getText().toString();
 		if(currentTitle != null && !"".equals(currentTitle)) {
@@ -258,14 +261,19 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		}
 	    
 	    builder.setView(layout)
-	    .setPositiveButton("OK", new DialogInterface.OnClickListener(){
+	    .setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener(){
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				titleTextView.setText(inputTitleEditText.getText());
+				String title = inputTitleEditText.getText().toString();
+				if(!"".equals(title) && title != null) {
+					titleTextView.setText(title);
+				} else {
+					titleTextView.setText(Constant.UN_NAMED_TITLE);
+				}
 			}
 			
-	    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+	    }).setNegativeButton(R.string.cancel_label, new DialogInterface.OnClickListener(){
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -587,7 +595,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			
 			//enddate must not be null or empty
 			String endDate = endDateTextView.getText().toString();
-			if(endDate == null || "".equals(endDate) || CountDown.DEFAULT_FOR_DATE.equals(endDate)) {
+			if(endDate == null || "".equals(endDate) || getResources().getString(R.string.default_underline).equals(endDate)) {
 				Toast.makeText(getApplicationContext(), R.string.endDateMust, Toast.LENGTH_SHORT).show();
 				return;
 			}
@@ -597,8 +605,8 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			values.put(CountDown.TITLE, title);
 			values.put(CountDown.PRIORITY, priorityTextView.getText().toString());
 			values.put(CountDown.END_DATE, endDate);
-			values.put(CountDown.END_TIME, StringUtil.underLineFilter(endTimeTextView.getText().toString()));
-			values.put(CountDown.REMIND_DATE, StringUtil.underLineFilter(remindDateTextView.getText().toString()));
+//			values.put(CountDown.END_TIME, StringUtil.underLineFilter(endTimeTextView.getText().toString()));
+//			values.put(CountDown.REMIND_DATE, StringUtil.underLineFilter(remindDateTextView.getText().toString()));
 			values.put(CountDown.REMIND_BELL, reminderTextView.getText().toString());
 			values.put(CountDown.TOP_INDEX, topSwitchText);
 			if(Constant.TOP_SWITCH_ON.equals(topSwitchText)) {
@@ -631,7 +639,10 @@ public class CountDownEdit extends Activity implements OnClickListener {
 				mCursor.close();
 				mCursor = null;
 				
+				//return to main page
 				finish();
+				Intent intent = new Intent(this, MainActivity.class);
+				startActivity(intent);
 			}
 			
 		}
@@ -860,9 +871,9 @@ public class CountDownEdit extends Activity implements OnClickListener {
 				String title = titleTextView.getText().toString();
 				String priority = priorityTextView.getText().toString();
 				String endDate = endDateTextView.getText().toString();
-				String endTime = StringUtil.underLineFilter(endTimeTextView.getText().toString());
+				//String endTime = StringUtil.underLineFilter(endTimeTextView.getText().toString());
 				//save data for widget update
-				WidgetConfigure.saveToPreference(this.getApplicationContext(), Integer.parseInt(mAppWidgetId), _ID, title, endTime, endDate, priority);
+				WidgetConfigure.saveToPreference(this.getApplicationContext(), Integer.parseInt(mAppWidgetId), _ID, title, null, endDate, priority);
 				
 				//create broadcast to update widget
 				Intent intent = new Intent(Constant.UPDATE_WIDGET);
@@ -879,13 +890,13 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()) {
-		case R.id.title:
+		case R.id.title_row:
 			titleDialog();
 			break;
-		case R.id.priority:
+		case R.id.type_row:
 			priorityDialog();
 			break;
-		case R.id.enddate:
+		case R.id.enddate_row:
 			datePicker(R.id.enddate);
 			break;
 		case R.id.endtime:

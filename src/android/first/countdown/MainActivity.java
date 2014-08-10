@@ -16,18 +16,19 @@
 
 package android.first.countdown;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.SearchManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.first.countdown.util.SharedPrefsUtil;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,10 +38,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.SimpleAdapter;
 
 public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
@@ -64,8 +64,7 @@ public class MainActivity extends Activity {
         // set a custom shadow that overlays the main content when the drawer opens
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mTypes));
+        mDrawerList.setAdapter(getSimpleAdapter());
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // ActionBarDrawerToggle ties together the the proper interactions
@@ -88,12 +87,14 @@ public class MainActivity extends Activity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+       
         mEditType.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(v.getContext(), TypeActivity.class);
 				startActivity(intent);
+				finish();
 			}
         	
         });
@@ -105,6 +106,32 @@ public class MainActivity extends Activity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
+        initDrawerList();
+    }
+    
+    private void initDrawerList() {
+    	SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(this, Constant.COUNT_DOWN_SETTING_PREF);
+    	boolean isFirstOpenApp = prefs.getBoolean(Constant.IS_FIRST_OPEN_APP, true);
+    	if(isFirstOpenApp) {
+    		mDrawerLayout.openDrawer(mDrawerLeft);
+    	} else {
+    		Bundle bundle = this.getIntent().getExtras();
+    		if(bundle != null) {
+    			boolean isOpen = bundle.getBoolean(Constant.IS_OPEN_DRAWER_LIST);
+    			if(isOpen) {
+    				mDrawerLayout.openDrawer(mDrawerLeft);
+    			}
+    		}
+    	}
+    	
+    }
+    
+    private SimpleAdapter getSimpleAdapter() {
+    	List<Map<String, Object>> data = TypeActivity.getDefaultData(this, true);
+    	data.addAll(TypeActivity.getCustomData(this, true));
+    	SimpleAdapter adapter = new SimpleAdapter(this, data, R.layout.drawer_list_item,
+				new String[] {"icon", "type"}, new int[] {R.id.type_icon, R.id.type_item});
+    	return adapter;
     }
     
     private void initViews() {
@@ -143,10 +170,12 @@ public class MainActivity extends Activity {
         case R.id.action_add:
             Intent intent = new Intent(Intent.ACTION_INSERT,getIntent().getData());
 			startActivity(intent);
+			finish();
             return true;
         case R.id.action_menumore:
         	intent = new Intent(this, MenuMore.class);
 			startActivity(intent);
+			finish();
             return true;
         default:
             return super.onOptionsItemSelected(item);

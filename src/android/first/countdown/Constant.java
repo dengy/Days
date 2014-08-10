@@ -46,12 +46,20 @@ public class Constant {
 	public static final Integer TOP_SWITCH_ON = 1;
 	public static final Integer TOP_SWITCH_OFF = 0;
 	
-	public static final String CUSTOM_TYPE_LIST_PREF = "customTypeListPref";
+	public static final String CUSTOM_TYPE_LIST_PREF = "customTypeListPref"; //type added by user
+	public static final String COUNT_DOWN_SETTING_PREF = "countDownSettingPref"; 
+	public static final String IS_FIRST_OPEN_APP = "isFirstOpenApp";
+	public static final String IS_OPEN_DRAWER_LIST = "isOpenDrawerList";
+	public static final String INIT_TITLE = "倒数日发布";
+	public static final String INIT_END_DATE = "2014-07-26";
 	
 	public static final String DAY_STATUS_LEFT = "还有";
-	public static final String DAY_STATUS_PASSED = "已过";
+	public static final String DAY_STATUS_PASSED = "已经";
 	
 	public static final String DELETE_TASK_CONFIRM = "确定删除此事件?";
 	public static final String DELETE_TYPE_WITH_TASKS_CONFIRM = "当前分类下尚有事件，是否要继续删除?";
+	
+	public static final String UN_NAMED_TITLE = "未命名事件";
+	public static final String UN_NAMED_TYPE = "未命名分类";
 			
 }

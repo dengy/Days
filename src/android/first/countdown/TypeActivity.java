@@ -12,6 +12,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
@@ -29,11 +30,10 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TypeActivity extends Activity {
+public class TypeActivity extends Activity implements OnClickListener{
 	private ListView defaultTypeList;
 	private ListView customTypeList;
 	private View mAddType;
-	private EditText typeEditText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,62 +48,70 @@ public class TypeActivity extends Activity {
 		defaultTypeList = (ListView) this.findViewById(R.id.default_type_list);
 		customTypeList = (ListView) this.findViewById(R.id.custom_type_list);
 		mAddType = this.findViewById(R.id.add_type);
-		typeEditText = (EditText) this.findViewById(R.id.input_type);
+		mAddType.setOnClickListener(this);
+		findViewById(R.id.type_back).setOnClickListener(this);
 		
 		
-		SimpleAdapter defaultAdapter = new SimpleAdapter(this, getDefaultData(), R.layout.default_type_list_item,
+		SimpleAdapter defaultAdapter = new SimpleAdapter(this, getDefaultData(this, false), R.layout.default_type_list_item,
 				new String[] {"icon", "type"}, new int[] {R.id.default_type_icon, R.id.default_type});
 		defaultTypeList.setAdapter(defaultAdapter);
 		loadCustomTypeList(false);
-		mAddType.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				showTypeDialog(null, null);
-			}
-			
-		});
 	}
 
 	private void loadCustomTypeList(boolean isFocus) {
-		CustomTypeAdapter customAdapter = new CustomTypeAdapter(this, getCustomData(), R.layout.custom_type_list_item,
+		CustomTypeAdapter customAdapter = new CustomTypeAdapter(this, getCustomData(this, false), R.layout.custom_type_list_item,
 				new String[] {"icon", "type"}, new int[] {R.id.delete_custom_type, R.id.custom_type}, isFocus);
 		customTypeList.setAdapter(customAdapter);
 	}
-	private List<Map<String, Object>> getDefaultData() {
-		String[] mTypes = SharedPrefsUtil.getDefaultTypes(this);
+	public static List<Map<String, Object>> getDefaultData(Context context, boolean isContainsAll) {
+		String[] mTypes = SharedPrefsUtil.getDefaultTypes(context);
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
+        
+        if(isContainsAll) {
+        	map = new HashMap<String, Object>();
+        	map.put("type", mTypes[0]);
+            map.put("icon", R.drawable.all_icon);
+            list.add(map);
+        }
+        
+        map = new HashMap<String, Object>();
         map.put("type", mTypes[1]);
-        map.put("icon", R.drawable.type_icon);
+        map.put("icon", R.drawable.life_icon);
         list.add(map);
         
         map = new HashMap<String, Object>();
         map.put("type", mTypes[2]);
-        map.put("icon", R.drawable.type_icon);
+        map.put("icon", R.drawable.work_icon);
         list.add(map);
         
         map = new HashMap<String, Object>();
         map.put("type", mTypes[3]);
-        map.put("icon", R.drawable.type_icon);
+        map.put("icon", R.drawable.study_icon);
         list.add(map);
         
         map = new HashMap<String, Object>();
         map.put("type", mTypes[4]);
-        map.put("icon", R.drawable.type_icon);
+        map.put("icon", R.drawable.memorial_day_icon);
         list.add(map);
         return list;
 	}
 	
-	private List<Map<String, Object>> getCustomData() {
-		String[] customTypes = SharedPrefsUtil.getCustomTypes(this);
+	public static List<Map<String, Object>> getCustomData(Context context, boolean isDrawerList) {
+		String[] customTypes = SharedPrefsUtil.getCustomTypes(context);
 		int index = customTypes.length;
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		for(int i = 0; i < index; i++) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("typeKey", (i+1)+"");
 	        map.put("type", customTypes[i]);
-	        map.put("icon", R.drawable.delete_type);
+	        if(isDrawerList) {
+	        	map.put("icon", R.drawable.custom_type_icon);
+	        } else {
+	        	map.put("icon", R.drawable.type_delete);
+	        }
+	        
+	        
 	        list.add(map);			 
 		}
         return list;
@@ -124,7 +132,7 @@ public class TypeActivity extends Activity {
 		}
 	    
 	    builder.setView(layout)
-	    .setPositiveButton("OK", new DialogInterface.OnClickListener(){
+	    .setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener(){
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -138,7 +146,7 @@ public class TypeActivity extends Activity {
 				
 			}
 			
-	    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+	    }).setNegativeButton(R.string.cancel_label, new DialogInterface.OnClickListener(){
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -257,8 +265,8 @@ public class TypeActivity extends Activity {
 	    	final int index = position;
 	    	View view = super.getView(position, convertView, parent);
 	    	final TextView customType = (TextView)view.findViewById(R.id.custom_type);
-	    	View clearCustomType = view.findViewById(R.id.clear_custom_type);
-	    	clearCustomType.setOnClickListener(new OnClickListener() {
+	    	View editCustomType = view.findViewById(R.id.edit_custom_type);
+	    	editCustomType.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					String typeKey = results.get(index).get("typeKey").toString();
@@ -280,6 +288,23 @@ public class TypeActivity extends Activity {
 	    		        
 	        return view;
 	    }
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch(v.getId()) {
+			case R.id.add_type:
+				showTypeDialog(null, null);
+				break;
+			case R.id.type_back:
+				Intent intent = new Intent(this, MainActivity.class);
+				intent.putExtra(Constant.IS_OPEN_DRAWER_LIST, true);
+				startActivity(intent);
+				finish();
+				break;
+			default:
+				break;
+		}
 	}
 
 }

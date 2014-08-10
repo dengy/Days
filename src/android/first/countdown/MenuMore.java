@@ -1,42 +1,23 @@
 package android.first.countdown;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.database.Cursor;
-import android.first.countdown.util.StringUtil;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.widget.ResourceCursorAdapter;
+import android.text.Layout;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,6 +52,7 @@ public class MenuMore extends Activity implements OnClickListener{
 		functions.setOnClickListener(this);
 		feedback.setOnClickListener(this);
 		about.setOnClickListener(this);
+		findViewById(R.id.more_back).setOnClickListener(this);
 	}
 	
 	@Override
@@ -232,7 +214,9 @@ public class MenuMore extends Activity implements OnClickListener{
 			showFeedbackDialog();
 			break;
 		case R.id.more_back:
-			finish();
+		    finish();
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
 			break;
 		default:
 			break;

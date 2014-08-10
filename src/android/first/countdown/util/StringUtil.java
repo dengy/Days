@@ -15,12 +15,12 @@ public class StringUtil {
 		return sb.toString();
 	}
 	
-	public static String underLineFilter(String src) {
-		if(CountDown.DEFAULT_FOR_DATE.equals(src)) {
-			return "";
-		}
-		
-		return src;
-	}
+//	public static String underLineFilter(String src) {
+//		if(CountDown.DEFAULT_FOR_DATE.equals(src)) {
+//			return "";
+//		}
+//		
+//		return src;
+//	}
 
 }

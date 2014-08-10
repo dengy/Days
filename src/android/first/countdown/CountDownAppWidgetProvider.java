@@ -150,7 +150,7 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     }**/
     
     
-    public static void refreshAppWidget(Context context, RemoteViews views, String endDate, int mAppWidgetId, 
+    public static void refreshAppWidget(Context context, RemoteViews views, String endDate, String type, int mAppWidgetId, 
     		AppWidgetManager appWidgetManager) {
     	int days = getDayDiff(endDate);
     	if(days < 0) {
@@ -161,7 +161,10 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     		views.setViewVisibility(R.id.itemLeftDayLabel, View.VISIBLE);
     		views.setTextViewText(R.id.itemLeftDayStatus, Constant.DAY_STATUS_LEFT);
     	}
+    	views.setTextViewText(R.id.widget_type, type);
+    	views.setTextViewText(R.id.widget_end_date,  endDate);
         views.setTextViewText(R.id.days, days + "");
+        
 //        views.setTextViewText(R.id.hours, hours + "");
 //        views.setTextViewText(R.id.minutes, minutes + "");
 //        views.setTextViewText(R.id.seconds, seconds + "");

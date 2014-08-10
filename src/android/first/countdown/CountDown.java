@@ -30,6 +30,7 @@ public final class CountDown implements BaseColumns{
      */
     public static final String DEFAULT_SORT_ORDER = "created DESC";
     
+    
     public static final String TITLE = "title";
     
     public static final String REMARK = "remark";
@@ -49,6 +50,8 @@ public final class CountDown implements BaseColumns{
     
     public static final String TOP_INDEX = "topindex";
     
+    public static final String TOP_SORT_ORDER =  TOP_INDEX + " DESC";
+    
     public static final Uri CONTENT_STATE_OPEN_URI = Uri.parse("content://" + AUTHORITY + "/countdown/state/" + STATE_OPENED);
     public static final Uri CONTENT_STATE_CLOSE_URI = Uri.parse("content://" + AUTHORITY + "/countdown/state/" + STATE_CLOSED);
     
@@ -56,7 +59,7 @@ public final class CountDown implements BaseColumns{
     
     public static final String COUNT_DOWN = "countdown";
     
-    public static final String DEFAULT_FOR_DATE = "_";
+    //public static final String DEFAULT_FOR_DATE = "_";
 
 
 }

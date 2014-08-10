@@ -6,13 +6,16 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.first.countdown.util.SharedPrefsUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.ResourceCursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -53,6 +56,7 @@ public class ItemListFragment extends Fragment{
         
         CustomCursorAdapter itemAdapter = new CustomCursorAdapter(act, R.layout.countdownlist_item, cursor);
         list.setAdapter(itemAdapter);
+        list.setEmptyView(rootView.findViewById(android.R.id.empty));
         
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -61,6 +65,7 @@ public class ItemListFragment extends Fragment{
 					long id) {
 				Uri uri = ContentUris.withAppendedId(act.getIntent().getData(), id);
 				startActivity(new Intent(Intent.ACTION_EDIT, uri));
+				act.finish();
 			}
         	
 		});
@@ -72,6 +77,16 @@ public class ItemListFragment extends Fragment{
 	
 	private void initViews(View rootView) {
 		list = (ListView)rootView.findViewById(R.id.list);
+		
+		rootView.findViewById(android.R.id.empty).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_INSERT, act.getIntent().getData());
+				startActivity(intent);
+			}
+			
+		});
 /*        settings = (View)rootView.findViewById(R.id.settings);
         
         //add click listener
@@ -88,41 +103,72 @@ public class ItemListFragment extends Fragment{
 */	}
 	
 	private void showTheTopCountDown(View rootView) {
-		Cursor cursor = act.managedQuery(CountDown.CONTENT_URI, new String[] {CountDown._ID, CountDown.TITLE, CountDown.STARRED, 
-	        	CountDown.END_DATE, CountDown.END_TIME, CountDown.REMIND_BELL, CountDown.STATE, CountDown.PRIORITY, 
-	        	CountDown.WIDGET_IDS}, CountDown.TOP_INDEX + "=?", new String[]{Constant.TOP_SWITCH_ON+""},null); 
-		boolean hasTop = cursor.moveToFirst();
-		String endDate = "";
-		String title = "";
+		boolean isFirstOpenApp = isFirstOpenApp();
+		String endDate = null;
+		String title = null;
 		int topLeftDays = 0;
-		if(hasTop) {
-			endDate = cursor.getString(cursor.getColumnIndex(CountDown.END_DATE));
-			title = cursor.getString(cursor.getColumnIndex(CountDown.TITLE));
+		if(isFirstOpenApp) {
+			if(initData()) {
+				title = Constant.INIT_TITLE;
+				endDate = Constant.INIT_END_DATE;
+			}
 		} else {
-			title = "倒数日发布";
-			endDate = "2014-07-26";
-			ContentValues values = new ContentValues();
-			values.put(CountDown.TITLE, title);
-			values.put(CountDown.PRIORITY, this.getResources().getString(R.string.type_life));
-			values.put(CountDown.END_DATE, endDate);
-			values.put(CountDown.END_TIME, "");
-			values.put(CountDown.REMIND_DATE, "");
-			values.put(CountDown.REMIND_BELL, "");
-			values.put(CountDown.TOP_INDEX, Constant.TOP_SWITCH_ON);
-			act.getContentResolver().insert(act.getIntent().getData(), values);
+			Cursor cursor = act.managedQuery(CountDown.CONTENT_URI, new String[] {CountDown._ID, CountDown.TITLE, CountDown.STARRED, 
+		        	CountDown.END_DATE, CountDown.END_TIME, CountDown.REMIND_BELL, CountDown.STATE, CountDown.PRIORITY, 
+		        	CountDown.WIDGET_IDS}, null, null, CountDown.TOP_SORT_ORDER);
+			boolean hasData = cursor.moveToFirst();
+			if(hasData) {
+				endDate = cursor.getString(cursor.getColumnIndex(CountDown.END_DATE));
+				title = cursor.getString(cursor.getColumnIndex(CountDown.TITLE));
+			}
+		}
+		 
+		if(endDate != null && title != null) {
+			topLeftDays = CountDownAppWidgetProvider.getDayDiff(endDate);
+			TextView dayStatus = (TextView)rootView.findViewById(R.id.dayStatus);
+			if(topLeftDays < 0) {
+				dayStatus.setText(Constant.DAY_STATUS_PASSED);
+				topLeftDays*=-1;
+			} else {
+				dayStatus.setText(Constant.DAY_STATUS_LEFT);
+			}
+			((TextView)rootView.findViewById(R.id.topTitle)).setText(title);
+			((TextView)rootView.findViewById(R.id.topDate)).setText(endDate);
+			((TextView)rootView.findViewById(R.id.topLeftDays)).setText(topLeftDays + "");
+			
+			rootView.findViewById(R.id.topLayout).setVisibility(View.VISIBLE);
+		} else {
+			rootView.findViewById(R.id.topLayout).setVisibility(View.INVISIBLE);
 		}
 		
-		topLeftDays = CountDownAppWidgetProvider.getDayDiff(endDate);
-		TextView dayStatus = (TextView)rootView.findViewById(R.id.dayStatus);
-		if(topLeftDays < 0) {
-			dayStatus.setText(Constant.DAY_STATUS_PASSED);
-			topLeftDays*=-1;
-		} else {
-			dayStatus.setText(Constant.DAY_STATUS_LEFT);
-		}
-		((TextView)rootView.findViewById(R.id.topTitle)).setText(title);
-		((TextView)rootView.findViewById(R.id.topDate)).setText(endDate);
-		((TextView)rootView.findViewById(R.id.topLeftDays)).setText(topLeftDays + "");
+		
+	}
+	
+	private boolean isFirstOpenApp() {
+		SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(act, Constant.COUNT_DOWN_SETTING_PREF);
+		return prefs.getBoolean(Constant.IS_FIRST_OPEN_APP, true);
+	}
+	
+	private boolean initData() {
+		ContentValues values = new ContentValues();
+		values.put(CountDown.TITLE, Constant.INIT_TITLE);
+		values.put(CountDown.PRIORITY, this.getResources().getString(R.string.type_life));
+		values.put(CountDown.END_DATE, Constant.INIT_END_DATE);
+		values.put(CountDown.END_TIME, "");
+		values.put(CountDown.REMIND_DATE, "");
+		values.put(CountDown.REMIND_BELL, "");
+		values.put(CountDown.TOP_INDEX, Constant.TOP_SWITCH_ON);
+		act.getContentResolver().insert(act.getIntent().getData(), values);
+		
+		saveIsOpenAppFlag();
+		
+		return true;
+	}
+	
+	private void saveIsOpenAppFlag() {
+		SharedPreferences.Editor editor = SharedPrefsUtil.getSharedPrefs(act, Constant.COUNT_DOWN_SETTING_PREF).edit();
+		editor.putBoolean(Constant.IS_FIRST_OPEN_APP, false);
+		editor.commit();
 	}
 	
 	private Cursor getCursorByUri(Uri uri) {

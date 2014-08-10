@@ -21,6 +21,8 @@
 	<drawable name="yellow">#77ffff00</drawable>
 	<drawable name="add_item_bg">#8E8E8E</drawable>
 	<drawable name="gray">#D3D3D3</drawable>
+	<drawable name="white">#ffffff</drawable>
+	<drawable name="orange">@color/orange</drawable>
 	
 	<drawable name="screen_background_black">#ff000000</drawable>
     <drawable name="translucent_background">#e0000000</drawable>

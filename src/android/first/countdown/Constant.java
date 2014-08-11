@@ -19,8 +19,11 @@ public class Constant {
 //	public static final String PRIORITY_M = "一般";
 //	public static final String PRIORITY_L = "较低";
 	public static final String ALL_TYPE = "全部";
-	
 	public static final String DEFAULT_TYPE = "生活";
+	public static final String TYPE_LIFE = "生活";
+	public static final String TYPE_WORK = "工作";
+	public static final String TYPE_STUDY = "学习";
+	public static final String TYPE_MEMORIAL_DAY = "纪念日";
 	
 	public static final Integer INTERVAL_SEC = 1000;
 	public static final Integer INTERVAL_MIN = 60000;

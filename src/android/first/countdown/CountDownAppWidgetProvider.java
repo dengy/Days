@@ -237,21 +237,25 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     	RemoteViews views = null;
     	int viewId;
     	
-    	viewId = R.layout.reminder_widget;
-		views = new RemoteViews(context.getPackageName(), viewId);
-//		if(Constant.PRIORITY_H.equals(priority)) {
-//			viewId = R.layout.reminder_widget_high;
-//			views = new RemoteViews(context.getPackageName(), viewId);
-//	    } else if(Constant.PRIORITY_M.equals(priority)) {
-//	    	viewId = R.layout.reminder_widget_medium;
-//	    	views = new RemoteViews(context.getPackageName(), viewId);
-//	    } else if(Constant.PRIORITY_L.equals(priority)) {
-//	    	viewId = R.layout.reminder_widget_low;
-//	    	views = new RemoteViews(context.getPackageName(), viewId);
-//	    } else {
-//	    	viewId = R.layout.reminder_widget_medium;
-//	    	views = new RemoteViews(context.getPackageName(), viewId);
-//	    }
+//    	viewId = R.layout.reminder_widget_life;
+//		views = new RemoteViews(context.getPackageName(), viewId);
+		
+		if(Constant.TYPE_LIFE.equals(priority)) {
+			viewId = R.layout.reminder_widget_life;
+			views = new RemoteViews(context.getPackageName(), viewId);
+	    } else if(Constant.TYPE_STUDY.equals(priority)) {
+	    	viewId = R.layout.reminder_widget_study;
+	    	views = new RemoteViews(context.getPackageName(), viewId);
+	    } else if(Constant.TYPE_WORK.equals(priority)) {
+	    	viewId = R.layout.reminder_widget_work;
+	    	views = new RemoteViews(context.getPackageName(), viewId);
+	    } else if(Constant.TYPE_MEMORIAL_DAY.equals(priority)) {
+	    	viewId = R.layout.reminder_widget_memorialday;
+	    	views = new RemoteViews(context.getPackageName(), viewId);
+	    } else {
+	    	viewId = R.layout.reminder_widget_custom;
+	    	views = new RemoteViews(context.getPackageName(), viewId);
+	    }
 
 		return views;
     }

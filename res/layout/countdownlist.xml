@@ -11,7 +11,10 @@
     android:id="@+id/topLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dip"> 
+    android:layout_marginLeft="5dip"
+    android:layout_marginRight="5dip"
+    android:paddingTop="10dip"
+    android:paddingBottom="10dip"> 
     <!-- <TextView
         android:id="@+id/from_1"
         android:layout_width="wrap_content"
@@ -19,7 +22,12 @@
         android:text="@string/from_1"
         android:layout_alignParentLeft="true"
         style="@style/actionbarText"/> -->
-    <TextView
+    <RelativeLayout 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_centerVertical="true">
+        <TextView
         android:id="@+id/topLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,25 +56,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/topTitle"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/topLabel"
+        android:layout_marginLeft="5dip"
         style="@style/small"/>
-     
+    </RelativeLayout>
+    
+     <RelativeLayout 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_centerVertical="true">
      <TextView
         android:id="@+id/leftDay_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/days"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/topTitle"
-        style="@style/day_label"
-        android:layout_gravity="center"/>
+        android:layout_alignBaseline="@+id/topLeftDays"
+        android:gravity="center"
+        style="@style/day_label"/>
      
      <TextView
         android:id="@+id/topLeftDays"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/leftDay_label"
-        android:layout_centerVertical="true"
         android:layout_marginRight="5dip"
         style="@style/large"/>
      
@@ -74,10 +88,13 @@
         android:id="@+id/dayStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/topTitle"
         android:layout_toLeftOf="@id/topLeftDays"
+        android:layout_alignBaseline="@+id/topLeftDays"
         android:layout_marginRight="5dip"
         style="@style/small"/>
+    </RelativeLayout>
+     
+     
     
     
     
@@ -109,7 +126,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:divider="@android:color/transparent"
-    android:dividerHeight="5dip"
+    android:dividerHeight="3dip"
     android:layout_marginTop="5dip"
     android:layout_marginLeft="5dip"
     android:layout_marginRight="5dip"

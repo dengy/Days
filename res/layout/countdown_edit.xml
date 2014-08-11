@@ -219,12 +219,13 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:text="@string/delete_action"
-    android:textColor="@drawable/red"
+    android:textColor="@color/solid_red"
     android:background="@drawable/delete_btn_bg_selector"
     android:drawableRight="@drawable/delete_icon"/>
 
       </RelativeLayout>
-      
+     
+   
     <TableLayout  
         android:layout_width="match_parent"  
         android:layout_height="wrap_content"  
@@ -232,9 +233,6 @@
         android:focusable="true"  
         android:focusableInTouchMode="true"
         android:visibility="gone" >  
-
-    
-
     <TableRow  
             android:layout_width="fill_parent"  
             android:layout_height="wrap_content"  

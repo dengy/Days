@@ -37,6 +37,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -66,6 +68,21 @@ public class MainActivity extends Activity {
         // set up the drawer's list view with items and click listener
         mDrawerList.setAdapter(getSimpleAdapter());
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        
+        mDrawerList.setOnScrollListener(new OnScrollListener() {
+            
+            @Override
+           public void onScrollStateChanged(AbsListView view, int scrollState) {
+                       if (scrollState == SCROLL_STATE_IDLE) {
+                                 mDrawerList.bringToFront();
+                                    mDrawerLayout.requestLayout();
+                        }               
+            }
+           
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+           }
+        });
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon

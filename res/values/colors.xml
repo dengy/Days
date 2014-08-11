@@ -18,7 +18,6 @@
     <drawable name="red">#7f00</drawable>
     <drawable name="blue">#770000ff</drawable>
     <drawable name="green">#7700ff00</drawable>
-	<drawable name="yellow">#77ffff00</drawable>
 	<drawable name="add_item_bg">#8E8E8E</drawable>
 	<drawable name="gray">#D3D3D3</drawable>
 	<drawable name="white">#ffffff</drawable>
@@ -30,7 +29,6 @@
 
     <color name="yellow">#77ffff00</color>
     <color name="edit_bg">#EAEAEA</color>
-    <color name="solid_red">#f00</color>
     <color name="solid_blue">#0000ff</color>
     <color name="solid_green">#f0f0</color>
     <color name="solid_yellow">#ffffff00</color>
@@ -41,12 +39,33 @@
     <color name="D_color">#b7ba6b</color>
     <color name="expire_color">#cc0000</color>
     <color name="white">#ffffff</color>
-    <color name="dark_gray">#77787b</color>
     <color name="blue">#33B5E5</color>
     <color name="black">#130c0e</color>
     <color name="orange">#f47920</color>
     
     <color name="color_black_333333_90_transparent">#e5333333</color>
     <color name="color_black_000000_88_transparent">#e0000000</color>
+    
+    <!-- new add -->
+    <color name="green_level_1">#669900</color>
+    <color name="green_level_2">#66cc66</color>
+    <color name="green_level_3">#ccff99</color>
+    
+    <color name="orange_level_1">#FF8800</color>
+    <color name="orange_level_2">#FFBB33</color>
+    
+    <color name="blue_level_1">#0099CC</color>
+    <color name="blue_level_2">#33B5E5</color>
+    
+    <color name="purple_level_1">#9933CC</color>
+    <color name="purple_level_2">#AA66CC</color>
+        
+    <color name="red_level_1">#CC0000</color>
+    <color name="red_level_2">#FF4444</color>
+    
+    
+    <color name="dark_gray">#77787b</color>
+    
+    <color name="solid_red">#f00</color>
 
 </resources>

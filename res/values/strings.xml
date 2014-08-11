@@ -19,7 +19,7 @@
     <string name="priority_low">较低</string>
     <string name="priority_medium">一般</string>
     <string name="priority_high">重要</string>
-    <string name="enddate_label">截止日期</string>
+    <string name="enddate_label">日期</string>
     <string name="endtime_label">截止时间</string>
     <string name="remind_label_1">从</string>
     <string name="remind_label_2">开始提醒我</string>
@@ -42,10 +42,10 @@
     <string name="finishTask">恭喜!您完成了:</string>
     <string name="operationSuccess">操作成功!</string>
     <string name="deleteError">删除数据失败!</string>
-    <string name="days">天&#160;&#160;&#160;</string>
-    <string name="hours">时&#160;&#160;&#160;</string>
+    <string name="days">&#160;天&#160;</string>
+    <string name="hours">时</string>
     <string name="minutes">分</string>
-    <string name="seconds">&#160;&#160;秒</string>
+    <string name="seconds">秒</string>
     <string name="expired">已过期</string>
     <string name="finished">已完成</string>
     <string name="countDownReminder">倒计时提醒</string>
@@ -100,7 +100,7 @@
     <string name="type_study">学习</string>
     <string name="type_memorial_day">纪念日</string>
     <string name="select_type_dialog">选择分类</string>
-    <string name="add_widget_tips">请选择以下的事件，显示到桌面!</string>
+    <string name="add_widget_tips">请点击列表中的事件，显示到桌面 :)</string>
     
     <string name="type_edit_hint">编辑分类</string>
     <string name="type_delete_hint">删除分类</string>

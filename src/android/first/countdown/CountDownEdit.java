@@ -899,12 +899,12 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		case R.id.enddate_row:
 			datePicker(R.id.enddate);
 			break;
-		case R.id.endtime:
-			timePicker(R.id.endtime);
-			break;
-		case R.id.remindFromDate:
-			datePicker(R.id.remindFromDate);
-			break;
+//		case R.id.endtime:
+//			timePicker(R.id.endtime);
+//			break;
+//		case R.id.remindFromDate:
+//			datePicker(R.id.remindFromDate);
+//			break;
 //		case R.id.reminder:
 //			bellDialog();
 //			break;

@@ -11,6 +11,10 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -56,12 +60,13 @@
                 <data android:mimeType="vnd.android.cursor.item/countdown" />
             </intent-filter>
         </activity>
+        <!-- 
         <activity
             android:name=".AlarmExecutor"
             android:label="@string/countDownReminder"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Dialog" >
-        </activity>
+        </activity> -->
 
         <receiver android:name=".AlarmReceiver" >
             <intent-filter>
@@ -114,6 +119,9 @@
             android:name=".TypeActivity"
             android:label="@string/edit_type" >
         </activity>
+        
+        <meta-data android:value="53ea1eaffd98c5e4eb009031" android:name="UMENG_APPKEY"></meta-data>
+		<meta-data android:value="91" android:name="UMENG_CHANNEL"/>
        
     </application>
 

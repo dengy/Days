@@ -1,5 +1,7 @@
 package android.first.countdown;
 
+import com.umeng.analytics.MobclickAgent;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -71,12 +73,16 @@ public class MenuMore extends Activity implements OnClickListener{
 	protected void onResume() {
 		Log.i(TAG, "onResume");
 		super.onResume();
+		//umeng sdk
+    	MobclickAgent.onResume(this);
 	}
 	
 	@Override
 	protected void onPause() {
 		Log.i(TAG, "onPause");
 		super.onPause();
+		//umeng sdk
+    	MobclickAgent.onPause(this);
 	}
 	
 	@Override

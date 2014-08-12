@@ -1,6 +1,8 @@
 package android.first.countdown;
 
 
+import com.umeng.analytics.MobclickAgent;
+
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ContentUris;
@@ -26,7 +28,6 @@ import android.widget.Toast;
 
 
 public class WidgetConfigure extends Activity{
-	private static final String TAG = "ItemList";
 	private ListView list;
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	//public static final String PREFS_NAME
@@ -111,6 +112,19 @@ public class WidgetConfigure extends Activity{
 		});
 
 	}
+	
+	@Override
+    public void onResume() {
+    	super.onResume();
+    	//umeng sdk
+    	MobclickAgent.onResume(this);
+    }
+    @Override
+    public void onPause() {
+    	super.onPause();
+    	//umeng sdk
+    	MobclickAgent.onPause(this);
+    }
 	
 	private void saveDataForWidget(Context context, int mAppWidgetId, Cursor cursor, String state) {
 		if(cursor != null) {
@@ -256,7 +270,6 @@ public class WidgetConfigure extends Activity{
 			ViewHolder viewHolder = (ViewHolder)view.getTag();
 			
 			if(c == null) {
-				Log.e(TAG, "cursor is null!");
 				throw new NullPointerException("Cusor is null");
 			} else {
 				viewHolder.titleView.setText(c.getString(c.getColumnIndex(CountDown.TITLE)));

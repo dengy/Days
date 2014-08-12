@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.umeng.analytics.MobclickAgent;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -43,6 +45,19 @@ public class TypeActivity extends Activity implements OnClickListener{
 		initViews();
 		
 	}
+	
+	@Override
+    public void onResume() {
+    	super.onResume();
+    	//umeng sdk
+    	MobclickAgent.onResume(this);
+    }
+    @Override
+    public void onPause() {
+    	super.onPause();
+    	//umeng sdk
+    	MobclickAgent.onPause(this);
+    }
 	
 	private void initViews() {
 		defaultTypeList = (ListView) this.findViewById(R.id.default_type_list);
@@ -184,8 +199,8 @@ public class TypeActivity extends Activity implements OnClickListener{
 		String type = prefs.getString(typeKey, null);
 		if(type != null) {
 			Cursor cursor = getCountDownByType(type);
-			boolean hasData = cursor.moveToFirst();
-			if(hasData) {
+			int count = cursor.getCount();
+			if(count > 0) {
 				showDeleteConfirmDialog(Constant.DELETE_TYPE_WITH_TASKS_CONFIRM, cursor, typeKey, type);
 			} else {
 				delete(typeKey);
@@ -298,7 +313,7 @@ public class TypeActivity extends Activity implements OnClickListener{
 				break;
 			case R.id.type_back:
 				Intent intent = new Intent(this, MainActivity.class);
-				intent.putExtra(Constant.IS_OPEN_DRAWER_LIST, true);
+				//intent.putExtra(Constant.IS_OPEN_DRAWER_LIST, false);
 				startActivity(intent);
 				finish();
 				break;

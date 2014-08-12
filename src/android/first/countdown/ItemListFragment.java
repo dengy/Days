@@ -1,5 +1,9 @@
 package android.first.countdown;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.ContentUris;
@@ -108,9 +112,14 @@ public class ItemListFragment extends Fragment{
 		String title = null;
 		int topLeftDays = 0;
 		if(isFirstOpenApp) {
-			if(initData()) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String str = sdf.format(new Date());
+			endDate = (Integer.parseInt(str.split("-")[0]) + 1 )+ "-01-01";
+			if(initData(endDate)) {
+				//init the first data: new year
 				title = Constant.INIT_TITLE;
-				endDate = Constant.INIT_END_DATE;
+				//endDate = Constant.INIT_END_DATE;
+				
 			}
 		} else {
 			Cursor cursor = act.managedQuery(CountDown.CONTENT_URI, new String[] {CountDown._ID, CountDown.TITLE, CountDown.STARRED, 
@@ -149,11 +158,11 @@ public class ItemListFragment extends Fragment{
 		return prefs.getBoolean(Constant.IS_FIRST_OPEN_APP, true);
 	}
 	
-	private boolean initData() {
+	private boolean initData(String endDate) {
 		ContentValues values = new ContentValues();
 		values.put(CountDown.TITLE, Constant.INIT_TITLE);
 		values.put(CountDown.PRIORITY, this.getResources().getString(R.string.type_life));
-		values.put(CountDown.END_DATE, Constant.INIT_END_DATE);
+		values.put(CountDown.END_DATE, endDate);
 		values.put(CountDown.END_TIME, "");
 		values.put(CountDown.REMIND_DATE, "");
 		values.put(CountDown.REMIND_BELL, "");

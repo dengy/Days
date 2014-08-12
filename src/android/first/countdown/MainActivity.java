@@ -17,12 +17,12 @@
 package android.first.countdown;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -30,19 +30,19 @@ import android.first.countdown.util.SharedPrefsUtil;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
+import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
@@ -59,6 +59,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //umeng sdk
+        MobclickAgent.updateOnlineConfig(this);
 
         mTitle = mDrawerTitle = getTitle();
         initViews();
@@ -126,20 +128,62 @@ public class MainActivity extends Activity {
         initDrawerList();
     }
     
+    public static String getDeviceInfo(Context context) {
+        try{
+          org.json.JSONObject json = new org.json.JSONObject();
+          android.telephony.TelephonyManager tm = (android.telephony.TelephonyManager) context
+              .getSystemService(Context.TELEPHONY_SERVICE);
+      
+          String device_id = tm.getDeviceId();
+          
+          android.net.wifi.WifiManager wifi = (android.net.wifi.WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+              
+          String mac = wifi.getConnectionInfo().getMacAddress();
+          json.put("mac", mac);
+          
+          if( TextUtils.isEmpty(device_id) ){
+            device_id = mac;
+          }
+          
+          if( TextUtils.isEmpty(device_id) ){
+            device_id = android.provider.Settings.Secure.getString(context.getContentResolver(),android.provider.Settings.Secure.ANDROID_ID);
+          }
+          
+          json.put("device_id", device_id);
+          
+          return json.toString();
+        }catch(Exception e){
+          e.printStackTrace();
+        }
+      return null;
+    }
+    
+    @Override
+    public void onResume() {
+    	super.onResume();
+    	MobclickAgent.onResume(this);
+    }
+    @Override
+    public void onPause() {
+    	super.onPause();
+    	MobclickAgent.onPause(this);
+    }
+    
     private void initDrawerList() {
     	SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(this, Constant.COUNT_DOWN_SETTING_PREF);
     	boolean isFirstOpenApp = prefs.getBoolean(Constant.IS_FIRST_OPEN_APP, true);
     	if(isFirstOpenApp) {
     		mDrawerLayout.openDrawer(mDrawerLeft);
-    	} else {
-    		Bundle bundle = this.getIntent().getExtras();
-    		if(bundle != null) {
-    			boolean isOpen = bundle.getBoolean(Constant.IS_OPEN_DRAWER_LIST);
-    			if(isOpen) {
-    				mDrawerLayout.openDrawer(mDrawerLeft);
-    			}
-    		}
-    	}
+    	} 
+//    	else {
+//    		Bundle bundle = this.getIntent().getExtras();
+//    		if(bundle != null) {
+//    			boolean isOpen = bundle.getBoolean(Constant.IS_OPEN_DRAWER_LIST);
+//    			if(isOpen) {
+//    				mDrawerLayout.openDrawer(mDrawerLeft);
+//    			}
+//    		}
+//    	}
     	
     }
     
@@ -251,28 +295,4 @@ public class MainActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /**
-     * Fragment that appears in the "content_frame", shows a planet
-     */
-    public static class PlanetFragment extends Fragment {
-        public static final String ARG_PLANET_NUMBER = "planet_number";
-
-        public PlanetFragment() {
-            // Empty constructor required for fragment subclasses
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
-            int i = getArguments().getInt(ARG_PLANET_NUMBER);
-            String planet = getResources().getStringArray(R.array.planets_array)[i];
-
-            int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
-                            "drawable", getActivity().getPackageName());
-            ((ImageView) rootView.findViewById(R.id.image)).setImageResource(imageId);
-            getActivity().setTitle(planet);
-            return rootView;
-        }
-    }
 }

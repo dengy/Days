@@ -3,6 +3,8 @@ package android.first.countdown;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import com.umeng.analytics.MobclickAgent;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -166,20 +168,20 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	
 	@Override
 	protected void onStart() {
-		Log.i(TAG, "onStart");
 		super.onStart();
 	}
 	 
 	@Override
 	protected void onRestart() {
-		Log.i(TAG, "onRestart");
 		super.onRestart();
 	}
 	
 	@Override
     protected void onResume() {
-		Log.i(TAG, "onResume");
         super.onResume();
+      //umeng sdk
+        MobclickAgent.onResume(this);
+        
         // The activity has become visible (it is now "resumed").
         if(mCursor != null) {
             if(mState == STATE_EDIT) {
@@ -228,20 +230,19 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	
 	@Override
     protected void onPause() {
-		Log.i(TAG, "onPause");
         super.onPause();
+      //umeng sdk
+        MobclickAgent.onPause(this);
         cancel();
 	}
 	
 	@Override
 	protected void onStop() {
-		Log.i(TAG, "onStop");
         super.onStop();
 	}
 	
 	@Override
 	protected void onDestroy() {
-		Log.i(TAG, "onDestroy");
         super.onDestroy();
 	}
 	

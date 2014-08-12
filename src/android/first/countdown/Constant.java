@@ -53,8 +53,8 @@ public class Constant {
 	public static final String COUNT_DOWN_SETTING_PREF = "countDownSettingPref"; 
 	public static final String IS_FIRST_OPEN_APP = "isFirstOpenApp";
 	public static final String IS_OPEN_DRAWER_LIST = "isOpenDrawerList";
-	public static final String INIT_TITLE = "倒数日发布";
-	public static final String INIT_END_DATE = "2014-07-26";
+	public static final String INIT_TITLE = "新年";
+//	public static final String INIT_END_DATE = "2014-07-26";
 	
 	public static final String DAY_STATUS_LEFT = "还有";
 	public static final String DAY_STATUS_PASSED = "已经";

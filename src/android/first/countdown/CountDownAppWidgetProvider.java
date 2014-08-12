@@ -2,14 +2,8 @@ package android.first.countdown;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
@@ -271,14 +265,6 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
         		difference = sf.parse(endDate).getTime() - sf.parse(currentDateStr).getTime();
 				int days = (int) ((difference / 1000) / 86400);
 
-				/*int hours = (int) (((difference / 1000) - (days
-		                * 86400)) / 3600);
-		        int minutes = (int) (((difference / 1000) - ((days
-		                * 86400) + (hours * 3600))) / 60);
-		        
-		        if(hours != 0 || minutes != 0) {
-		        	days += 1;
-		        }*/
 				return days;
 			} catch (ParseException e) {
 				e.printStackTrace();

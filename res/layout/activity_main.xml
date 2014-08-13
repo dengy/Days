@@ -20,20 +20,21 @@
          with the content view. -->
  <RelativeLayout
     android:id="@+id/drawerLeft"
-    android:layout_width="match_parent"
+    android:layout_width="240dp"
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:background="#fff" >
     
   <ListView
         android:id="@+id/drawer_list"
-        android:layout_width="240dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:dividerHeight="1dp"/>
+        android:dividerHeight="1dp"
+        android:layout_marginLeft="10dip"/>
     
     <!-- <TextView 
     android:id="@+id/edit_type"
-    android:layout_width="240dp"
+    android:layout_width="180dp"
     android:layout_height="wrap_content"
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
     android:gravity="center_vertical"
@@ -46,7 +47,7 @@
     
     <View
     android:id="@+id/line"
-    android:layout_width="240dp"
+    android:layout_width="180dp"
     android:layout_height="1dip"
     android:layout_below="@id/drawer_list"
     android:background="@drawable/gray">
@@ -54,7 +55,7 @@
     
     <LinearLayout
     android:id="@+id/edit_type"
-    android:layout_width="240dp"
+    android:layout_width="180dp"
     android:layout_height="wrap_content"
     android:layout_below="@id/line"
     android:orientation="horizontal"
@@ -78,11 +79,36 @@
     </LinearLayout>
     
     <View
-    android:layout_width="240dp"
+    android:id="@+id/line2"
+    android:layout_width="180dp"
     android:layout_height="1dip"
     android:layout_below="@id/edit_type"
     android:background="@drawable/gray">
     </View>
+    
+    <TextView 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dip"
+    android:layout_below="@id/line2"
+    android:text="@string/edit_type_tips"
+    style="@style/drawerListTips"
+    android:visibility="gone"/>
+    
+    <LinearLayout 
+    android:id="@+id/pull_back_click"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:layout_alignParentRight="true"
+    android:padding="20dip"
+    android:clickable="true"
+    android:background="@drawable/drawer_list_edit_bg_selector">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/pull_back_click"/>
+    </LinearLayout>
         
     </RelativeLayout>
 </android.support.v4.widget.DrawerLayout>

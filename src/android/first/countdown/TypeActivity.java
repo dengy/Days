@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.umeng.analytics.MobclickAgent;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,6 +17,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.first.countdown.util.SharedPrefsUtil;
+import android.first.countdown.util.Utils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,6 +30,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.umeng.analytics.MobclickAgent;
 
 public class TypeActivity extends Activity implements OnClickListener{
 	private ListView defaultTypeList;
@@ -79,7 +80,7 @@ public class TypeActivity extends Activity implements OnClickListener{
 		customTypeList.setAdapter(customAdapter);
 	}
 	public static List<Map<String, Object>> getDefaultData(Context context, boolean isContainsAll) {
-		String[] mTypes = SharedPrefsUtil.getDefaultTypes(context);
+		String[] mTypes = Utils.getDefaultTypes(context);
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         
@@ -113,7 +114,7 @@ public class TypeActivity extends Activity implements OnClickListener{
 	}
 	
 	public static List<Map<String, Object>> getCustomData(Context context, boolean isDrawerList) {
-		String[] customTypes = SharedPrefsUtil.getCustomTypes(context);
+		String[] customTypes = Utils.getCustomTypes(context);
 		int index = customTypes.length;
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		for(int i = 0; i < index; i++) {

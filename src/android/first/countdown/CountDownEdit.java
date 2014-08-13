@@ -21,7 +21,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.first.countdown.util.SharedPrefsUtil;
-import android.first.countdown.util.StringUtil;
+import android.first.countdown.util.Utils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,8 +83,8 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.countdown_edit);
-		initViews();
 		
+		initViews();
 		
 		//select data from database
 		Intent intent = getIntent();
@@ -123,6 +123,9 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		
 	}
 	
+	/**
+	 * init views when open the activity
+	 */
 	private void initViews() {
 		//add clickListener on element
 		titleTextView = (TextView)findViewById(R.id.title);
@@ -131,12 +134,12 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		priorityTextView.setOnClickListener(this);
 		endDateTextView = (TextView)findViewById(R.id.enddate);
 		endDateTextView.setOnClickListener(this);
-		endTimeTextView = (TextView)findViewById(R.id.endtime);
-		endTimeTextView.setOnClickListener(this);
-		remindDateTextView = (TextView)findViewById(R.id.remindFromDate);
-		remindDateTextView.setOnClickListener(this);
-		reminderTextView = (TextView)findViewById(R.id.reminder);
-		reminderTextView.setOnClickListener(this);
+		//endTimeTextView = (TextView)findViewById(R.id.endtime);
+		//endTimeTextView.setOnClickListener(this);
+		//remindDateTextView = (TextView)findViewById(R.id.remindFromDate);
+		//remindDateTextView.setOnClickListener(this);
+		//reminderTextView = (TextView)findViewById(R.id.reminder);
+		//reminderTextView.setOnClickListener(this);
 		remarkEditText = (EditText)findViewById(R.id.remark);
 		topSwitch = (Switch)findViewById(R.id.topSwitch);
 		
@@ -167,19 +170,9 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	}
 	
 	@Override
-	protected void onStart() {
-		super.onStart();
-	}
-	 
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-	}
-	
-	@Override
     protected void onResume() {
         super.onResume();
-      //umeng sdk
+        //umeng sdk
         MobclickAgent.onResume(this);
         
         // The activity has become visible (it is now "resumed").
@@ -195,6 +188,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
                 	endDateTextView.setText(endDate);
                 }
                 
+                /**
                 String endTime = mCursor.getString(mCursor.getColumnIndex(CountDown.END_TIME));
                 if(endTime != null && !"".equals(endTime)) {
                 	endTimeTextView.setText(endTime);
@@ -207,7 +201,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
                 String reminder = mCursor.getString(mCursor.getColumnIndex(CountDown.REMIND_BELL));
                 if(reminder != null && !"".equals(reminder)) {
                 	reminderTextView.setText(reminder);
-                }
+                }**/
 //                if(CountDown.DEFAUL_BELL.equals(mCursor.getString(mCursor.getColumnIndex(CountDown.REMIND_BELL)))) {
 //                	remindBellSlipButton.setCheck(true);
 //                } else {
@@ -231,19 +225,9 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	@Override
     protected void onPause() {
         super.onPause();
-      //umeng sdk
+        //umeng sdk
         MobclickAgent.onPause(this);
         cancel();
-	}
-	
-	@Override
-	protected void onStop() {
-        super.onStop();
-	}
-	
-	@Override
-	protected void onDestroy() {
-        super.onDestroy();
 	}
 	
 	/**
@@ -261,9 +245,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			inputTitleEditText.setText(currentTitle);
 		}
 	    
-	    builder.setView(layout)
-	    .setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener(){
-
+	    builder.setView(layout).setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String title = inputTitleEditText.getText().toString();
@@ -273,8 +255,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
 					titleTextView.setText(Constant.UN_NAMED_TITLE);
 				}
 			}
-			
-	    }).setNegativeButton(R.string.cancel_label, new DialogInterface.OnClickListener(){
+	    }).setNegativeButton(R.string.go_back_label, new DialogInterface.OnClickListener(){
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -289,6 +270,10 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		d.show();
 	}
 	
+	/**
+	 * show the delete cofirm dialog when click delete button
+	 * @param title
+	 */
 	private void showDeleteConfirmDialog(String title) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    // Get the layout inflater
@@ -299,14 +284,14 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	    confirmTitle.setText(title); 
 	    
 	    builder.setView(layout)
-	    .setPositiveButton("É¾³ý", new DialogInterface.OnClickListener(){
+	    .setPositiveButton(R.string.confirm_delete_label, new DialogInterface.OnClickListener(){
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				deleteAction();
 			}
 			
-	    }).setNegativeButton("·ÅÆú", new DialogInterface.OnClickListener(){
+	    }).setNegativeButton(R.string.cancel_label, new DialogInterface.OnClickListener(){
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -319,10 +304,13 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		d.show();
 	}
 	
+	/**
+	 * show the type list dialog (use the old field "priority" as "type")
+	 */
 	private void priorityDialog() {
 		//when edit,show the current priority
 		int checkedIndex = 0;
-	    String[] priority = SharedPrefsUtil.getAllTypes(this);
+	    String[] priority = Utils.getAllTypes(this);
 	    final String[] usedPriority = new String[priority.length -1];
 
 		String currentPriority = priorityTextView.getText().toString();
@@ -498,7 +486,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	}
 	
 	/**
-	 * show timepicker dialog
+	 * show timepicker dialog, unused 
 	 */
 	private void timePicker(int id) {
 		String endDate = endDateTextView.getText().toString();
@@ -574,6 +562,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
         }, hour, minute,true).show();
 	}
 	
+	
 	/**
 	 * select bell to remind when today is reminder date
 	 */
@@ -608,12 +597,13 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			values.put(CountDown.END_DATE, endDate);
 //			values.put(CountDown.END_TIME, StringUtil.underLineFilter(endTimeTextView.getText().toString()));
 //			values.put(CountDown.REMIND_DATE, StringUtil.underLineFilter(remindDateTextView.getText().toString()));
-			values.put(CountDown.REMIND_BELL, reminderTextView.getText().toString());
+//			values.put(CountDown.REMIND_BELL, reminderTextView.getText().toString());
 			values.put(CountDown.TOP_INDEX, topSwitchText);
 			if(Constant.TOP_SWITCH_ON.equals(topSwitchText)) {
 				//update all the data, set the top_switch=0
 				ContentValues contentValues2 = new ContentValues();
 				contentValues2.put(CountDown.TOP_INDEX, Constant.TOP_SWITCH_OFF);
+				//first, update all the data topindex with value:0, then update current data topindex with value:1
 				updateAllData(contentValues2);
 			}
 //			if(remindBellSlipButton.isChecked()) {
@@ -622,41 +612,45 @@ public class CountDownEdit extends Activity implements OnClickListener {
 //				values.put(CountDown.REMIND_BELL, "");
 //			}
 			values.put(CountDown.REMARK, remarkEditText.getText().toString());
-//			values.put(CountDown.CREATED_DATE, System.currentTimeMillis());//current time
+			values.put(CountDown.CREATED_DATE, System.currentTimeMillis());//created time
 			
 			int count = getContentResolver().update(mUri, values, null, null);
-			
 			if(count == 1) {
 	            //set countdown reminder
 //	            setCountDownReminder();
 	            
 	            if(mState == STATE_EDIT) {
 	            	//update widget 
-		            updateWidget();
+		            updateWidgets();
 	            }
 	            
 				Toast.makeText(getApplicationContext(), R.string.save_successfully, Toast.LENGTH_SHORT).show();
-				
 				mCursor.close();
 				mCursor = null;
 				
 				//return to main page
-				finish();
-				Intent intent = new Intent(this, MainActivity.class);
-				startActivity(intent);
+				toMainActivity();
 			}
 			
 		}
 		
 	}
 	
+	/**
+	 * update all data's topindex field with the same value : Constant.TOP_SWITCH_OFF
+	 * @param contentValues
+	 */
 	private void updateAllData(ContentValues contentValues) {
+		/**
 		Cursor cursor = managedQuery(CountDown.CONTENT_URI, new String[] {CountDown._ID}, null, null, null); 
 		while(cursor.moveToNext()) {
 			Integer id = cursor.getInt(cursor.getColumnIndex(CountDown._ID));
 			Uri uri = ContentUris.withAppendedId(CountDown.CONTENT_URI, id);
 			getContentResolver().update(uri, contentValues, null, null);
-		}
+		}**/
+		
+		//more simple code
+		getContentResolver().update(CountDown.CONTENT_URI, contentValues, null, null);
 	}
 	
 	/**
@@ -665,17 +659,37 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	private void cancel() {
 		if(mCursor != null) {
 			if (mState == STATE_EDIT) {
-				//TODO do nothing
 			} else if(mState == STATE_INSERT) {
 				deleteRecord();
 			}
-			
-			//shutdown this activity
-			finish();
-			//to main page
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
 		}
+		
+		toMainActivity();
+	}
+	
+	/**
+	 * return to MainActivity
+	 */
+	private void toMainActivity() {
+		//shutdown this activity
+		finish();
+		//to main page
+		Intent intent = new Intent(this, MainActivity.class);
+		startActivity(intent);
+	}
+	
+	
+	/**
+	 * delete action
+	 */
+	private void deleteAction() {
+		if(deleteRecordAndWidgets(mCursor) > 0) {
+			toMainActivity();
+			Toast.makeText(this, R.string.operationSuccess, Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(this, R.string.deleteError, Toast.LENGTH_SHORT).show();
+		}
+		
 	}
 	
 	/**
@@ -683,9 +697,10 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	 */
 	private int deleteRecordAndWidgets(Cursor cursor) {
 		int result = getContentResolver().delete(mUri, null, null);
-		String widgetIds = cursor.getString(cursor.getColumnIndex(CountDown.WIDGET_IDS));
-		if(result == 1) {
+		if(result > 0) {
 			//notice widget to delete itself
+			String widgetIds = cursor.getString(cursor.getColumnIndex(CountDown.WIDGET_IDS));
+			
 			if(widgetIds != null && !"".equals(widgetIds)) {
 				String[] appWidgetIds = widgetIds.split(",");
 				for(String mAppWidgetId : appWidgetIds) {
@@ -696,28 +711,9 @@ public class CountDownEdit extends Activity implements OnClickListener {
 					this.sendBroadcast(intent);
 				}
 			}
-						
-		} else {
-			Toast.makeText(getApplicationContext(), R.string.deleteError, Toast.LENGTH_SHORT).show();
 		}
 		
 		return result;
-	}
-	
-	/**
-	 * delete action
-	 */
-	private void deleteAction() {
-		if(deleteRecordAndWidgets(mCursor) == 1) {
-			finish();
-			Toast.makeText(this, R.string.operationSuccess, Toast.LENGTH_SHORT).show();
-			//to main page
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
-		} else {
-			Toast.makeText(this, R.string.deleteError, Toast.LENGTH_SHORT).show();
-		}
-		
 	}
 	
 	/**
@@ -857,7 +853,10 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		prefs.commit();
 	}**/
 	
-	private void updateWidget() {
+	/**
+	 * sync the data in the prefs file with the updated data (for widgets)
+	 */
+	private void updateWidgets() {
 		if(mCursor != null) {
 			//save update data
 			String widgetIds = mCursor.getString(mCursor.getColumnIndex(CountDown.WIDGET_IDS));
@@ -866,24 +865,31 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			} 
 			
 			String[] appWidgetIds = widgetIds.split(",");
+			int[] intWidgetIds = new int[appWidgetIds.length];
 			
 			int _ID = mCursor.getInt(mCursor.getColumnIndex(CountDown._ID));
+			int index = 0;
 			for(String mAppWidgetId : appWidgetIds) {
+				try{
+					intWidgetIds[index] = Integer.parseInt(mAppWidgetId);
+					index++;
+				} catch(Exception e) {
+					return;
+				}
 				String title = titleTextView.getText().toString();
 				String priority = priorityTextView.getText().toString();
 				String endDate = endDateTextView.getText().toString();
 				//String endTime = StringUtil.underLineFilter(endTimeTextView.getText().toString());
 				//save data for widget update
 				WidgetConfigure.saveToPreference(this.getApplicationContext(), Integer.parseInt(mAppWidgetId), _ID, title, null, endDate, priority);
-				
-				//create broadcast to update widget
-				Intent intent = new Intent(Constant.UPDATE_WIDGET);
-				Bundle extras = new Bundle();
-				extras.putString(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-				intent.putExtras(extras);
-				
-				this.sendBroadcast(intent);
 			}
+			
+			//create broadcast to update widget
+			Intent intent = new Intent(Constant.UPDATE_WIDGET);
+			Bundle extras = new Bundle();
+			extras.putIntArray(AppWidgetManager.EXTRA_APPWIDGET_ID, intWidgetIds);
+			intent.putExtras(extras);
+			this.sendBroadcast(intent);
 		}
 	}
 	

@@ -22,22 +22,19 @@ import java.util.Map;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.first.countdown.util.SharedPrefsUtil;
+import android.first.countdown.util.Utils;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -64,6 +61,9 @@ public class MainActivity extends Activity {
 
         mTitle = mDrawerTitle = getTitle();
         initViews();
+        
+        //start update widget service
+        //startUpdateWidgetService();
 
         // set a custom shadow that overlays the main content when the drawer opens
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -71,21 +71,6 @@ public class MainActivity extends Activity {
         mDrawerList.setAdapter(getSimpleAdapter());
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         
-        mDrawerList.setOnScrollListener(new OnScrollListener() {
-            
-            @Override
-           public void onScrollStateChanged(AbsListView view, int scrollState) {
-                       if (scrollState == SCROLL_STATE_IDLE) {
-                                 mDrawerList.bringToFront();
-                                    mDrawerLayout.requestLayout();
-                        }               
-            }
-           
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-           }
-        });
-
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -107,17 +92,6 @@ public class MainActivity extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
        
-        mEditType.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(v.getContext(), TypeActivity.class);
-				startActivity(intent);
-				finish();
-			}
-        	
-        });
-        
      // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -126,36 +100,6 @@ public class MainActivity extends Activity {
             selectItem(0);
         }
         initDrawerList();
-    }
-    
-    public static String getDeviceInfo(Context context) {
-        try{
-          org.json.JSONObject json = new org.json.JSONObject();
-          android.telephony.TelephonyManager tm = (android.telephony.TelephonyManager) context
-              .getSystemService(Context.TELEPHONY_SERVICE);
-      
-          String device_id = tm.getDeviceId();
-          
-          android.net.wifi.WifiManager wifi = (android.net.wifi.WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-              
-          String mac = wifi.getConnectionInfo().getMacAddress();
-          json.put("mac", mac);
-          
-          if( TextUtils.isEmpty(device_id) ){
-            device_id = mac;
-          }
-          
-          if( TextUtils.isEmpty(device_id) ){
-            device_id = android.provider.Settings.Secure.getString(context.getContentResolver(),android.provider.Settings.Secure.ANDROID_ID);
-          }
-          
-          json.put("device_id", device_id);
-          
-          return json.toString();
-        }catch(Exception e){
-          e.printStackTrace();
-        }
-      return null;
     }
     
     @Override
@@ -167,6 +111,12 @@ public class MainActivity extends Activity {
     public void onPause() {
     	super.onPause();
     	MobclickAgent.onPause(this);
+    }
+    
+    private void startUpdateWidgetService() {
+    	Intent i = new Intent();
+		i.setClass(this, UpdateWidgetService.class);
+		startService(i);
     }
     
     private void initDrawerList() {
@@ -196,11 +146,32 @@ public class MainActivity extends Activity {
     }
     
     private void initViews() {
-    	 mTypes = SharedPrefsUtil.getAllTypes(this);
+    	 mTypes = Utils.getAllTypes(this);
          mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
          mDrawerList = (ListView) findViewById(R.id.drawer_list);
          mDrawerLeft = findViewById(R.id.drawerLeft);
          mEditType = findViewById(R.id.edit_type);
+         
+         //edit type button click
+         mEditType.setOnClickListener(new OnClickListener() {
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				Intent intent = new Intent(v.getContext(), TypeActivity.class);
+ 				startActivity(intent);
+ 				finish();
+ 			}
+         	
+         });
+
+         //pull back button click
+         findViewById(R.id.pull_back_click).setOnClickListener(new OnClickListener() {
+  			@Override
+  			public void onClick(View v) {
+  				mDrawerLayout.closeDrawer(mDrawerLeft);
+  			}
+          	
+          });
     }
         
     @Override

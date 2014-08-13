@@ -50,7 +50,7 @@ public final class CountDown implements BaseColumns{
     
     public static final String TOP_INDEX = "topindex";
     
-    public static final String TOP_SORT_ORDER =  TOP_INDEX + " DESC";
+    public static final String TOP_SORT_ORDER =  TOP_INDEX + " DESC," + CREATED_DATE + " DESC";
     
     public static final Uri CONTENT_STATE_OPEN_URI = Uri.parse("content://" + AUTHORITY + "/countdown/state/" + STATE_OPENED);
     public static final Uri CONTENT_STATE_CLOSE_URI = Uri.parse("content://" + AUTHORITY + "/countdown/state/" + STATE_CLOSED);

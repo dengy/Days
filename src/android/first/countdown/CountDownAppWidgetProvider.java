@@ -4,14 +4,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.first.countdown.util.StringUtil;
+import android.first.countdown.util.Utils;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,14 +25,13 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
 
 	@Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        final int N = appWidgetIds.length;
-        Log.i(TAG, "onUpdate");
+        int count = appWidgetIds.length;
         // Perform this loop procedure for each App Widget that belongs to this provider
-        for (int i=0; i<N; i++) {
+        for (int i = 0; i<count; i++) {
             int appWidgetId = appWidgetIds[i];
             Log.d(TAG, "widgetId=" + appWidgetId);
             if(!validateWidget(appWidgetId, appWidgetManager)) {
-				return;
+				continue;
 			}
             updateAppWidget(context, appWidgetManager, appWidgetId);
                         
@@ -42,13 +44,19 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
         Log.i(TAG, "onReceive");
         
         if(Constant.UPDATE_WIDGET.equals(intent.getAction())){ 
-        	Log.i(TAG, Constant.UPDATE_WIDGET);
+        	Bundle extras = intent.getExtras();
+        	int[] appWidgetIds = null;;
+        	if (extras != null) {
+        		appWidgetIds = extras.getIntArray(AppWidgetManager.EXTRA_APPWIDGET_ID);
+        	} 
         	
-        	int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, CountDownAppWidgetProvider.class));
+        	if(appWidgetIds == null ) {
+        		appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, CountDownAppWidgetProvider.class));
+        	}
+        	
         	this.onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds);
         	
         } else if(Constant.DELETE_WIDGET.equals(intent.getAction())) {
-        	Log.i(TAG, Constant.DELETE_WIDGET);
         	Bundle extras = intent.getExtras();
         	if (extras != null) {
         		String strAppWidgetId = extras.getString(AppWidgetManager.EXTRA_APPWIDGET_ID);
@@ -99,15 +107,19 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-        Log.d(TAG, "onDeleted");
         // When the user deletes the widget, delete the preference associated with it.
-        final int N = appWidgetIds.length;
-        for (int i=0; i<N; i++) {
+        int count = appWidgetIds.length;
+        for (int i=0; i<count; i++) {
         	int appWidgetId = appWidgetIds[i];
         	deleteData(context, appWidgetId);
         }
     }
     
+    /**
+     * delete the data in the prefs file
+     * @param context
+     * @param mAppWidgetId
+     */
     public void deleteData(Context context ,int mAppWidgetId) {
     	//delete countdownTimder object in the map
     	//cancelUpdateWidgetAlarmer(context, mAppWidgetId);
@@ -116,6 +128,12 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     	WidgetConfigure.deleteFromPreference(context, mAppWidgetId);
     }
     
+    /**
+     * update the deleted state wiget view
+     * @param appWidgetManager
+     * @param context
+     * @param mAppWidgetId
+     */
     public static void deleteAppWidget(AppWidgetManager appWidgetManager, Context context, int mAppWidgetId) {
     	//updated widget
     	RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.invalid_widget);
@@ -143,7 +161,15 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     	cancelUpdateWidgetAlarmer(context, mAppWidgetId);
     }**/
     
-    
+    /**
+     * refresh the widget view
+     * @param context
+     * @param views
+     * @param endDate
+     * @param type
+     * @param mAppWidgetId
+     * @param appWidgetManager
+     */
     public static void refreshAppWidget(Context context, RemoteViews views, String endDate, String type, int mAppWidgetId, 
     		AppWidgetManager appWidgetManager) {
     	int days = getDayDiff(endDate);
@@ -171,30 +197,63 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     	
     }
     
+    /**
+     * update app widget
+     * @param context
+     * @param appWidgetManager
+     * @param mAppWidgetId
+     */
     public void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int mAppWidgetId) {
-//    	Log.i(TAG, "updateAppWidget");
     	//load data from shared preferences
     	SharedPreferences prefs = context.getSharedPreferences(Constant.WIDGET_DATA_FILE, Context.MODE_PRIVATE);
-    	int _ID = prefs.getInt(StringUtil.appendAppWidgetId(CountDown._ID, mAppWidgetId), -1);
-    	String title = prefs.getString(StringUtil.appendAppWidgetId(CountDown.TITLE, mAppWidgetId), "");
+    	int _ID = prefs.getInt(Utils.appendAppWidgetId(CountDown._ID, mAppWidgetId), -1);
+    	String title = prefs.getString(Utils.appendAppWidgetId(CountDown.TITLE, mAppWidgetId), null);
     	if(title != null && !"".equals(title)) {
-    		String priority = prefs.getString(StringUtil.appendAppWidgetId(CountDown.PRIORITY, mAppWidgetId), "");
-        	String endDate = prefs.getString(StringUtil.appendAppWidgetId(CountDown.END_DATE, mAppWidgetId), "");
-        	String remind_state = prefs.getString(StringUtil.appendAppWidgetId(Constant.TASK_STATE, mAppWidgetId), "");
+    		String priority = prefs.getString(Utils.appendAppWidgetId(CountDown.PRIORITY, mAppWidgetId), "");
+        	String endDate = prefs.getString(Utils.appendAppWidgetId(CountDown.END_DATE, mAppWidgetId), "");
+        	String taskState = prefs.getString(Utils.appendAppWidgetId(Constant.TASK_STATE, mAppWidgetId), "");
         	
-        	if(Constant.DELETED_STATE.equals(remind_state)) {
+        	if(Constant.DELETED_STATE.equals(taskState)) {
         		deleteAppWidget(appWidgetManager, context, mAppWidgetId);
         	} else {
         		//set alarmManager to control service to update widget
-            	Intent intent  = setIntentForAlarm(context, mAppWidgetId,
-                		_ID, title, priority, endDate, remind_state);
-                context.startService(intent); 
+//            	Intent intent  = getIntentForAlarm(context, mAppWidgetId,
+//                		_ID, title, priority, endDate, remind_state);
+//                context.startService(intent); 
+                
+                RemoteViews views = CountDownAppWidgetProvider.getRemoteViews(priority, context, _ID);
+                
+              //仅当widget所对应的任务属于Running状态的时候，可以编辑
+        		if(Constant.RUNNING_STATE.equals(taskState)) {
+        			//add click event
+        			Uri uri = ContentUris.withAppendedId(CountDown.CONTENT_URI, _ID);
+        			Intent updateIntent = new Intent(Intent.ACTION_EDIT, uri);
+        	        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, updateIntent, 0);
+        	        views.setOnClickPendingIntent(R.id.reminderWidget, pendingIntent);
+        		}		
+            	
+            	views.setTextViewText(R.id.widget_title, title);
+            	//views.setTextViewText(R.id.widget_end_date, endDate);
+            	
+            	//update widget
+            	CountDownAppWidgetProvider.refreshAppWidget(context, views, endDate, priority, mAppWidgetId, appWidgetManager);
         	}
     	}    	    
 
     }
     
-    public static Intent setIntentForAlarm(Context context , int mAppWidgetId, int _ID, String title, String priority, 
+    /**
+     * get the intent which transfered to the service
+     * @param context
+     * @param mAppWidgetId
+     * @param _ID
+     * @param title
+     * @param priority
+     * @param endDate
+     * @param remind_state
+     * @return
+     */
+    public static Intent getIntentForAlarm(Context context , int mAppWidgetId, int _ID, String title, String priority, 
     		String endDate, String remind_state) {
 		Intent intent = new Intent(context, UpdateWidgetService.class);
 		
@@ -227,6 +286,13 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     	}
     }
     
+    /**
+     * get the remoteViews by type
+     * @param priority
+     * @param context
+     * @param _ID
+     * @return
+     */
     public static RemoteViews getRemoteViews(String priority, Context context, int _ID) {
     	RemoteViews views = null;
     	int viewId;
@@ -254,6 +320,11 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
 		return views;
     }
     
+    /**
+     * get the left days
+     * @param endDate
+     * @return
+     */
     public static int getDayDiff(String endDate) {
 		String[] date = endDate.split("-");
 		if(date.length == 3) {
@@ -264,7 +335,6 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
 				long difference = 0l;
         		difference = sf.parse(endDate).getTime() - sf.parse(currentDateStr).getTime();
 				int days = (int) ((difference / 1000) / 86400);
-
 				return days;
 			} catch (ParseException e) {
 				e.printStackTrace();

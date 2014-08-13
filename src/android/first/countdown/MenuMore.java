@@ -12,8 +12,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +25,6 @@ import android.widget.Toast;
 
 
 public class MenuMore extends Activity implements OnClickListener{
-	private static final String TAG = "ItemList";
 	private View rate;
 	private View functions;
 	private View feedback;
@@ -35,14 +32,10 @@ public class MenuMore extends Activity implements OnClickListener{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.i(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.menu_more);
 		initViews();
-		
-		
-        
 	}
 	
 	private void initViews() {
@@ -58,20 +51,7 @@ public class MenuMore extends Activity implements OnClickListener{
 	}
 	
 	@Override
-	protected void onStart() {
-		Log.i(TAG, "onStart");
-		super.onStart();
-	}
-	 
-	@Override
-	protected void onRestart() {
-		Log.i(TAG, "onRestart");
-		super.onRestart();
-	}
-	
-	@Override
 	protected void onResume() {
-		Log.i(TAG, "onResume");
 		super.onResume();
 		//umeng sdk
     	MobclickAgent.onResume(this);
@@ -79,23 +59,9 @@ public class MenuMore extends Activity implements OnClickListener{
 	
 	@Override
 	protected void onPause() {
-		Log.i(TAG, "onPause");
 		super.onPause();
 		//umeng sdk
     	MobclickAgent.onPause(this);
-	}
-	
-	@Override
-	protected void onStop() {
-		Log.i(TAG, "onStop");
-		super.onStop();
-	}
-	
-	@Override
-	protected void onDestroy() {
-		Log.i(TAG, "onDestroy");
-		
-		super.onDestroy();
 	}
 	
 	
@@ -134,9 +100,7 @@ public class MenuMore extends Activity implements OnClickListener{
 	}
 	
 	private String getVersionName() {
-		 // ����packagemanager������
         PackageManager packageManager = getPackageManager();
-        // getPackageName()������������������0������������������
         PackageInfo packInfo;
         String version = "";
 		try {
@@ -198,7 +162,7 @@ public class MenuMore extends Activity implements OnClickListener{
 		try {
 			startActivity(Intent.createChooser(intent, Constant.MAIL_SENDING));    
 		}catch(android.content.ActivityNotFoundException ex) {
-			Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.no_email_app_installed, Toast.LENGTH_SHORT).show();
 		}
 	}
 	

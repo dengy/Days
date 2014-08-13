@@ -39,6 +39,7 @@ public class ItemListFragment extends Fragment{
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+		
         View rootView = inflater.inflate(R.layout.countdownlist, container, false);
         initViews(rootView);
         act = getActivity();
@@ -50,10 +51,8 @@ public class ItemListFragment extends Fragment{
             intent.setData(CountDown.CONTENT_URI);
         }
         
-        
         //show the top countdown data
         showTheTopCountDown(rootView);
-        
         
         //show the list by type
         Cursor cursor = getCursorByUri(CountDown.CONTENT_TYPE_URI);
@@ -81,7 +80,6 @@ public class ItemListFragment extends Fragment{
 	
 	private void initViews(View rootView) {
 		list = (ListView)rootView.findViewById(R.id.list);
-		
 		rootView.findViewById(android.R.id.empty).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -106,6 +104,10 @@ public class ItemListFragment extends Fragment{
         settingButton.setOnClickListener(this);
 */	}
 	
+	/**
+	 * show the top task
+	 * @param rootView
+	 */
 	private void showTheTopCountDown(View rootView) {
 		boolean isFirstOpenApp = isFirstOpenApp();
 		String endDate = null;
@@ -115,16 +117,14 @@ public class ItemListFragment extends Fragment{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			String str = sdf.format(new Date());
 			endDate = (Integer.parseInt(str.split("-")[0]) + 1 )+ "-01-01";
-			if(initData(endDate)) {
+			if(initTheFirstTask(endDate)) {
 				//init the first data: new year
 				title = Constant.INIT_TITLE;
 				//endDate = Constant.INIT_END_DATE;
-				
 			}
 		} else {
-			Cursor cursor = act.managedQuery(CountDown.CONTENT_URI, new String[] {CountDown._ID, CountDown.TITLE, CountDown.STARRED, 
-		        	CountDown.END_DATE, CountDown.END_TIME, CountDown.REMIND_BELL, CountDown.STATE, CountDown.PRIORITY, 
-		        	CountDown.WIDGET_IDS}, null, null, CountDown.TOP_SORT_ORDER);
+			Cursor cursor = act.managedQuery(CountDown.CONTENT_URI, new String[] {CountDown._ID, CountDown.TITLE, 
+		        	CountDown.END_DATE, CountDown.PRIORITY, CountDown.WIDGET_IDS}, null, null, CountDown.TOP_SORT_ORDER);
 			boolean hasData = cursor.moveToFirst();
 			if(hasData) {
 				endDate = cursor.getString(cursor.getColumnIndex(CountDown.END_DATE));
@@ -153,12 +153,21 @@ public class ItemListFragment extends Fragment{
 		
 	}
 	
+	/**
+	 * is first open app?
+	 * @return
+	 */
 	private boolean isFirstOpenApp() {
 		SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(act, Constant.COUNT_DOWN_SETTING_PREF);
 		return prefs.getBoolean(Constant.IS_FIRST_OPEN_APP, true);
 	}
 	
-	private boolean initData(String endDate) {
+	/**
+	 * init the app with the first task
+	 * @param endDate
+	 * @return
+	 */
+	private boolean initTheFirstTask(String endDate) {
 		ContentValues values = new ContentValues();
 		values.put(CountDown.TITLE, Constant.INIT_TITLE);
 		values.put(CountDown.PRIORITY, this.getResources().getString(R.string.type_life));
@@ -174,12 +183,20 @@ public class ItemListFragment extends Fragment{
 		return true;
 	}
 	
+	/**
+	 * save the first open app state
+	 */
 	private void saveIsOpenAppFlag() {
 		SharedPreferences.Editor editor = SharedPrefsUtil.getSharedPrefs(act, Constant.COUNT_DOWN_SETTING_PREF).edit();
 		editor.putBoolean(Constant.IS_FIRST_OPEN_APP, false);
 		editor.commit();
 	}
 	
+	/**
+	 * get the cursor for the list
+	 * @param uri
+	 * @return
+	 */
 	private Cursor getCursorByUri(Uri uri) {
 		String mType = null;
 		Bundle bundle = this.getArguments();
@@ -190,17 +207,13 @@ public class ItemListFragment extends Fragment{
 		//uri = Uri.withAppendedPath(uri, mType);
 		Cursor cursor = null;
 		if(Constant.ALL_TYPE.equals(mType)) {
-			cursor = act.managedQuery(uri, new String[] {CountDown._ID, CountDown.TITLE, CountDown.STARRED, 
-		        	CountDown.END_DATE, CountDown.END_TIME, CountDown.REMIND_BELL, CountDown.STATE, CountDown.PRIORITY, 
-		        	CountDown.WIDGET_IDS}, null, null,
-		                CountDown.DEFAULT_SORT_ORDER); 
+			cursor = act.managedQuery(uri, new String[] {CountDown._ID, CountDown.TITLE, CountDown.END_DATE, CountDown.PRIORITY, CountDown.WIDGET_IDS}, 
+					null, null,CountDown.DEFAULT_SORT_ORDER); 
 		} else {
-			cursor = act.managedQuery(uri, new String[] {CountDown._ID, CountDown.TITLE, CountDown.STARRED, 
-		        	CountDown.END_DATE, CountDown.END_TIME, CountDown.REMIND_BELL, CountDown.STATE, CountDown.PRIORITY, 
-		        	CountDown.WIDGET_IDS}, CountDown.PRIORITY + "=?", new String[]{mType},
+			cursor = act.managedQuery(uri, new String[] {CountDown._ID, CountDown.TITLE, CountDown.END_DATE, CountDown.PRIORITY, CountDown.WIDGET_IDS}, 
+					CountDown.PRIORITY + "=?", new String[]{mType},
 		                CountDown.DEFAULT_SORT_ORDER); 
 		}
-		
 
 		return cursor;
 	}
@@ -247,7 +260,6 @@ public class ItemListFragment extends Fragment{
 				final String title = c.getString(c.getColumnIndex(CountDown.TITLE));
 				viewHolder.titleView.setText(title);
 //				String remindBell = c.getString(c.getColumnIndex(CountDown.REMIND_BELL));
-				
 				//show remindBell image
 				/**if(remindBell == null || getResources().getString(R.string.mute).equals(remindBell)) {
 					viewHolder.remindBellImage.setVisibility(View.GONE);
@@ -259,8 +271,8 @@ public class ItemListFragment extends Fragment{
 			    final int id = c.getInt(c.getColumnIndex(CountDown._ID));//primary key
 			    //for delete alarm data after countdown finish
 			    viewHolder._ID = id;
-			    viewHolder.prefs = context.getSharedPreferences(Constant.ALARM_DATA_FILE, Context.MODE_PRIVATE).edit();
-			    final String widgetIds = c.getString(c.getColumnIndex(CountDown.WIDGET_IDS));
+			    //viewHolder.prefs = context.getSharedPreferences(Constant.ALARM_DATA_FILE, Context.MODE_PRIVATE).edit();
+			    //final String widgetIds = c.getString(c.getColumnIndex(CountDown.WIDGET_IDS));
 
 			    //show checkbox
 //			    if(CountDown.STATE_OPENED.equals(state)) {
@@ -270,7 +282,7 @@ public class ItemListFragment extends Fragment{
 //			    }
 			    			    
 			    //show priority
-			    String priority = c.getString(c.getColumnIndex(CountDown.PRIORITY));
+			    //String priority = c.getString(c.getColumnIndex(CountDown.PRIORITY));
 //			    setPriority(priority, viewHolder);
 			    
 			    //show countdown time
@@ -286,6 +298,11 @@ public class ItemListFragment extends Fragment{
 			
 		}
 		
+		/**
+		 * show the left days of the list item
+		 * @param endDate
+		 * @param viewHolder
+		 */
 		private void showCountDown(String endDate, ViewHolder viewHolder) {
 			int daysDiff = CountDownAppWidgetProvider.getDayDiff(endDate);
 			if(Constant.ERROR_DAYS != daysDiff) {
@@ -365,8 +382,8 @@ public class ItemListFragment extends Fragment{
 		/**
 		 * update state
 		 */
-		private void updateState(Uri uri, boolean checkState) {
-			ContentValues values = new ContentValues();
+//		private void updateState(Uri uri, boolean checkState) {
+//			ContentValues values = new ContentValues();
 //			if(checkState) {
 //				values.put(CountDown.STATE, CountDown.STATE_CLOSED);
 //				getContentResolver().update(uri, values, null, null);
@@ -376,8 +393,6 @@ public class ItemListFragment extends Fragment{
 //				getContentResolver().update(uri, values, null, null);
 //				
 //			}
-			
-		}
-		
+//		}
 	}
 }

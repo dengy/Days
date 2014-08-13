@@ -11,7 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.first.countdown.util.StringUtil;
+import android.first.countdown.util.Utils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.ResourceCursorAdapter;
@@ -151,18 +151,21 @@ public class WidgetConfigure extends Activity{
 	public static void saveToPreference(Context context, int mAppWidgetId, int _ID, String title, String endTime, String endDate, String priority) {
 		SharedPreferences.Editor prefs = context.getSharedPreferences(Constant.WIDGET_DATA_FILE, Context.MODE_PRIVATE).edit();
 		//save appWidgetId
-		prefs.putInt(StringUtil.appendAppWidgetId(CountDown._ID, mAppWidgetId), _ID);
-		prefs.putString(StringUtil.appendAppWidgetId(CountDown.TITLE, mAppWidgetId), title);
+		prefs.putInt(Utils.appendAppWidgetId(CountDown._ID, mAppWidgetId), _ID);
+		prefs.putString(Utils.appendAppWidgetId(CountDown.TITLE, mAppWidgetId), title);
 		
+		/**
 		if(endTime != null && !"".equals(endTime)) {
-			prefs.putString(StringUtil.appendAppWidgetId(CountDown.END_DATE, mAppWidgetId), endDate + " " + endTime);
+			prefs.putString(Utils.appendAppWidgetId(CountDown.END_DATE, mAppWidgetId), endDate + " " + endTime);
 		} else {
-			prefs.putString(StringUtil.appendAppWidgetId(CountDown.END_DATE, mAppWidgetId), endDate);
-		}
+			prefs.putString(Utils.appendAppWidgetId(CountDown.END_DATE, mAppWidgetId), endDate);
+		}**/
 		
-		prefs.putString(StringUtil.appendAppWidgetId(Constant.TASK_STATE, mAppWidgetId), Constant.RUNNING_STATE);
+		prefs.putString(Utils.appendAppWidgetId(CountDown.END_DATE, mAppWidgetId), endDate);
 		
-		prefs.putString(StringUtil.appendAppWidgetId(CountDown.PRIORITY, mAppWidgetId), priority);
+		prefs.putString(Utils.appendAppWidgetId(Constant.TASK_STATE, mAppWidgetId), Constant.RUNNING_STATE);
+		
+		prefs.putString(Utils.appendAppWidgetId(CountDown.PRIORITY, mAppWidgetId), priority);
 		
 		prefs.commit();
 	}
@@ -171,10 +174,10 @@ public class WidgetConfigure extends Activity{
 	 * @param context
 	 * @param mAppWidgetId
 	 */
-	public static void updateTaskStateInPreference(Context context, int mAppWidgetId, String remindState) {
+	public static void updateTaskStateInPreference(Context context, int mAppWidgetId, String taskState) {
 		SharedPreferences.Editor prefs = context
     			.getSharedPreferences(Constant.WIDGET_DATA_FILE, Context.MODE_PRIVATE).edit();
-		prefs.putString(StringUtil.appendAppWidgetId(Constant.TASK_STATE, mAppWidgetId), remindState);
+		prefs.putString(Utils.appendAppWidgetId(Constant.TASK_STATE, mAppWidgetId), taskState);
     	prefs.commit();
 	}
 	
@@ -186,11 +189,11 @@ public class WidgetConfigure extends Activity{
 	public static void deleteFromPreference(Context context, int mAppWidgetId) {
 		SharedPreferences.Editor prefs = context
     			.getSharedPreferences(Constant.WIDGET_DATA_FILE, Context.MODE_PRIVATE).edit();
-		prefs.remove(StringUtil.appendAppWidgetId(CountDown._ID, mAppWidgetId));
-    	prefs.remove(StringUtil.appendAppWidgetId(CountDown.TITLE, mAppWidgetId));
-    	prefs.remove(StringUtil.appendAppWidgetId(CountDown.END_DATE, mAppWidgetId));
-    	prefs.remove(StringUtil.appendAppWidgetId(CountDown.PRIORITY, mAppWidgetId));
-    	prefs.remove(StringUtil.appendAppWidgetId(Constant.TASK_STATE, mAppWidgetId));
+		prefs.remove(Utils.appendAppWidgetId(CountDown._ID, mAppWidgetId));
+    	prefs.remove(Utils.appendAppWidgetId(CountDown.TITLE, mAppWidgetId));
+    	prefs.remove(Utils.appendAppWidgetId(CountDown.END_DATE, mAppWidgetId));
+    	prefs.remove(Utils.appendAppWidgetId(CountDown.PRIORITY, mAppWidgetId));
+    	prefs.remove(Utils.appendAppWidgetId(Constant.TASK_STATE, mAppWidgetId));
     	prefs.commit();
 	}
 	

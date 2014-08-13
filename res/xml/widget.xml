@@ -2,5 +2,5 @@
     android:minWidth="250dp"
     android:minHeight="20dp"
     android:configure="android.first.countdown.WidgetConfigure"
-    android:updatePeriodMillis="0"
+    android:updatePeriodMillis="86400000"
 />

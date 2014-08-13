@@ -10,62 +10,59 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.PowerManager;
 import android.os.SystemClock;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 public class UpdateWidgetService extends Service {
 	public static final String TAG = "UpdateWidgetService";
-    int mStartMode;       // indicates how to behave if the service is killed
+    int mStartMode = Service.START_STICKY;;       // indicates how to behave if the service is killed
     IBinder mBinder;      // interface for clients that bind
     boolean mAllowRebind; // indicates whether onRebind should be used
 
     @Override
     public void onCreate() {
         // The service is being created
-    	Log.d(TAG, "onCreate");
-    	this.setWidgetUpdateAlarmManager();
+    	setWidgetUpdateAlarmManager();
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // The service is starting, due to a call to startService()
-    	PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+//    	PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
     	 
-        if (pm.isScreenOn()) {
+        //if (pm.isScreenOn()) {
     	Bundle bundle = intent.getExtras();
-    	Log.d(TAG, "onStartCommand");
-    	Log.d(TAG, "widgetId=" + bundle.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID));
     	//update Widget View
-    	int mAppWidgetId = bundle.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
-    	int _ID = bundle.getInt(CountDown._ID);
-    	String title = bundle.getString(CountDown.TITLE);
-    	if(title != null && !"".equals(title)) {
-    		String priority = bundle.getString(CountDown.PRIORITY);
-        	String endDate = bundle.getString(CountDown.END_DATE);
-        	String task_state = bundle.getString(Constant.TASK_STATE);
+    	if(bundle != null) {
+    		int _ID = bundle.getInt(CountDown._ID, -99);
+        	String title = bundle.getString(CountDown.TITLE);
+        	if(title != null && !"".equals(title) && _ID != -99) {
+            	int mAppWidgetId = bundle.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
+        		String priority = bundle.getString(CountDown.PRIORITY);
+            	String endDate = bundle.getString(CountDown.END_DATE);
+            	String task_state = bundle.getString(Constant.TASK_STATE);
+            	
+            	AppWidgetManager am = AppWidgetManager.getInstance(this); 
+                RemoteViews views = CountDownAppWidgetProvider.getRemoteViews(priority, this, _ID);
+                
+              //仅当widget所对应的任务属于Running状态的时候，可以编辑
+        		if(Constant.RUNNING_STATE.equals(task_state)) {
+        			//add click event
+        			Uri uri = ContentUris.withAppendedId(CountDown.CONTENT_URI, _ID);
+        			Intent updateIntent = new Intent(Intent.ACTION_EDIT, uri);
+        	        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, updateIntent, 0);
+        	        views.setOnClickPendingIntent(R.id.reminderWidget, pendingIntent);
+        		}		
+            	
+            	views.setTextViewText(R.id.widget_title, title);
+            	//views.setTextViewText(R.id.widget_end_date, endDate);
+            	
+            	//update widget
+            	CountDownAppWidgetProvider.refreshAppWidget(this, views, endDate, priority, mAppWidgetId, am);
+        	}
         	
-        	AppWidgetManager am = AppWidgetManager.getInstance(this); 
-            RemoteViews views = CountDownAppWidgetProvider.getRemoteViews(priority, this, _ID);
-            
-          //仅当widget所对应的任务属于Running状态的时候，可以编辑
-    		if(Constant.RUNNING_STATE.equals(task_state)) {
-    			//add click event
-    			Uri uri = ContentUris.withAppendedId(CountDown.CONTENT_URI, _ID);
-    			Intent updateIntent = new Intent(Intent.ACTION_EDIT, uri);
-    	        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, updateIntent, 0);
-    	        views.setOnClickPendingIntent(R.id.reminderWidget, pendingIntent);
-    		}		
+            //}
         	
-        	views.setTextViewText(R.id.widget_title, title);
-        	//views.setTextViewText(R.id.widget_end_date, endDate);
-        	
-        	//update widget
-        	CountDownAppWidgetProvider.refreshAppWidget(this, views, endDate, priority, mAppWidgetId, am);
     	}
-    	
-        }
-    	
     	
         return mStartMode;
     }
@@ -111,14 +108,11 @@ public class UpdateWidgetService extends Service {
         // The service is no longer used and is being destroyed
     }
     
-    public static void cancelUpdate(int widgetId) {
-    	Log.d(TAG, "cancelUpdate");
-    }
-    
-    
     private void setWidgetUpdateAlarmManager() {
-		Intent intent = new Intent(this, CountDownAppWidgetProvider.class);
-		intent.setAction(Constant.UPDATE_WIDGET);
+    	cancelAlarmRepeat();
+    	
+		Intent intent = new Intent(Constant.UPDATE_WIDGET);
+		intent.setClass(this, CountDownAppWidgetProvider.class);
 		//transfer data to receiver
 		Bundle extras = new Bundle();
 		intent.putExtras(extras);
@@ -127,8 +121,16 @@ public class UpdateWidgetService extends Service {
         		0, intent, 0);
         // Schedule the alarm!
 		long l = SystemClock.elapsedRealtime();
-        AlarmManager am = (AlarmManager)this.getSystemService(ALARM_SERVICE);
+        AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);
         am.setRepeating(AlarmManager.RTC_WAKEUP,
         		l, AlarmManager.INTERVAL_DAY, sender);
+	}
+    
+    private void cancelAlarmRepeat() {
+		Intent intent = new Intent(Constant.UPDATE_WIDGET);
+		intent.setClass(this, CountDownAppWidgetProvider.class);
+		PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
+		AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+		alarmManager.cancel(pendingIntent);
 	}
 }

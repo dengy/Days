@@ -269,22 +269,28 @@ public class CountDownProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String where,
 			String[] whereArgs) {
+		
+		if(values == null) {
+			return -1;
+		}
+		
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		int count = 0;
 		switch(sUriMatcher.match(uri)) {
 		case COUNTDOWN:
-			count = db.update(COUNTDOWN_TABLE_NAME, values, where, whereArgs);
-            break;
-		case COUNTDOWN_ID:
-			String countdownId = uri.getPathSegments().get(1);
 			if(values.size() == 1 && values.containsKey(CountDown.TOP_INDEX)) {
 				//when only update top_index
 				StringBuilder sql = new StringBuilder();
 				sql.append("update ").append(COUNTDOWN_TABLE_NAME).append(" set ").append(CountDown.TOP_INDEX).
-				append("=").append(values.getAsInteger(CountDown.TOP_INDEX)).append(" where ").append(CountDown._ID).
-				append("=").append(countdownId);
+				append("=").append(values.getAsInteger(CountDown.TOP_INDEX));
 				db.execSQL(sql.toString());
-			} else if(values.size() == 1 && values.containsKey(CountDown.PRIORITY)) {
+			} else {
+				count = db.update(COUNTDOWN_TABLE_NAME, values, where, whereArgs);
+			}
+            break;
+		case COUNTDOWN_ID:
+			String countdownId = uri.getPathSegments().get(1);
+			if(values.size() == 1 && values.containsKey(CountDown.PRIORITY)) {
 				//when only update top_index
 				StringBuilder sql = new StringBuilder();
 				sql.append("update ").append(COUNTDOWN_TABLE_NAME).append(" set ").append(CountDown.PRIORITY).

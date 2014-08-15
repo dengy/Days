@@ -217,10 +217,12 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
         		deleteAppWidget(appWidgetManager, context, mAppWidgetId);
         	} else {
         		//set alarmManager to control service to update widget
-//            	Intent intent  = getIntentForAlarm(context, mAppWidgetId,
-//                		_ID, title, priority, endDate, remind_state);
-//                context.startService(intent); 
+            	Intent intent  = getIntentForAlarm(context, mAppWidgetId,
+                		_ID, title, priority, endDate, taskState);
+                context.startService(intent); 
                 
+        		
+        		/**
                 RemoteViews views = CountDownAppWidgetProvider.getRemoteViews(priority, context, _ID);
                 
               //仅当widget所对应的任务属于Running状态的时候，可以编辑
@@ -237,6 +239,7 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
             	
             	//update widget
             	CountDownAppWidgetProvider.refreshAppWidget(context, views, endDate, priority, mAppWidgetId, appWidgetManager);
+            	**/
         	}
     	}    	    
 

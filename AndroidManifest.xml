@@ -125,10 +125,10 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget" />
         </receiver>
-        <!-- 
+        
         <service android:name=".UpdateWidgetService" >
         </service>
-         -->
+        
         <meta-data android:value="53ea1eaffd98c5e4eb009031" android:name="UMENG_APPKEY"></meta-data>
 		<meta-data android:value="91" android:name="UMENG_CHANNEL"/>
        

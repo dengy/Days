@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -109,7 +108,6 @@ public class UpdateWidgetService extends Service {
     }
     
     private void setWidgetUpdateAlarmManager() {
-    	cancelAlarmRepeat();
     	
 		Intent intent = new Intent(Constant.UPDATE_WIDGET);
 		intent.setClass(this, CountDownAppWidgetProvider.class);
@@ -122,15 +120,8 @@ public class UpdateWidgetService extends Service {
         // Schedule the alarm!
 		long l = SystemClock.elapsedRealtime();
         AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);
+        am.cancel(sender);
         am.setRepeating(AlarmManager.RTC_WAKEUP,
         		l, AlarmManager.INTERVAL_DAY, sender);
-	}
-    
-    private void cancelAlarmRepeat() {
-		Intent intent = new Intent(Constant.UPDATE_WIDGET);
-		intent.setClass(this, CountDownAppWidgetProvider.class);
-		PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
-		AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.cancel(pendingIntent);
 	}
 }

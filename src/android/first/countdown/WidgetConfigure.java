@@ -239,7 +239,7 @@ public class WidgetConfigure extends Activity{
 			ViewHolder viewHolder = new ViewHolder();
 //			viewHolder.priorityView = (TextView)view.findViewById(R.id.priority);
 			viewHolder.titleView = (TextView)view.findViewById(R.id.title);
-			viewHolder.remindBellImage = view.findViewById(R.id.remindBellImage);
+//			viewHolder.remindBellImage = view.findViewById(R.id.remindBellImage);
 //			viewHolder.finishSlipButton = (SlipButton)view.findViewById(R.id.finish);
 			viewHolder.enddateView = (TextView)view.findViewById(R.id.enddate);
 //			viewHolder.daysView = (TextView)view.findViewById(R.id.days);

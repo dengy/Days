@@ -29,6 +29,9 @@ public class UpdateWidgetService extends Service {
 //    	PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
     	 
         //if (pm.isScreenOn()) {
+    	if(intent == null) {
+    		return mStartMode;
+    	}
     	Bundle bundle = intent.getExtras();
     	//update Widget View
     	if(bundle != null) {

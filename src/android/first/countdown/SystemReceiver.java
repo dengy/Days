@@ -13,7 +13,7 @@ public class SystemReceiver extends BroadcastReceiver {
 		Intent i = new Intent();
 		i.setClass(context, UpdateWidgetService.class);
 		if(Intent.ACTION_BOOT_COMPLETED.equals(action)) {
-			//context.startService(i);
+			context.startService(i);
 		} else if (Intent.ACTION_USER_PRESENT.equals(action)) {
 			context.startService(i);
 			Log.w("present", "click me");

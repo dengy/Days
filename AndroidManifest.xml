@@ -126,7 +126,8 @@
                 android:resource="@xml/widget" />
         </receiver>
         
-        <service android:name=".UpdateWidgetService" >
+        <service android:name=".UpdateWidgetService" 
+            android:process=".updateWidgetService">
         </service>
         
         <meta-data android:value="53ea1eaffd98c5e4eb009031" android:name="UMENG_APPKEY"></meta-data>

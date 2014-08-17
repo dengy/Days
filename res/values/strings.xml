@@ -6,7 +6,7 @@
     <string name="edit_title">编辑标题</string>
     <string name="edit_content">编辑內容</string>
     <string name="ok_label">保存</string>
-    <string name="go_back_label">返回</string>
+    <string name="go_back_label">取消</string>
     <string name="title_label">标题</string>
     <string name="priority_label">分类</string>
     <string name="default_priority">一般</string>
@@ -66,24 +66,23 @@
     <string name="since">结束</string>
     <string name="left">剩</string>
     <string name="help_functions">功能:</string>
-    <string name="help_functions1">1.自定义倒计时任务</string>
-    <string name="help_functions2">2.添加桌面小组件(Widget)</string>
-    <string name="help_type">倒计时分类:</string>
-    <string name="help_type1">1.正在进行的倒计时任务</string>
-    <string name="help_type2">2.已过期的倒计时任务</string>
+    <string name="help_functions1">1.自定义计时事件</string>
+    <string name="help_functions2">2.支持添加桌面小工具</string>
+    <string name="help_type">事件分类:</string>
+    <string name="help_type1">1.默认应用自带4个分类:生活，工作，学习，纪念日</string>
+    <string name="help_type2">2.用户可以自己添加自定义分类</string>
     <string name="help_type3">3.已完成的倒计时任务</string>
-    <string name="help_hint">提示:</string>
-    <string name="help_hint1">1.长按手机桌面,在弹出的菜单中选择倒计时图标对应的小组件,选择一条倒计时任务,添加到桌面</string>
+    <string name="help_hint">使用小贴士:</string>
+    <string name="help_hint1">1.为了保证桌面小插件能够正常工作，需要将应用加入白名单(允许自启动)</string>
     <string name="help_hint2">2.针对手机重启或者关机再开后,未正确提醒的情况,需要在手机系统设置权限允许倒计时应用开机时自启动</string>
     <string name="noDataForWidget">提示:没有正在运行的倒计时任务!</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="top_label">置顶</string>
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
+    <string name="drawer_open">打开导航抽屉</string>
+    <string name="drawer_close">关闭导航抽屉</string>
     <string name="action_add">添加</string>
     <string name="menu_more_title">更多内容</string>
-    <string name="app_not_available">Sorry, there\'s no web browser available</string>
     <string name="leftDayLabel">距离</string>
     <string name="topDate_label">目标日:</string>
     <string name="edit_type">点击编辑分类</string>
@@ -105,8 +104,12 @@
     <string name="add_day">+添加新日子</string>
     
     <string name="confirm_delete_label">确定删除</string>
-    <string name="cancel_label">取消</string>
+    <string name="cancel_label">返回</string>
     <string name="no_email_app_installed">：( 没有安装邮箱应用，无法提交反馈!</string>
+    
+    <string name="confirm_ok_label">知道了</string>
+    <string name="first_open_app_dialog">使用小贴士</string>
+    <string name="first_open_app_hint">1.为了保证桌面小插件能够正常工作，需要将应用加入白名单(允许自启动)</string>
     
 
 </resources>

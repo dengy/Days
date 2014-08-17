@@ -20,22 +20,30 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.first.countdown.util.SharedPrefsUtil;
 import android.first.countdown.util.Utils;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -61,10 +69,10 @@ public class MainActivity extends Activity {
 
         mTitle = mDrawerTitle = getTitle();
         initViews();
-        
+                
         //start update widget service
-        //startUpdateWidgetService();
-
+        startUpdateWidgetService();
+        
         // set a custom shadow that overlays the main content when the drawer opens
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
@@ -76,7 +84,7 @@ public class MainActivity extends Activity {
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
                 mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
+                R.drawable.ic_drawer_used,  /* nav drawer image to replace 'Up' caret */
                 R.string.drawer_open,  /* "open drawer" description for accessibility */
                 R.string.drawer_close  /* "close drawer" description for accessibility */
                 ) {
@@ -99,8 +107,28 @@ public class MainActivity extends Activity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
+        //init drawer list
         initDrawerList();
+        
     }
+    
+    private void firstOpenAppDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    // Get the layout inflater
+	    LayoutInflater inflater = this.getLayoutInflater();
+	    
+	    final View layout = inflater.inflate(R.layout.first_open_app_dialog, null);
+	    
+	    builder.setView(layout).setPositiveButton(R.string.confirm_ok_label, new DialogInterface.OnClickListener(){
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+	    });
+	    
+	    Dialog d = builder.create();
+		d.setCanceledOnTouchOutside(false);
+		d.show();
+	}
     
     @Override
     public void onResume() {
@@ -124,6 +152,8 @@ public class MainActivity extends Activity {
     	boolean isFirstOpenApp = prefs.getBoolean(Constant.IS_FIRST_OPEN_APP, true);
     	if(isFirstOpenApp) {
     		mDrawerLayout.openDrawer(mDrawerLeft);
+    		
+    		firstOpenAppDialog();
     	} 
 //    	else {
 //    		Bundle bundle = this.getIntent().getExtras();

@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -16,6 +17,7 @@ import android.content.SharedPreferences;
 import android.first.countdown.util.Utils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -36,6 +38,8 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
             updateAppWidget(context, appWidgetManager, appWidgetId);
                         
         }
+        
+        
     }
     
     @Override 
@@ -44,6 +48,7 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
         Log.i(TAG, "onReceive");
         
         if(Constant.UPDATE_WIDGET.equals(intent.getAction())){ 
+        	Log.i("OnlyWidget", "UPDATE_WIDGET");
         	Bundle extras = intent.getExtras();
         	int[] appWidgetIds = null;;
         	if (extras != null) {

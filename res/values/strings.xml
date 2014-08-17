@@ -45,8 +45,8 @@
     <string name="expired">已过期</string>
     <string name="finished">已完成</string>
     <!-- <string name="countDownReminder">倒计时提醒</string> -->
-    <string name="setting_rate">去评分</string>
-    <string name="setting_help">帮助</string>
+    <string name="setting_rate">还不错，去评分</string>
+    <string name="setting_help">应用帮助</string>
     <string name="setting_feedback">反馈(您的宝贵意见)</string>
     <string name="setting_about">关于</string>
     <string name="setting_update">检查新版本</string>
@@ -73,8 +73,8 @@
     <string name="help_type2">2.用户可以自己添加自定义分类</string>
     <string name="help_type3">3.已完成的倒计时任务</string>
     <string name="help_hint">使用小贴士:</string>
-    <string name="help_hint1">1.为了保证桌面小插件能够正常工作，需要将应用加入白名单(允许自启动)</string>
-    <string name="help_hint2">2.针对手机重启或者关机再开后,未正确提醒的情况,需要在手机系统设置权限允许倒计时应用开机时自启动</string>
+    <string name="help_hint1">1.为了保证桌面小工具能够自动更新，需要将应用加入白名单(允许自启动)</string>
+    <string name="help_hint2">2.使用的过程中遇到任何问题，可以点击"更多->反馈"给开发人员</string>
     <string name="noDataForWidget">提示:没有正在运行的倒计时任务!</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="hello_world">Hello world!</string>

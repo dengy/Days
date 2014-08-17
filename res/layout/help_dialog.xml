@@ -43,13 +43,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dip"
-        android:text="@string/help_type2"/>
+        android:text="@string/help_type2"
+        android:paddingBottom="10dip"/>
+    <!-- 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dip"
         android:text="@string/help_type3"
-        android:paddingBottom="10dip"/>
+        android:paddingBottom="10dip"/> -->
     
     <TextView
         android:layout_width="match_parent"

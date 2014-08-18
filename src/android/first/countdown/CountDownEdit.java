@@ -6,21 +6,15 @@ import java.util.Calendar;
 import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.appwidget.AppWidgetManager;
-import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.first.countdown.util.SharedPrefsUtil;
 import android.first.countdown.util.Utils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,12 +23,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -70,9 +62,9 @@ public class CountDownEdit extends Activity implements OnClickListener {
     private TextView titleTextView;
     private TextView priorityTextView;
     private TextView endDateTextView;
-    private TextView endTimeTextView;
-    private TextView remindDateTextView;
-    private TextView reminderTextView;
+//    private TextView endTimeTextView;
+//    private TextView remindDateTextView;
+//    private TextView reminderTextView;
     private TextView remarkEditText;
     private Switch topSwitch;
     private int topSwitchText;
@@ -177,7 +169,16 @@ public class CountDownEdit extends Activity implements OnClickListener {
         
         // The activity has become visible (it is now "resumed").
         if(mCursor != null) {
-            if(mState == STATE_EDIT) {
+        	if(mState == STATE_INSERT) {
+        		Intent intent = this.getIntent();
+        		Bundle bundle = intent.getExtras();
+        		if(bundle != null) {
+        			String mType = bundle.getString(CountDown.PRIORITY);
+        			if(mType != null && !"".equals(mType) && !Constant.ALL_TYPE.equals(mType)) {
+        				priorityTextView.setText(mType);
+        			}
+        		}
+        	} else if(mState == STATE_EDIT) {
             	// Make sure we are at the one and only row in the cursor.
                 mCursor.moveToFirst();
                 
@@ -675,6 +676,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		finish();
 		//to main page
 		Intent intent = new Intent(this, MainActivity.class);
+		intent.putExtra(CountDown.PRIORITY, priorityTextView.getText());
 		startActivity(intent);
 	}
 	

@@ -41,7 +41,9 @@ public class ItemListFragment extends Fragment{
             Bundle savedInstanceState) {
 		
         View rootView = inflater.inflate(R.layout.countdownlist, container, false);
-        initViews(rootView);
+        Bundle bundle = this.getArguments();
+		String mType = bundle.getString(CountDown.PRIORITY);
+        initViews(rootView, mType);
         act = getActivity();
         
      // If no data was given in the intent (because we were started
@@ -55,7 +57,8 @@ public class ItemListFragment extends Fragment{
         showTheTopCountDown(rootView);
         
         //show the list by type
-        Cursor cursor = getCursorByUri(CountDown.CONTENT_TYPE_URI);
+        
+        Cursor cursor = getCursorByUri(CountDown.CONTENT_TYPE_URI, mType);
         
         CustomCursorAdapter itemAdapter = new CustomCursorAdapter(act, R.layout.countdownlist_item, cursor);
         list.setAdapter(itemAdapter);
@@ -67,7 +70,8 @@ public class ItemListFragment extends Fragment{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long id) {
 				Uri uri = ContentUris.withAppendedId(act.getIntent().getData(), id);
-				startActivity(new Intent(Intent.ACTION_EDIT, uri));
+				Intent intent = new Intent(Intent.ACTION_EDIT, uri);
+				startActivity(intent);
 				act.finish();
 			}
         	
@@ -78,13 +82,14 @@ public class ItemListFragment extends Fragment{
         return rootView;
     }
 	
-	private void initViews(View rootView) {
+	private void initViews(View rootView, final String mType) {
 		list = (ListView)rootView.findViewById(R.id.list);
 		rootView.findViewById(android.R.id.empty).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(Intent.ACTION_INSERT, act.getIntent().getData());
+				intent.putExtra(CountDown.PRIORITY, mType);
 				startActivity(intent);
 			}
 			
@@ -197,13 +202,7 @@ public class ItemListFragment extends Fragment{
 	 * @param uri
 	 * @return
 	 */
-	private Cursor getCursorByUri(Uri uri) {
-		String mType = null;
-		Bundle bundle = this.getArguments();
-		if(bundle != null) {
-			mType = bundle.getString(CountDown.PRIORITY);
-		}
-		
+	private Cursor getCursorByUri(Uri uri, String mType) {
 		//uri = Uri.withAppendedPath(uri, mType);
 		Cursor cursor = null;
 		if(Constant.ALL_TYPE.equals(mType)) {

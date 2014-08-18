@@ -59,6 +59,7 @@ public class MainActivity extends Activity {
     private CharSequence mTitle;
     private String[] mTypes;
     private View mEditType;
+    private String currentType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,6 +232,7 @@ public class MainActivity extends Activity {
         switch(item.getItemId()) {
         case R.id.action_add:
             Intent intent = new Intent(Intent.ACTION_INSERT,getIntent().getData());
+            intent.putExtra(CountDown.PRIORITY, currentType);
 			startActivity(intent);
 			finish();
             return true;
@@ -255,9 +257,18 @@ public class MainActivity extends Activity {
     private void selectItem(int position) {
         // update the main content by replacing fragments
         //Fragment fragment = new PlanetFragment();
+//    	Intent intent = this.getIntent();
+//    	Bundle extras = intent.getExtras();
+//    	if(extras != null) {
+//    		currentType = extras.getString(CountDown.PRIORITY);
+//    	} else {
+//    		currentType = mTypes[position];
+//    	}
+    	
+    	currentType = mTypes[position];
     	Fragment fragment = new ItemListFragment();
         Bundle args = new Bundle();
-        args.putString(CountDown.PRIORITY, mTypes[position]);
+        args.putString(CountDown.PRIORITY, currentType);
         fragment.setArguments(args);
 
         FragmentManager fragmentManager = getFragmentManager();
@@ -266,9 +277,10 @@ public class MainActivity extends Activity {
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
         StringBuilder title = new StringBuilder();
-        title.append(getResources().getString(R.string.app_name)).append(".").append(mTypes[position]);
+        title.append(getResources().getString(R.string.app_name)).append(".").append(currentType);
         setTitle(title.toString());
         mDrawerLayout.closeDrawer(mDrawerLeft);
+        
     }
 
     @Override

@@ -20,12 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,7 +32,6 @@ import android.content.res.Configuration;
 import android.first.countdown.util.SharedPrefsUtil;
 import android.first.countdown.util.Utils;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
@@ -43,7 +41,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -77,8 +74,23 @@ public class MainActivity extends Activity {
         // set a custom shadow that overlays the main content when the drawer opens
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
+        View footerView = ((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.type_list_footer, null, false);
+        mEditType = footerView.findViewById(R.id.edit_type);
+         //edit type button click
+         mEditType.setOnClickListener(new OnClickListener() {
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				Intent intent = new Intent(v.getContext(), TypeActivity.class);
+ 				startActivity(intent);
+ 				finish();
+ 			}
+         	
+         });
+        mDrawerList.addFooterView(footerView);
         mDrawerList.setAdapter(getSimpleAdapter());
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        
         
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
@@ -181,19 +193,19 @@ public class MainActivity extends Activity {
          mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
          mDrawerList = (ListView) findViewById(R.id.drawer_list);
          mDrawerLeft = findViewById(R.id.drawerLeft);
-         mEditType = findViewById(R.id.edit_type);
+        // mEditType = findViewById(R.id.edit_type);
          
          //edit type button click
-         mEditType.setOnClickListener(new OnClickListener() {
-
- 			@Override
- 			public void onClick(View v) {
- 				Intent intent = new Intent(v.getContext(), TypeActivity.class);
- 				startActivity(intent);
- 				finish();
- 			}
-         	
-         });
+//         mEditType.setOnClickListener(new OnClickListener() {
+//
+// 			@Override
+// 			public void onClick(View v) {
+// 				Intent intent = new Intent(v.getContext(), TypeActivity.class);
+// 				startActivity(intent);
+// 				finish();
+// 			}
+//         	
+//         });
 
          //pull back button click
          findViewById(R.id.pull_back_click).setOnClickListener(new OnClickListener() {
@@ -234,12 +246,10 @@ public class MainActivity extends Activity {
             Intent intent = new Intent(Intent.ACTION_INSERT,getIntent().getData());
             intent.putExtra(CountDown.PRIORITY, currentType);
 			startActivity(intent);
-			finish();
             return true;
         case R.id.action_menumore:
         	intent = new Intent(this, MenuMore.class);
 			startActivity(intent);
-			finish();
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -264,6 +274,9 @@ public class MainActivity extends Activity {
 //    	} else {
 //    		currentType = mTypes[position];
 //    	}
+    	if(position == mTypes.length) {
+    		String s = "1";
+    	}
     	
     	currentType = mTypes[position];
     	Fragment fragment = new ItemListFragment();

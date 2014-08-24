@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -117,7 +117,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="countdown.widget.UPDATE" />
                 <action android:name="countdown.widget.DELETE" />
-                <action android:name="countdown.widget.FINISH" />
+                <!-- <action android:name="countdown.widget.FINISH" /> -->
                 <action android:name="android.intent.action.SCREEN_OFF" />
             </intent-filter>
 

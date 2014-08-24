@@ -197,6 +197,7 @@
         android:minLines="3"
    	    android:maxLines="6"
         android:lines="3"
+        android:textSize="14sp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_alignParentLeft="true"
@@ -226,7 +227,7 @@
 
       </RelativeLayout>
      
-   
+   <!-- 
     <TableLayout  
         android:layout_width="match_parent"  
         android:layout_height="wrap_content"  
@@ -239,7 +240,6 @@
             android:layout_height="wrap_content"  
             android:background="@drawable/edit_row_bg_middle"  
             android:padding="10dip" >  
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -306,4 +306,5 @@
         android:layout_span="2"/>
     </TableRow>
     </TableLayout>
+    -->
 </LinearLayout>

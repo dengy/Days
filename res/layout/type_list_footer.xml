@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/edit_type"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:padding="7dip"
+    android:background="@drawable/drawer_list_edit_bg_selector"
+    android:orientation="horizontal">
+    <!-- 
+    <Button android:id="@+id/edit_type"
+    android:layout_marginLeft="20dip"
+    android:layout_marginRight="20dip"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"
+    android:drawableLeft="@drawable/type_edit"
+    android:background="@drawable/delete_btn_bg_selector"
+    android:text="@string/edit_type" /> -->
+    
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:src="@drawable/type_edit"/>
+    <TextView 
+    android:id="@+id/type_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dip"
+    android:text="@string/edit_type"
+    style="@style/listItemText.edit"/>
+</LinearLayout>

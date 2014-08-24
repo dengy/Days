@@ -1,8 +1,8 @@
 package android.first.countdown;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -28,6 +28,7 @@ import android.widget.TextView;
 public class ItemListFragment extends Fragment{
 	private static final String TAG = "ItemList";
 	private ListView list;
+	private View rootView;
 	
 	//Activity act = getActivity();
     private Activity act;
@@ -40,7 +41,7 @@ public class ItemListFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		
-        View rootView = inflater.inflate(R.layout.countdownlist, container, false);
+        rootView = inflater.inflate(R.layout.countdownlist, container, false);
         Bundle bundle = this.getArguments();
 		String mType = bundle.getString(CountDown.PRIORITY);
         initViews(rootView, mType);
@@ -53,11 +54,7 @@ public class ItemListFragment extends Fragment{
             intent.setData(CountDown.CONTENT_URI);
         }
         
-        //show the top countdown data
-        showTheTopCountDown(rootView);
-        
         //show the list by type
-        
         Cursor cursor = getCursorByUri(CountDown.CONTENT_TYPE_URI, mType);
         
         CustomCursorAdapter itemAdapter = new CustomCursorAdapter(act, R.layout.countdownlist_item, cursor);
@@ -72,14 +69,18 @@ public class ItemListFragment extends Fragment{
 				Uri uri = ContentUris.withAppendedId(act.getIntent().getData(), id);
 				Intent intent = new Intent(Intent.ACTION_EDIT, uri);
 				startActivity(intent);
-				act.finish();
 			}
         	
 		});
         
-        //setWidgetUpdateAlarmManager();
-        
         return rootView;
+    }
+	
+	@Override
+    public void onResume() {
+    	super.onResume();
+    	//show the top countdown data
+        showTheTopCountDown(rootView);
     }
 	
 	private void initViews(View rootView, final String mType) {
@@ -124,8 +125,7 @@ public class ItemListFragment extends Fragment{
 			endDate = (Integer.parseInt(str.split("-")[0]) + 1 )+ "-01-01";
 			if(initTheFirstTask(endDate)) {
 				//init the first data: new year
-				title = Constant.INIT_TITLE;
-				//endDate = Constant.INIT_END_DATE;
+				title = getResources().getString(R.string.init_data_title);
 			}
 		} else {
 			Cursor cursor = act.managedQuery(CountDown.CONTENT_URI, new String[] {CountDown._ID, CountDown.TITLE, 
@@ -141,10 +141,10 @@ public class ItemListFragment extends Fragment{
 			topLeftDays = CountDownAppWidgetProvider.getDayDiff(endDate);
 			TextView dayStatus = (TextView)rootView.findViewById(R.id.dayStatus);
 			if(topLeftDays < 0) {
-				dayStatus.setText(Constant.DAY_STATUS_PASSED);
+				dayStatus.setText(getResources().getString(R.string.days_status_passed));
 				topLeftDays*=-1;
 			} else {
-				dayStatus.setText(Constant.DAY_STATUS_LEFT);
+				dayStatus.setText(getResources().getString(R.string.days_status_left));
 			}
 			((TextView)rootView.findViewById(R.id.topTitle)).setText(title);
 			((TextView)rootView.findViewById(R.id.topDate)).setText(endDate);
@@ -174,7 +174,7 @@ public class ItemListFragment extends Fragment{
 	 */
 	private boolean initTheFirstTask(String endDate) {
 		ContentValues values = new ContentValues();
-		values.put(CountDown.TITLE, Constant.INIT_TITLE);
+		values.put(CountDown.TITLE, getResources().getString(R.string.init_data_title));
 		values.put(CountDown.PRIORITY, this.getResources().getString(R.string.type_life));
 		values.put(CountDown.END_DATE, endDate);
 		values.put(CountDown.END_TIME, "");
@@ -205,7 +205,7 @@ public class ItemListFragment extends Fragment{
 	private Cursor getCursorByUri(Uri uri, String mType) {
 		//uri = Uri.withAppendedPath(uri, mType);
 		Cursor cursor = null;
-		if(Constant.ALL_TYPE.equals(mType)) {
+		if(getResources().getString(R.string.type_all).equals(mType)) {
 			cursor = act.managedQuery(uri, new String[] {CountDown._ID, CountDown.TITLE, CountDown.END_DATE, CountDown.PRIORITY, CountDown.WIDGET_IDS}, 
 					null, null,CountDown.DEFAULT_SORT_ORDER); 
 		} else {
@@ -308,10 +308,10 @@ public class ItemListFragment extends Fragment{
 				if(daysDiff < 0) {
 					daysDiff *= -1;
 					viewHolder.itemLeftDayLabelView.setVisibility(View.GONE);
-					viewHolder.itemLeftDayStatusView.setText(Constant.DAY_STATUS_PASSED);
+					viewHolder.itemLeftDayStatusView.setText(getResources().getString(R.string.days_status_passed));
 				} else {
 					viewHolder.itemLeftDayLabelView.setVisibility(View.VISIBLE);
-					viewHolder.itemLeftDayStatusView.setText(Constant.DAY_STATUS_LEFT);
+					viewHolder.itemLeftDayStatusView.setText(getResources().getString(R.string.days_status_left));
 				}
 		    	viewHolder.daysView.setText(daysDiff + "");
 			} else {				

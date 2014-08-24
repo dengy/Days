@@ -4,20 +4,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.first.countdown.util.Utils;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -142,7 +138,7 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     public static void deleteAppWidget(AppWidgetManager appWidgetManager, Context context, int mAppWidgetId) {
     	//updated widget
     	RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.invalid_widget);
-    	views.setTextViewText(R.id.invalid_widget, Constant.INVALID_WIDGET);
+    	views.setTextViewText(R.id.invalid_widget, context.getResources().getString(R.string.invalid_widget));
     	appWidgetManager.updateAppWidget(mAppWidgetId, views);
     	
     	//cancel alarmManager
@@ -181,10 +177,10 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     	if(days < 0) {
     		days *= -1;
     		views.setViewVisibility(R.id.itemLeftDayLabel, View.GONE);
-    		views.setTextViewText(R.id.itemLeftDayStatus, Constant.DAY_STATUS_PASSED);
+    		views.setTextViewText(R.id.itemLeftDayStatus, context.getResources().getString(R.string.days_status_passed));
     	} else {
     		views.setViewVisibility(R.id.itemLeftDayLabel, View.VISIBLE);
-    		views.setTextViewText(R.id.itemLeftDayStatus, Constant.DAY_STATUS_LEFT);
+    		views.setTextViewText(R.id.itemLeftDayStatus, context.getResources().getString(R.string.days_status_left));
     	}
     	views.setTextViewText(R.id.widget_type, type);
     	views.setTextViewText(R.id.widget_end_date,  endDate);
@@ -307,17 +303,17 @@ public class CountDownAppWidgetProvider extends AppWidgetProvider {
     	
 //    	viewId = R.layout.reminder_widget_life;
 //		views = new RemoteViews(context.getPackageName(), viewId);
-		
-		if(Constant.TYPE_LIFE.equals(priority)) {
+		Resources resources = context.getResources();
+		if(resources.getString(R.string.type_life).equals(priority)) {
 			viewId = R.layout.reminder_widget_life;
 			views = new RemoteViews(context.getPackageName(), viewId);
-	    } else if(Constant.TYPE_STUDY.equals(priority)) {
+	    } else if(resources.getString(R.string.type_study).equals(priority)) {
 	    	viewId = R.layout.reminder_widget_study;
 	    	views = new RemoteViews(context.getPackageName(), viewId);
-	    } else if(Constant.TYPE_WORK.equals(priority)) {
+	    } else if(resources.getString(R.string.type_work).equals(priority)) {
 	    	viewId = R.layout.reminder_widget_work;
 	    	views = new RemoteViews(context.getPackageName(), viewId);
-	    } else if(Constant.TYPE_MEMORIAL_DAY.equals(priority)) {
+	    } else if(resources.getString(R.string.type_memorial_day).equals(priority)) {
 	    	viewId = R.layout.reminder_widget_memorialday;
 	    	views = new RemoteViews(context.getPackageName(), viewId);
 	    } else {

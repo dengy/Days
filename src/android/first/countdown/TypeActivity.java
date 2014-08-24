@@ -1,6 +1,7 @@
 package android.first.countdown;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,22 +115,41 @@ public class TypeActivity extends Activity implements OnClickListener{
 	}
 	
 	public static List<Map<String, Object>> getCustomData(Context context, boolean isDrawerList) {
-		String[] customTypes = Utils.getCustomTypes(context);
-		int index = customTypes.length;
+//		String[] customTypes = Utils.getCustomTypes(context);
+//		int index = customTypes.length;
+//		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+//		for(int i = 0; i < index; i++) {
+//			Map<String, Object> map = new HashMap<String, Object>();
+//			map.put("typeKey", customTypes[i]);
+//	        map.put("type", customTypes[i]);
+//	        if(isDrawerList) {
+//	        	map.put("icon", R.drawable.custom_type_icon);
+//	        } else {
+//	        	map.put("icon", R.drawable.type_delete);
+//	        }
+//	        
+//	        
+//	        list.add(map);			 
+//		}
+		
+		SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(context, Constant.CUSTOM_TYPE_LIST_PREF);
+		Map<String,?> typeMap = prefs.getAll();
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		for(int i = 0; i < index; i++) {
+		for(String key : typeMap.keySet()) {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("typeKey", (i+1)+"");
-	        map.put("type", customTypes[i]);
+			map.put("typeKey", key);
+	        map.put("type", typeMap.get(key));
 	        if(isDrawerList) {
 	        	map.put("icon", R.drawable.custom_type_icon);
 	        } else {
 	        	map.put("icon", R.drawable.type_delete);
 	        }
 	        
-	        
 	        list.add(map);			 
+
 		}
+		
+		
         return list;
 	}
 	
@@ -176,14 +196,25 @@ public class TypeActivity extends Activity implements OnClickListener{
 	}
 	
 	private void saveType(String typeKey, String inputType) {
+		if(inputType == null) {
+			return;
+		}
+		
+		inputType = inputType.trim();
+		SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(this, Constant.CUSTOM_TYPE_LIST_PREF);
+		
 		if(typeKey == null) {//add
-			SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(this, Constant.CUSTOM_TYPE_LIST_PREF);
-			int index = prefs.getAll().size();
+			Map map = prefs.getAll();
+			if(map.containsValue(inputType)) {
+				Toast.makeText(this, inputType + " " + getResources().getString(R.string.already_exist), Toast.LENGTH_SHORT).show();
+				return;
+			}
+			
+			int index = getMaxIndexInPrefs(prefs);
 			Editor editor = prefs.edit();
 			editor.putString((++index) + "", inputType);
 			editor.commit();
 		} else {//edit
-			SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(this, Constant.CUSTOM_TYPE_LIST_PREF);
 			Editor editor = prefs.edit();
 			editor.putString(typeKey, inputType);
 			editor.commit();
@@ -195,6 +226,20 @@ public class TypeActivity extends Activity implements OnClickListener{
 		loadCustomTypeList(true);
 	}
 	
+	private int getMaxIndexInPrefs(SharedPreferences prefs) {
+		Map<String,?> typeMap = prefs.getAll();
+		//[] keySet = (String[])typeMap.keySet().toArray();
+		if(typeMap.keySet().size() == 0)
+			return 0;
+		
+		List<Integer> keySet = new ArrayList<Integer>();
+		for(String key : typeMap.keySet()) {
+			keySet.add(Integer.parseInt(key));
+		}
+		return Collections.max(keySet);
+		
+	}
+	
 	private void deleteType(String typeKey) {
 		SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(this , Constant.CUSTOM_TYPE_LIST_PREF);
 		String type = prefs.getString(typeKey, null);
@@ -202,7 +247,7 @@ public class TypeActivity extends Activity implements OnClickListener{
 			Cursor cursor = getCountDownByType(type);
 			int count = cursor.getCount();
 			if(count > 0) {
-				showDeleteConfirmDialog(Constant.DELETE_TYPE_WITH_TASKS_CONFIRM, cursor, typeKey, type);
+				showDeleteConfirmDialog(getResources().getString(R.string.delete_type_with_tasks_confirm), cursor, typeKey, type);
 			} else {
 				delete(typeKey);
 			}
@@ -223,7 +268,7 @@ public class TypeActivity extends Activity implements OnClickListener{
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				updateCountDownType(cursor, Constant.DEFAULT_TYPE);
+				updateCountDownType(cursor, getResources().getString(R.string.default_type));
 				delete(typeKey);
 			}
 			
@@ -305,6 +350,13 @@ public class TypeActivity extends Activity implements OnClickListener{
 	        return view;
 	    }
 	}
+	
+	@Override
+	public void onBackPressed() {
+		Intent intent = new Intent(this, MainActivity.class);
+		startActivity(intent);
+		finish();
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -314,7 +366,6 @@ public class TypeActivity extends Activity implements OnClickListener{
 				break;
 			case R.id.type_back:
 				Intent intent = new Intent(this, MainActivity.class);
-				//intent.putExtra(Constant.IS_OPEN_DRAWER_LIST, false);
 				startActivity(intent);
 				finish();
 				break;

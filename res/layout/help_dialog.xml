@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dip"
         android:text="@string/help_functions"
+        android:textSize="16sp"
         android:textStyle="bold"/>
     <TextView
         android:layout_width="match_parent"
@@ -26,12 +27,13 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dip"
         android:text="@string/help_functions2"
-        android:paddingBottom="10dip"/>
+        android:paddingBottom="15dip"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dip"
         android:text="@string/help_type"
+        android:textSize="16sp"
         android:textStyle="bold"/>
     
     <TextView
@@ -43,21 +45,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dip"
-        android:text="@string/help_type2"
-        android:paddingBottom="10dip"/>
-    <!-- 
+        android:text="@string/help_type2"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dip"
         android:text="@string/help_type3"
-        android:paddingBottom="10dip"/> -->
+        android:paddingBottom="15dip"/>
     
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dip"
         android:text="@string/help_hint"
+        android:textSize="16sp"
         android:textStyle="bold"/>
     <TextView
         android:layout_width="match_parent"

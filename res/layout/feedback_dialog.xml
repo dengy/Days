@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:singleLine="false"
         android:gravity="top"
-        android:minLines="3"
-   	    android:maxLines="5"
-        android:lines="3"/>  
+        android:minLines="4"
+   	    android:maxLines="7"
+        android:lines="4"/>  
     </LinearLayout>

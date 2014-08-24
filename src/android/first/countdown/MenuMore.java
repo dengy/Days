@@ -75,7 +75,7 @@ public class MenuMore extends Activity implements OnClickListener{
 	    //View layout = inflater.inflate(R.layout.about_dialog, null);
 	    View layout = View.inflate(new ContextThemeWrapper(this, R.style.AlarmDialogTheme), 
 	    		R.layout.about_dialog, null);
-	    ((TextView)layout.findViewById(R.id.version)).setText("Version:" + getVersionName());
+	    ((TextView)layout.findViewById(R.id.version)).setText(getResources().getString(R.string.version)+ getVersionName());
 	    builder.setView(layout);
 	    
 	    Dialog d = builder.create();
@@ -154,13 +154,13 @@ public class MenuMore extends Activity implements OnClickListener{
 //		intent.putExtra(Intent.EXTRA_EMAIL, getResources().getString(R.string.mail));  
 
 		//mail title
-		intent.putExtra(Intent.EXTRA_SUBJECT, Constant.MAIL_TITLE);  
+		intent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.email_title));  
 		
 		//mail content
 		intent.putExtra(Intent.EXTRA_TEXT, content);  
 		
 		try {
-			startActivity(Intent.createChooser(intent, Constant.MAIL_SENDING));    
+			startActivity(Intent.createChooser(intent, getResources().getString(R.string.select_email_client)));    
 		}catch(android.content.ActivityNotFoundException ex) {
 			Toast.makeText(this, R.string.no_email_app_installed, Toast.LENGTH_SHORT).show();
 		}
@@ -185,8 +185,8 @@ public class MenuMore extends Activity implements OnClickListener{
 			break;
 		case R.id.more_back:
 		    finish();
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
+//			Intent intent = new Intent(this, MainActivity.class);
+//			startActivity(intent);
 			break;
 		default:
 			break;

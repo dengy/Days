@@ -20,7 +20,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/edit_type"
+        android:text="@string/edit_type_title"
         android:gravity="center"
         android:layout_centerVertical="true"
         style="@style/actionbarText"/>    

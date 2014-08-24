@@ -14,8 +14,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dip"
-        android:paddingBottom="20dip"
+        android:gravity="center_horizontal"
+        android:padding="10dip"
         android:text="@string/app_name"
         android:textSize="18sp"/>
     
@@ -23,18 +23,20 @@
         android:id="@+id/version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dip"/>
+        android:gravity="center_horizontal"
+        android:padding="10dip"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dip"
-        android:paddingBottom="20dip"
-        android:text="@string/build"/>
+        android:gravity="center_horizontal"
+        android:padding="10dip"
+        android:text="@string/contact"/>
     
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dip"
+        android:gravity="center_horizontal"
+        android:padding="10dip"
         android:text="@string/author"/>
     <!-- <TextView
         android:layout_width="match_parent"

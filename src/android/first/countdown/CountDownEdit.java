@@ -78,6 +78,9 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		
 		initViews();
 		
+		//start update widget service
+        startUpdateWidgetService();
+		
 		//select data from database
 		Intent intent = getIntent();
 		
@@ -114,6 +117,12 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		
 		
 	}
+	
+	private void startUpdateWidgetService() {
+    	Intent i = new Intent();
+		i.setClass(this, UpdateWidgetService.class);
+		startService(i);
+    }
 	
 	/**
 	 * init views when open the activity
@@ -174,7 +183,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
         		Bundle bundle = intent.getExtras();
         		if(bundle != null) {
         			String mType = bundle.getString(CountDown.PRIORITY);
-        			if(mType != null && !"".equals(mType) && !Constant.ALL_TYPE.equals(mType)) {
+        			if(mType != null && !"".equals(mType) && !getResources().getString(R.string.type_all).equals(mType)) {
         				priorityTextView.setText(mType);
         			}
         		}
@@ -251,9 +260,9 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			public void onClick(DialogInterface dialog, int which) {
 				String title = inputTitleEditText.getText().toString();
 				if(!"".equals(title) && title != null) {
-					titleTextView.setText(title);
+					titleTextView.setText(title.trim());
 				} else {
-					titleTextView.setText(Constant.UN_NAMED_TITLE);
+					titleTextView.setText(getResources().getString(R.string.unamed_title));
 				}
 			}
 	    }).setNegativeButton(R.string.go_back_label, new DialogInterface.OnClickListener(){
@@ -492,7 +501,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	private void timePicker(int id) {
 		String endDate = endDateTextView.getText().toString();
 		if(endDate == null || "".equals(endDate)) {
-			Toast.makeText(getApplicationContext(), R.string.endTimeWithoutEndDate, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(getApplicationContext(), R.string.endTimeWithoutEndDate, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		// Use the current time as the default values for the picker
@@ -675,9 +684,9 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		//shutdown this activity
 		finish();
 		//to main page
-		Intent intent = new Intent(this, MainActivity.class);
+		/**Intent intent = new Intent(this, MainActivity.class);
 		intent.putExtra(CountDown.PRIORITY, priorityTextView.getText());
-		startActivity(intent);
+		startActivity(intent);**/
 	}
 	
 	
@@ -924,7 +933,7 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			save();
 			break;
 		case R.id.delete_action:
-			showDeleteConfirmDialog(Constant.DELETE_TASK_CONFIRM);
+			showDeleteConfirmDialog(getResources().getString(R.string.delete_task_confirm));
 			break;
 		default:
 			break;

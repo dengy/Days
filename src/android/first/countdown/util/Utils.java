@@ -1,12 +1,13 @@
 package android.first.countdown.util;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.first.countdown.Constant;
-import android.first.countdown.CountDown;
 import android.first.countdown.R;
 
 public class Utils {
@@ -35,12 +36,22 @@ public class Utils {
 	}
 	
 	public static String[] getCustomTypes(Context context) { 
+		
 		SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(context, Constant.CUSTOM_TYPE_LIST_PREF);
 		Map<String,?> map = prefs.getAll();
+//		Set<String> set = map.keySet();
+//		Iterator<String> it = set.iterator();
 		String[] results = new String[map.size()];
-		for(int i = 0; i < map.size(); i++) {
-			results[i] = map.get((i+1)+"") + "";
+//		while(it.hasNext()) {
+//			String key = it.next();
+//			results[index] = map.get(key) + "";
+//		}
+		
+		int index = 0;
+		for(String s: map.keySet()) {
+			results[index++] = map.get(s) + "";
 		}
+		
 		return results;
 	}
 	

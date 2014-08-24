@@ -3,7 +3,6 @@ package android.first.countdown;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 public class SystemReceiver extends BroadcastReceiver {
 
@@ -16,7 +15,6 @@ public class SystemReceiver extends BroadcastReceiver {
 			context.startService(i);
 		} else if (Intent.ACTION_USER_PRESENT.equals(action)) {
 			context.startService(i);
-			Log.w("present", "click me");
 		}
 		
 		

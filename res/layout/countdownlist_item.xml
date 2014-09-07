@@ -26,12 +26,6 @@
         android:layout_marginRight="20dip"
         style="@style/listItemText"/>
     
-	<!-- <android.first.countdown.util.SlipButton
-            android:id="@+id/finish"
-            android:layout_width="60dip"
-            android:layout_height="30dip"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/> -->
     <!-- <CheckBox android:id="@+id/finish"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

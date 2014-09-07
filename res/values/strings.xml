@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">闪亮的日子</string>
-    <string name="app_label">@string/app_name</string>
+    <string name="app_label">闪亮的日子</string>
     <string name="edit_title">编辑标题</string>
     <string name="edit_content">编辑內容</string>
     <string name="ok_label">保存</string>
@@ -30,6 +30,7 @@
     <string name="remark_label">备注</string>
     <string name="remark_hint">添加备注</string>
     <string name="delete_action">删除数据</string>
+    <string name="share_action">分享给好友</string>
     <string name="state_opened">打开</string>
     <string name="state_closed">关闭</string>
     <string name="save_successfully">保存成功</string>
@@ -86,8 +87,9 @@
     <string name="help_type2">2.用户可以编辑分类,添加自定义分类</string>
     <string name="help_type3">3.置顶选项，可将事件显示在界面最上方</string>
     <string name="help_hint">使用小贴士:</string>
-    <string name="help_hint1">1.为了保证桌面小工具能够自动刷新，需要将应用加入白名单(允许自启动)</string>
-    <string name="help_hint2">2.使用的过程中遇到任何问题，可以点击"更多->反馈"给开发人员</string>
+    <string name="help_hint1">1.支持添加桌面小工具</string>
+    <string name="help_hint2">2.为了保证桌面小工具能够自动刷新，需要将应用加入白名单(允许自启动)</string>
+    <string name="help_hint3">3.使用中遇到任何问题，可以点击"更多->反馈"给开发人员</string>
     <string name="noDataForWidget">提示:没有正在运行的任务!</string>
     <string name="top_label">置顶</string>
     <string name="drawer_open">打开导航抽屉</string>
@@ -97,12 +99,12 @@
     <string name="leftDayLabel">距离</string>
     <string name="topDate_label">目标日:</string>
     <string name="edit_type">点击编辑分类</string>
-    <string name="edit_type_title">@string/type_edit_hint</string>
+    <string name="edit_type_title">编辑分类</string>
     <string name="add_type_label">+ 添加</string>
     <string name="type_not_empty">分类不能为空!</string>
     
     <string name="type_all">全部</string>
-    <string name="default_type">@string/type_life</string>
+    <string name="default_type">生活</string>
     <string name="type_life">生活</string>
     <string name="type_work">工作</string>
     <string name="type_study">学习</string>

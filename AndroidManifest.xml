@@ -1,63 +1,49 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.first.countdown"
-    android:versionCode="1"
-    android:versionName="1.0" >
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.inde.shiningdays">
 
-    <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="19"/>
 
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
-	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <!-- <uses-permission android:name="android.permission.VIBRATE" /> -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- <uses-permission android:name="android.permission.WAKE_LOCK" /> -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	<!-- 缓存资源优先存入SDcard -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_label"
-        android:theme="@style/MyTheme" >
-        <provider
-            android:name=".CountDownProvider"
-            android:authorities="android.first.countdown.CountDown" />
+    <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_label" android:theme="@style/MyTheme">
+        <provider android:authorities="com.inde.shiningdays.CountDown" android:name="com.inde.shiningdays.CountDownProvider"/>
 
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+        <activity android:label="@string/app_name" android:name="com.inde.shiningdays.MainActivity" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <!--
             <intent-filter>
                 <data
-                    android:host="android.first.countdown.ItemList"
+                    android:host="com.inde.shiningdays.ItemList"
                     android:scheme="aone" />
             </intent-filter>
             -->
         </activity>
-        <activity
-            android:name=".CountDownEdit"
-            android:screenOrientation="portrait" >
+        <activity android:name="com.inde.shiningdays.CountDownEdit" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.INSERT" />
+                <action android:name="android.intent.action.INSERT"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:mimeType="vnd.android.cursor.dir/countdown" />
+                <data android:mimeType="vnd.android.cursor.dir/countdown"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.EDIT" />
+                <action android:name="android.intent.action.EDIT"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:mimeType="vnd.android.cursor.item/countdown" />
+                <data android:mimeType="vnd.android.cursor.item/countdown"/>
             </intent-filter>
         </activity>
         <!-- 
@@ -68,24 +54,18 @@
             android:theme="@android:style/Theme.Dialog" >
         </activity> -->
 
-        <activity
-            android:name=".WidgetConfigure"
-            android:screenOrientation="portrait" >
+        <activity android:name="com.inde.shiningdays.WidgetConfigure" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MenuMore"
-            android:screenOrientation="portrait" >
+        <activity android:name="com.inde.shiningdays.MenuMore" android:screenOrientation="portrait">
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".TypeActivity"
-            android:screenOrientation="portrait" >
+        <activity android:name="com.inde.shiningdays.TypeActivity" android:screenOrientation="portrait">
         </activity>
         
         <!-- 
@@ -105,34 +85,54 @@
         </receiver>
          -->
          
-         <receiver
-            android:name=".SystemReceiver" >
+         <receiver android:name="com.inde.shiningdays.SystemReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.USER_PRESENT"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".CountDownAppWidgetProvider" >
+        <receiver android:name="com.inde.shiningdays.CountDownAppWidgetProvider">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="countdown.widget.UPDATE" />
-                <action android:name="countdown.widget.DELETE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="countdown.widget.UPDATE"/>
+                <action android:name="countdown.widget.DELETE"/>
                 <!-- <action android:name="countdown.widget.FINISH" /> -->
-                <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.SCREEN_OFF"/>
             </intent-filter>
 
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget" />
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget"/>
         </receiver>
         
-        <service android:name=".UpdateWidgetService" 
-            android:process=".updateWidgetService">
+        <service android:name="com.inde.shiningdays.UpdateWidgetService" android:process=".updateWidgetService">
         </service>
         
+        <!-- ###################添加UmengAppkey###################### -->
         <meta-data android:value="53ea1eaffd98c5e4eb009031" android:name="UMENG_APPKEY"></meta-data>
 		<meta-data android:value="91" android:name="UMENG_CHANNEL"/>
        
-    </application>
+		<!-- ###################友盟社会化分享 组件开始###################### -->
+		<activity android:configChanges="orientation|keyboard" 
+		    android:launchMode="singleTask" android:name="com.umeng.socialize.view.ShareActivity" android:noHistory="true" 
+		    android:theme="@style/Theme.UMDialog" android:windowSoftInputMode="stateVisible|adjustResize"/>
+		<activity android:configChanges="keyboardHidden|orientation|screenSize" android:exported="true" 
+		    android:name=".wxapi.WXEntryActivity" android:screenOrientation="portrait" 
+		    android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+		<activity android:configChanges="orientation|keyboard" android:launchMode="singleTask" android:name="com.tencent.tauth.AuthActivity" 
+		    android:noHistory="true">
+		<intent-filter>
+		<action android:name="android.intent.action.VIEW"/>
+		<category android:name="android.intent.category.DEFAULT"/>
+		<category android:name="android.intent.category.BROWSABLE"/>
+		<data android:scheme="1102297892"/>
+		</intent-filter>
+		</activity>
+		<activity android:name="com.tencent.connect.common.AssistActivity" android:screenOrientation="portrait" 
+		    android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+		<!-- ###################友盟社会化分享 组件结束###################### -->
+</application>
 
+
+<!-- 
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
 </manifest>

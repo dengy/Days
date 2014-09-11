@@ -36,7 +36,7 @@
         android:layout_toRightOf="@id/itemLeftDayLabel"
         android:layout_marginLeft="10dip"
         android:text="@string/app_label"
-        android:singleLine="true"
+        android:maxLines="1"
         android:ellipsize="end"
         style="@style/listItemText.widget"/>
     

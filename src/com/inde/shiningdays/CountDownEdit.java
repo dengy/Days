@@ -32,14 +32,18 @@ import android.widget.Toast;
 import com.inde.shiningdays.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
 import com.umeng.socialize.media.QQShareContent;
 import com.umeng.socialize.media.QZoneShareContent;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.sso.QZoneSsoHandler;
 import com.umeng.socialize.sso.UMQQSsoHandler;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.umeng.socialize.weixin.media.CircleShareContent;
+import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 public class CountDownEdit extends Activity implements OnClickListener {
 	
@@ -78,12 +82,12 @@ public class CountDownEdit extends Activity implements OnClickListener {
     private Switch topSwitch;
     private int topSwitchText;
     private View shareLayout;
+    private View deleteButton;
     
     private UMSocialService mController;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.i(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.countdown_edit);
@@ -102,11 +106,15 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			mUri = intent.getData();
 			//show share button
 			shareLayout.setVisibility(View.VISIBLE);
+			//show delete button
+			deleteButton.setVisibility(View.VISIBLE);
 		} else if(Intent.ACTION_INSERT.equals(action)) {
 			mState = STATE_INSERT;
 			mUri = getContentResolver().insert(intent.getData(), null);
 			//hide share button
 			shareLayout.setVisibility(View.GONE);
+			//hide delete button
+			deleteButton.setVisibility(View.INVISIBLE);
 			
 			// If we were unable to create a new countdown, then just finish
             // this activity.  A RESULT_CANCELED will be sent back to the
@@ -164,11 +172,11 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		addOkButton.setOnClickListener(this);
 		View addCancelButton = findViewById(R.id.add_cancel);
 		addCancelButton.setOnClickListener(this);
-		View deleteButton = findViewById(R.id.delete_action);
-		deleteButton.setOnClickListener(this);
 		View shareButton = findViewById(R.id.share_action);
 		shareButton.setOnClickListener(this);
 		shareLayout = findViewById(R.id.share_layout);
+		deleteButton = findViewById(R.id.delete_action);
+		deleteButton.setOnClickListener(this);
 		topSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -348,13 +356,11 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	    final String[] usedPriority = new String[priority.length -1];
 
 		String currentPriority = priorityTextView.getText().toString();
-		if(currentPriority != null && !"".equals(currentPriority)) {
-			for(int i = 1; i < priority.length; i++) {
-				int currentIndex = i - 1;
-				usedPriority[currentIndex] = priority[i];//remove the first item--all
-				if(currentPriority.equals(priority[i])) {
-					checkedIndex = currentIndex;
-				}
+		for(int i = 1; i < priority.length; i++) {
+			int currentIndex = i - 1;
+			usedPriority[currentIndex] = priority[i];//remove the first item--all
+			if(currentPriority != null && currentPriority.equals(priority[i])) {
+				checkedIndex = currentIndex;
 			}
 		}
 		
@@ -937,11 +943,11 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		if(topLeftDays < 0) {
 			topLeftDays*=-1;
 			shareContent.append(titleTextView.getText()).append("  ");
-			shareContent.append(getResources().getString(R.string.days_status_passed)).append(" ");
+			shareContent.append(getResources().getString(R.string.days_status_passed));
 		} else {
 			shareContent.append(getResources().getString(R.string.leftDayLabel));
 			shareContent.append(titleTextView.getText()).append("  ");
-			shareContent.append(getResources().getString(R.string.days_status_left)).append(" ");
+			shareContent.append(getResources().getString(R.string.days_status_left));
 		}
 		shareContent.append(topLeftDays).append(getResources().getString(R.string.days));
 		
@@ -969,6 +975,30 @@ public class CountDownEdit extends Activity implements OnClickListener {
        //############分享到QQ空间 结束#################
        
       //############分享到微信朋友圈 开始#################
+       String appID = "wx4486dace47a3bd5b";
+       String appSecret = "5a4ab424eb39b4b20dbc950c455a88b2";
+    // 添加微信平台
+       UMWXHandler wxHandler = new UMWXHandler(this ,appID,appSecret);
+       wxHandler.addToSocialSDK();
+       
+       //设置微信好友分享内容
+       WeiXinShareContent weixinContent = new WeiXinShareContent();
+       //设置分享文字
+       weixinContent.setShareContent(shareTitle);
+       //设置title
+       weixinContent.setTitle(shareContent.toString());
+       //设置分享内容跳转URL
+       weixinContent.setTargetUrl(targetUrl);
+       //设置分享图片
+       weixinContent.setShareImage(umimage);
+       mController.setShareMedia(weixinContent);
+       
+       //设置分享内容
+       // 支持微信朋友圈
+       UMWXHandler wxCircleHandler = new UMWXHandler(this ,appID,appSecret);
+       wxCircleHandler.setToCircle(true);
+       wxCircleHandler.addToSocialSDK();
+
        CircleShareContent circleMedia = new CircleShareContent();
        circleMedia.setShareContent(shareTitle);
        //设置朋友圈title
@@ -994,8 +1024,27 @@ public class CountDownEdit extends Activity implements OnClickListener {
        qqSsoHandler.addToSocialSDK();  
       //############分享到qq 结束#################
        
-        mController.getConfig().removePlatform( SHARE_MEDIA.SINA, SHARE_MEDIA.TENCENT, SHARE_MEDIA.WEIXIN);
-		mController.openShare(this, false);
+        mController.getConfig().removePlatform( SHARE_MEDIA.SINA, SHARE_MEDIA.TENCENT);
+		//mController.openShare(this, false);
+		mController.openShare(this, new SnsPostListener() {
+
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int eCode,
+                    SocializeEntity entity) {
+            	if (eCode == 200) {
+                    Toast.makeText(CountDownEdit.this, R.string.share_succ, Toast.LENGTH_SHORT)
+                        .show();
+                  } else {
+                    Toast.makeText(CountDownEdit.this,
+                        getResources().getString(R.string.share_fail) + " : error code : " + eCode, Toast.LENGTH_SHORT)
+                        .show();
+                  }
+            }
+        });
 	}
 	
 

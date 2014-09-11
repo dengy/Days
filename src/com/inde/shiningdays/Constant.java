@@ -30,7 +30,7 @@ public class Constant {
 	
 	public static final String WIDGET_DATA_FILE = "com.inde.shiningdays.widgetData";
 	
-	public static final String ALARM_DATA_FILE = "com.inde.shiningdays.alarmData";
+	//public static final String ALARM_DATA_FILE = "com.inde.shiningdays.alarmData";
 	
 	public static final String SPLIT_SEMICOLON = ";";
 	
@@ -53,6 +53,10 @@ public class Constant {
 	public static final String COUNT_DOWN_SETTING_PREF = "countDownSettingPref"; 
 	public static final String IS_FIRST_OPEN_APP = "isFirstOpenApp";
 	public static final String IS_OPEN_DRAWER_LIST = "isOpenDrawerList";
+	
+	//Constant for rate dialog
+	public static final String APP_OPENED_COUNT = "appOpenedCount";//the app opened count
+	public static final String IS_OPEN_RATE_DIALOG = "isOpenRateDialog";
 //	public static final String INIT_TITLE = "ÐÂÄê";
 //	public static final String INIT_END_DATE = "2014-07-26";
 	

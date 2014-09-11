@@ -16,6 +16,8 @@
 
 package com.inde.shiningdays;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +30,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -45,10 +49,6 @@ import android.widget.SimpleAdapter;
 import com.inde.shiningdays.util.SharedPrefsUtil;
 import com.inde.shiningdays.util.Utils;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.controller.UMServiceFactory;
-import com.umeng.socialize.controller.UMSocialService;
-import com.umeng.socialize.media.UMImage;
 
 public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
@@ -61,6 +61,7 @@ public class MainActivity extends Activity {
     private String[] mTypes;
     private View mEditType;
     private String currentType;
+    private ArrayList<Integer> rateCountList = new ArrayList<Integer>(Arrays.asList(30, 60, 90, 120, 150, 180, 210, 250, 300));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +118,7 @@ public class MainActivity extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
        
-     // enable ActionBar app icon to behave as action to toggle nav drawer
+        //enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
@@ -126,6 +127,8 @@ public class MainActivity extends Activity {
         }
         //init drawer list
         initDrawerList();
+        //show rate dialog
+        showRateDialog();
     }
     
     private void firstOpenAppDialog() {
@@ -145,6 +148,81 @@ public class MainActivity extends Activity {
 		d.setCanceledOnTouchOutside(false);
 		d.show();
 	}
+    
+    /**
+     * whether to open the rate dialog
+     */
+    private void showRateDialog() {
+    	SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(this, Constant.COUNT_DOWN_SETTING_PREF);
+    	int appOpenedCount = prefs.getInt(Constant.APP_OPENED_COUNT, 1);
+    	boolean isOpenRateDialog = prefs.getBoolean(Constant.IS_OPEN_RATE_DIALOG, true);
+    	if(isOpenRateDialog) {
+    		if(rateCountList.contains(appOpenedCount)) {
+    			openRateDialog();
+    		}
+    		
+    		//update the appOpenedCount
+    		if(appOpenedCount < 100000) {
+    			appOpenedCount++;
+        		Editor editor = prefs.edit();
+        		editor.putInt(Constant.APP_OPENED_COUNT, appOpenedCount);
+        		editor.commit();
+    		}
+    	}
+    }
+    
+    private void openRateDialog() {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    // Get the layout inflater
+	    LayoutInflater inflater = this.getLayoutInflater();
+	    
+	    final View layout = inflater.inflate(R.layout.rate_dialog, null);
+	    builder.setView(layout);
+	    final Dialog dialog = builder.create();
+
+	    //rate right now 
+	    layout.findViewById(R.id.rate_right_now).setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				//open the market list
+				Intent goToMarket = new Intent(Intent.ACTION_VIEW);
+				goToMarket.setData(Uri.parse("market://details?id=" + getPackageName()));
+				startActivity(goToMarket); 
+				//modify the isOpenRateDialog = false
+				SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(v.getContext(), 
+						Constant.COUNT_DOWN_SETTING_PREF);
+				Editor editor = prefs.edit();
+				editor.putBoolean(Constant.IS_OPEN_RATE_DIALOG, false);
+				editor.commit();
+				//dismiss dialog
+				dialog.dismiss();
+			}
+	    });
+	    //rate later
+	    layout.findViewById(R.id.rate_later).setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+	    });
+	    //rate never
+	    layout.findViewById(R.id.rate_never).setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				//modify the isOpenRateDialog = false
+				SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(v.getContext(), 
+						Constant.COUNT_DOWN_SETTING_PREF);
+				Editor editor = prefs.edit();
+				editor.putBoolean(Constant.IS_OPEN_RATE_DIALOG, false);
+				editor.commit();
+				//dismiss dialog
+				dialog.dismiss();
+			}
+	    });
+	    
+	    dialog.setCanceledOnTouchOutside(false);
+	    dialog.show();
+    }
     
     @Override
     public void onResume() {

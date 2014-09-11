@@ -89,7 +89,7 @@
     <string name="help_hint">使用小贴士:</string>
     <string name="help_hint1">1.支持添加桌面小工具</string>
     <string name="help_hint2">2.为了保证桌面小工具能够自动刷新，需要将应用加入白名单(允许自启动)</string>
-    <string name="help_hint3">3.使用中遇到任何问题，可以点击"更多->反馈"给开发人员</string>
+    <string name="help_hint3">3.编辑页面可分享事件至微信,QQ</string>
     <string name="noDataForWidget">提示:没有正在运行的任务!</string>
     <string name="top_label">置顶</string>
     <string name="drawer_open">打开导航抽屉</string>
@@ -137,5 +137,12 @@
     
     <string name="unamed_title">未命名事件</string>
     <string name="unamed_type">未命名分类</string>
+    
+    <string name="rate_title">如果喜欢这款应用,写下你的意见帮助它改进吧~</string>
+    <string name="rate_right_now_text">现在去评价&#160;:&#160;)</string>
+    <string name="rate_later_text">稍后提醒我~</string>
+    <string name="rate_never_text">残忍的拒绝&#160;:&#160;(</string>
 
+    <string name="share_succ">分享成功</string>
+    <string name="share_fail">分享失败</string>
 </resources>

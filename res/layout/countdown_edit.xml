@@ -69,6 +69,8 @@
         android:id="@+id/title"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:maxLines="6"
+        android:maxEms="20"
         android:layout_toLeftOf="@+id/arrow_title"/>
     
     <ImageView
@@ -222,14 +224,15 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:text="@string/share_action"
-    android:textColor="@color/green_level_1"
+    android:textColor="@color/dark_green"
     android:background="@drawable/delete_btn_bg_selector"
-    android:paddingRight="10dip"
+    android:paddingRight="15dip"
     android:drawableRight="@drawable/share"/>
 
       </RelativeLayout>
       
    <RelativeLayout 
+    android:id="@+id/delete_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"

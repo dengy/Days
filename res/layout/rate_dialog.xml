@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    
+    <TextView 
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="20dip"
+        android:text="@string/rate_title"
+        android:gravity="center"
+        style="@style/rateDialogTitle" />
+    <Button 
+        android:id="@+id/rate_right_now"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="5dip"
+        android:gravity="center"
+        style="@style/rateDialogText"
+        android:text="@string/rate_right_now_text"/>  
+    <View
+    android:layout_width="match_parent"
+    android:layout_height="1dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:background="@drawable/gray">
+    </View>
+    <Button 
+        android:id="@+id/rate_later"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="5dip"
+        android:gravity="center"
+        style="@style/rateDialogText"
+        android:text="@string/rate_later_text"/>   
+    <View
+    android:layout_width="match_parent"
+    android:layout_height="1dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:background="@drawable/gray">
+    </View>
+    <Button 
+        android:id="@+id/rate_never"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="5dip"
+        android:gravity="center"
+        style="@style/rateDialogText"
+        android:text="@string/rate_never_text"/>          
+</LinearLayout>

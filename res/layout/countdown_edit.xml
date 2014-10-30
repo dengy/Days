@@ -69,6 +69,8 @@
         android:id="@+id/title"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:maxLines="6"
+        android:maxEms="20"
         android:layout_toLeftOf="@+id/arrow_title"/>
     
     <ImageView
@@ -205,7 +207,32 @@
         android:hint="@string/remark_hint"/>  
       </RelativeLayout>
       
+    <RelativeLayout 
+    android:id="@+id/share_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:paddingLeft="20dip"
+    android:paddingRight="20dip"
+    android:paddingTop="12dip"
+    android:paddingBottom="12dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:background="@drawable/edit_item_bg_middle_selector">
+    <Button
+    android:id="@+id/share_action"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/share_action"
+    android:textColor="@color/dark_green"
+    android:background="@drawable/delete_btn_bg_selector"
+    android:paddingRight="15dip"
+    android:drawableRight="@drawable/share"/>
+
+      </RelativeLayout>
+      
    <RelativeLayout 
+    android:id="@+id/delete_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -226,7 +253,7 @@
     android:drawableRight="@drawable/delete_icon"/>
 
       </RelativeLayout>
-     
+      
    <!-- 
     <TableLayout  
         android:layout_width="match_parent"  

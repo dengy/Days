@@ -41,6 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/topLabel"
         android:layout_marginLeft="5dip"
+        android:maxLines="1"
+        android:ellipsize="end"
         style="@style/normal"/>
 
      <!-- <TextView

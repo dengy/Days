@@ -1,6 +1,6 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="250dp"
     android:minHeight="20dp"
-    android:configure="android.first.countdown.WidgetConfigure"
+    android:configure="com.inde.shiningdays.WidgetConfigure"
     android:updatePeriodMillis="86400000"
 />

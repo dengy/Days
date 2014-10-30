@@ -21,17 +21,10 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dip"
         android:text="@string/app_label"
-        android:singleLine="true"
+        android:maxLines="1"
         android:ellipsize="end"
-        android:layout_marginRight="20dip"
         style="@style/listItemText"/>
     
-	<!-- <android.first.countdown.util.SlipButton
-            android:id="@+id/finish"
-            android:layout_width="60dip"
-            android:layout_height="30dip"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/> -->
     <!-- <CheckBox android:id="@+id/finish"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -72,6 +65,13 @@
         android:visibility="gone"
         style="@style/small"/> 
          -->
+    <TextView
+        android:id="@+id/itemLeftDayStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:layout_marginRight="5dip"
+        style="@style/listItemText"/>
         
     <TextView
         android:id="@+id/days"
@@ -123,6 +123,7 @@
         
     </LinearLayout>
     
+    <!-- 
     <TextView
         android:id="@+id/itemLeftDayStatus"
         android:layout_width="wrap_content"
@@ -131,7 +132,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="5dip"
         style="@style/listItemText"/>
-    
+    -->
     <!-- <TextView
         android:id="@+id/expire"
         android:layout_width="wrap_content"

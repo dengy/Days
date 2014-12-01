@@ -72,4 +72,8 @@ public class Utils {
 		return resultTypes;
 	}
 
+	public static void cancelAlarmManager() {
+
+	}
+
 }

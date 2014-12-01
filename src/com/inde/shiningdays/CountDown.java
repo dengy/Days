@@ -28,7 +28,9 @@ public final class CountDown implements BaseColumns{
     /**
      * The default sort order for this table
      */
+    public static final String ORDER_BY = "orderby";
     public static final String DEFAULT_SORT_ORDER = "created DESC";
+    public static final String SORT_END_DATE_ASC = "enddate ASC";
     
     
     public static final String TITLE = "title";

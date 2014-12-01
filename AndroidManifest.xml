@@ -67,15 +67,14 @@
 
         <activity android:name="com.inde.shiningdays.TypeActivity" android:screenOrientation="portrait">
         </activity>
-        
-        <!-- 
-        <receiver android:name=".AlarmReceiver" >
+
+
+        <receiver android:name="com.inde.shiningdays.CommonReceiver" >
             <intent-filter>
-                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="countdown.remind.SEND_NOTIFICATION" />
             </intent-filter>
         </receiver>
-         -->
-        <!-- 
+        <!--
         <receiver
             android:name=".AlarmWakeUpReceiver"
             android:process=".countDownAlarmWake" >
@@ -107,7 +106,7 @@
         </service>
         
         <!-- ###################添加UmengAppkey###################### -->
-        <meta-data android:value="53ea1eaffd98c5e4eb009031" android:name="UMENG_APPKEY"></meta-data>
+        <!-- <meta-data android:value="53ea1eaffd98c5e4eb009031" android:name="UMENG_APPKEY"></meta-data> -->
 		<meta-data android:value="91" android:name="UMENG_CHANNEL"/>
        
 		<!-- ###################友盟社会化分享 组件开始###################### -->

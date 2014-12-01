@@ -92,6 +92,7 @@
     <string name="help_hint3">3.编辑页面可分享事件至微信,QQ</string>
     <string name="noDataForWidget">提示:没有正在运行的任务!</string>
     <string name="top_label">置顶</string>
+    <string name="remind_label">提醒</string>
     <string name="drawer_open">打开导航抽屉</string>
     <string name="drawer_close">关闭导航抽屉</string>
     <string name="action_add">添加</string>
@@ -145,4 +146,28 @@
 
     <string name="share_succ">分享成功</string>
     <string name="share_fail">分享失败</string>
+
+    <string name="sort_end_date_asc">排序:即将到来</string>
+    <string name="sort_update_date_desc">排序:最新添加</string>
+
+    <string name="remind_default">无通知</string>
+    <string name="remind_1_day">提前1天(9:00)</string>
+    <string name="remind_2_day">提前2天(9:00)</string>
+    <string name="remind_7_day">提前一周(9:00)</string>
+    <string name="remind_custom">自定义</string>
+
+    <string name="remind_setting_title">提醒设置</string>
+    <string name="remind_label1">提前</string>
+    <string name="remind_label2">天,于</string>
+    <string name="remind_label3">点通知</string>
+    <string name="notification_from">来自闪亮的日子应用</string>
+    <string name="remind_by_notification">通过通知提醒我</string>
+    <string name="default_remind_hour">9:00</string>
+    <string name="at_remind_hour">于</string>
+    <string name="default_remind_hour_text">于9:00</string>
+    <string name="remind_hour_hint">(点击此处修改)</string>
+
+    <string name="remind_hour_0">0:00点</string>
+    <string name="remind_hour_1">1:00点</string>
+    <string name="select_hour_dialog">提醒时间</string>
 </resources>

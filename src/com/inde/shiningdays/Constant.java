@@ -1,9 +1,12 @@
 package com.inde.shiningdays;
 
 public class Constant {
+	//broadcast
 	public static final String UPDATE_WIDGET = "countdown.widget.UPDATE";
 	public static final String DELETE_WIDGET = "countdown.widget.DELETE";
 	public static final String FINISH_WIDGET = "countdown.widget.FINISH";
+	public static final String SEND_NOTIFICATION = "countdown.remind.SEND_NOTIFICATION";
+
 //	public static final String EXPIRED = "已过期";
 //	public static final String FINISHED = "已完成";
 //	public static final String INVALID_WIDGET = "插件无效,建议删除";
@@ -30,7 +33,7 @@ public class Constant {
 	
 	public static final String WIDGET_DATA_FILE = "com.inde.shiningdays.widgetData";
 	
-	//public static final String ALARM_DATA_FILE = "com.inde.shiningdays.alarmData";
+	public static final String ALARM_DATA_FILE = "com.inde.shiningdays.alarmData";
 	
 	public static final String SPLIT_SEMICOLON = ";";
 	
@@ -68,5 +71,7 @@ public class Constant {
 	
 //	public static final String UN_NAMED_TITLE = "未命名事件";
 //	public static final String UN_NAMED_TYPE = "未命名分类";
+
+
 			
 }

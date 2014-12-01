@@ -20,8 +20,10 @@
         android:layout_toRightOf="@id/itemLeftDayLabel"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dip"
+        android:layout_marginRight="25dip"
         android:text="@string/app_label"
         android:maxLines="1"
+        android:maxEms="9"
         android:ellipsize="end"
         style="@style/listItemText"/>
     

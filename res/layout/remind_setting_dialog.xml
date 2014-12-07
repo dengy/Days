@@ -33,7 +33,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:padding="15dp"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:text="@string/default_remind_day"/>
     <View
             android:layout_width="fill_parent"
             android:layout_height="1dip"
@@ -61,13 +62,12 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:padding="15dp"
-                android:layout_marginLeft="20dp"
-                android:text="@string/default_remind_hour_text"/>
+                android:layout_marginLeft="20dp"/>
         <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:padding="15dp"
-                android:layout_marginLeft="15dp"
+                android:padding="8dp"
+                android:layout_marginLeft="10dp"
                 android:text="@string/remind_hour_hint"/>
         <TextView
                 android:id="@+id/remind_hour"

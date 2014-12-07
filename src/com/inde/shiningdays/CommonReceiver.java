@@ -17,24 +17,45 @@ public class CommonReceiver extends BroadcastReceiver {
 		if(Constant.SEND_NOTIFICATION.equals(action)) {
 			Bundle bundle = intent.getExtras();
 			if(bundle != null) {
-				sendNotification(context, bundle);
+				int id = bundle.getInt(CountDown._ID);
+				if(sendNotification(context, bundle, id)) {
+					CountDownEdit.deleteAlarmDataAndCancelAlarm(context, id);
+				}
 			}
 		}
 	}
 
-	private void sendNotification(Context context, Bundle bundle) {
+	private boolean sendNotification(Context context, Bundle bundle, int id) {
 		String endDate = bundle.getString(CountDown.END_DATE);
-		int id = bundle.getInt(CountDown._ID);
 		int leftDays = CountDownAppWidgetProvider.getDayDiff(endDate);
 		StringBuilder notificationTitle = new StringBuilder();
 		String title = bundle.getString(CountDown.TITLE);
-		notificationTitle.append(context.getResources().getString(R.string.leftDayLabel)).append(":").
-				append(title).
-				append(context.getResources().getString(R.string.days_status_left)).
-				append(leftDays).append(context.getResources().getString(R.string.days));
+		if(title == null || "".equals(title)) {
+			return false;
+		}
+		if(title.length() > 8) {
+			title = title.substring(0,8) + "...";
+
+		}
+		if(leftDays > 0) {
+			notificationTitle.append(context.getResources().getString(R.string.leftDayLabel)).append(" ").
+					append(title).append(" ").
+					append(context.getResources().getString(R.string.days_status_left)).
+					append(leftDays).append(context.getResources().getString(R.string.days));
+		} else if(leftDays == 0){
+			notificationTitle.append(title).append(" ").
+					append(context.getResources().getString(R.string.is_today));
+		} else {
+			leftDays *= -1;
+			notificationTitle.append(title).append(" ").append(context.getResources().
+					getString(R.string.days_status_passed_detail)).
+					append(leftDays).append(context.getResources().getString(R.string.days));
+		}
+
 		String appInfo = context.getResources().getString(R.string.app_name);
 
 		Intent intent = new Intent(context, MainActivity.class);
+		//intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		PendingIntent pendingIntent
 				= PendingIntent.getActivity(context, 0, intent, 0);
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context).
@@ -47,5 +68,7 @@ public class CommonReceiver extends BroadcastReceiver {
 
 		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.notify(id, mBuilder.build());
+
+		return true;
 	}
 }

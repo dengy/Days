@@ -78,8 +78,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/topLabel"
         android:layout_marginLeft="5dip"
-        android:maxLines="4"
-        android:maxEms="7"
+        android:maxLines="2"
+        android:maxEms="8"
         android:ellipsize="end"
         style="@style/normal"/>
 

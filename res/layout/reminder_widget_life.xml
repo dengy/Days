@@ -15,7 +15,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dip"
+        android:layout_marginLeft="5dip"
+        android:layout_marginTop="3dip"
         style="@style/day_label"/>
      
     <TextView
@@ -24,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/widget_type"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dip"
+        android:layout_marginLeft="5dip"
         android:text="@string/leftDayLabel"
         style="@style/listItemText.widget"/>
     
@@ -34,10 +35,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/widget_type"
         android:layout_toRightOf="@id/itemLeftDayLabel"
-        android:layout_marginLeft="10dip"
-        android:text="@string/app_label"
-        android:maxLines="3"
-        android:maxEms="7"
+        android:layout_marginLeft="5dip"
+        android:maxLines="1"
+        android:maxEms="@string/widget_textview_maxems"
         android:ellipsize="end"
         style="@style/listItemText.widget"/>
     
@@ -47,7 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/widget_title"
-        android:layout_marginLeft="10dip"
+        android:layout_marginLeft="5dip"
+        android:layout_marginBottom="3dip"
         android:text="@string/leftDayLabel"
         style="@style/listItemText.widget.endDate"/>
     

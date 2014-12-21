@@ -44,6 +44,7 @@ public class ItemListFragment extends Fragment{
         rootView = inflater.inflate(R.layout.countdownlist, container, false);
         Bundle bundle = this.getArguments();
 		String mType = bundle.getString(CountDown.PRIORITY);
+		String orderBy = bundle.getString(CountDown.ORDER_BY);
 		//init views
         initViews(rootView, mType);
         
@@ -60,7 +61,7 @@ public class ItemListFragment extends Fragment{
         initData();
         
         //show the list by type
-        Cursor cursor = getCursorByUri(CountDown.CONTENT_TYPE_URI, mType);
+        Cursor cursor = getCursorByUri(CountDown.CONTENT_TYPE_URI, mType, orderBy);
         
         CustomCursorAdapter itemAdapter = new CustomCursorAdapter(act, R.layout.countdownlist_item, cursor);
         list.setAdapter(itemAdapter);
@@ -210,16 +211,16 @@ public class ItemListFragment extends Fragment{
 	 * @param uri
 	 * @return
 	 */
-	private Cursor getCursorByUri(Uri uri, String mType) {
+	private Cursor getCursorByUri(Uri uri, String mType, String orderBy) {
 		//uri = Uri.withAppendedPath(uri, mType);
 		Cursor cursor = null;
 		if(getResources().getString(R.string.type_all).equals(mType)) {
 			cursor = act.managedQuery(uri, new String[] {CountDown._ID, CountDown.TITLE, CountDown.END_DATE, CountDown.PRIORITY, CountDown.WIDGET_IDS}, 
-					null, null,CountDown.DEFAULT_SORT_ORDER); 
+					null, null,orderBy);
 		} else {
 			cursor = act.managedQuery(uri, new String[] {CountDown._ID, CountDown.TITLE, CountDown.END_DATE, CountDown.PRIORITY, CountDown.WIDGET_IDS}, 
 					CountDown.PRIORITY + "=?", new String[]{mType},
-		                CountDown.DEFAULT_SORT_ORDER); 
+					orderBy);
 		}
 
 		return cursor;
@@ -323,7 +324,7 @@ public class ItemListFragment extends Fragment{
 				}
 		    	viewHolder.daysView.setText(daysDiff + "");
 			} else {				
-		    	viewHolder.daysView.setText("ЁЖ╢Мак");
+		    	viewHolder.daysView.setText("О©╫О©╫О©╫О©╫О©╫О©╫");
 			}
 		}
 		

@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent">
+<LinearLayout
   	android:layout_width="match_parent" 
     android:layout_height="match_parent"
     android:orientation="vertical">
+
    <RelativeLayout 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:focusableInTouchMode="true"
     style="@style/MyActionBar">
-    
-    <!--  <Button 
-    android:id="@+id/add_cancel"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
-    android:layout_centerVertical="true"
-    android:layout_marginLeft="5dip"
-    android:background="@drawable/cancel"/>  -->
 
     <Button
     android:id="@+id/add_cancel"
@@ -69,8 +62,9 @@
         android:id="@+id/title"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:maxLines="6"
-        android:maxEms="20"
+        android:maxLines="4"
+        android:maxEms="10"
+        android:ellipsize="end"
         android:layout_toLeftOf="@+id/arrow_title"/>
     
     <ImageView
@@ -174,7 +168,47 @@
        android:textOff="否"
        android:layout_alignParentRight="true"/>
       </RelativeLayout>
-      
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:paddingTop="12dip"
+            android:paddingBottom="12dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/edit_item_bg_middle_selector"
+            android:id="@+id/remind_setting_row">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/remind_label"
+                android:layout_alignParentLeft="true"/>
+
+        <TextView
+                android:id="@+id/remind_setting"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:visibility="gone"/>
+
+        <TextView
+                android:id="@+id/remind_setting_show"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/remind_default"
+                android:layout_toLeftOf="@+id/arrow_remind"/>
+
+        <ImageView
+                android:id="@+id/arrow_remind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/p_arrow_r"
+                android:layout_marginLeft="5dip"
+                android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
    <RelativeLayout 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -196,9 +230,9 @@
         android:id="@+id/remark"
         android:singleLine="false"
         android:gravity="top"
-        android:minLines="3"
+        android:minLines="2"
    	    android:maxLines="6"
-        android:lines="3"
+        android:lines="6"
         android:textSize="14sp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -242,6 +276,7 @@
     android:paddingBottom="12dip"
     android:layout_marginLeft="10dip"
     android:layout_marginRight="10dip"
+    android:layout_marginBottom="10dip"
     android:background="@drawable/edit_row_bg_bottom">
     <Button
     android:id="@+id/delete_action"
@@ -334,4 +369,6 @@
     </TableRow>
     </TableLayout>
     -->
+
 </LinearLayout>
+</ScrollView>

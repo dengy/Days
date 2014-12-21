@@ -1,91 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-  	android:layout_width="match_parent" 
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_widget"
-    android:id="@+id/reminderWidget">
-    
-    <RelativeLayout 
-     android:layout_width="wrap_content"
-     android:layout_height="fill_parent"
-     android:gravity="center"
-     android:layout_alignParentLeft="true">
-     <TextView
-        android:id="@+id/widget_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dip"
-        style="@style/day_label"/>
-     
-    <TextView
-        android:id="@+id/itemLeftDayLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/widget_type"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dip"
-        android:text="@string/leftDayLabel"
-        style="@style/listItemText.widget"/>
-    
-    <TextView
-        android:id="@+id/widget_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/widget_type"
-        android:layout_toRightOf="@id/itemLeftDayLabel"
-        android:layout_marginLeft="10dip"
-        android:text="@string/app_label"
-        android:maxLines="1"
-        android:ellipsize="end"
-        style="@style/listItemText.widget"/>
-    
-    <TextView
-        android:id="@+id/widget_end_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/widget_title"
-        android:layout_marginLeft="10dip"
-        android:text="@string/leftDayLabel"
-        style="@style/listItemText.widget.endDate"/>
-    
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_widget"
+                android:id="@+id/reminderWidget">
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:layout_alignParentLeft="true">
+        <TextView
+                android:id="@+id/widget_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dip"
+                android:layout_marginTop="3dip"
+                style="@style/day_label"/>
+
+        <TextView
+                android:id="@+id/itemLeftDayLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/widget_type"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dip"
+                android:text="@string/leftDayLabel"
+                style="@style/listItemText.widget"/>
+
+        <TextView
+                android:id="@+id/widget_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/widget_type"
+                android:layout_toRightOf="@id/itemLeftDayLabel"
+                android:layout_marginLeft="5dip"
+                android:maxLines="1"
+                android:maxEms="@string/widget_textview_maxems"
+                android:ellipsize="end"
+                style="@style/listItemText.widget"/>
+
+        <TextView
+                android:id="@+id/widget_end_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/widget_title"
+                android:layout_marginLeft="5dip"
+                android:layout_marginBottom="3dip"
+                android:text="@string/leftDayLabel"
+                style="@style/listItemText.widget.endDate"/>
+
     </RelativeLayout>
     <RelativeLayout
-        android:layout_height="fill_parent"
-        android:layout_width="wrap_content"
-        android:padding="10dip"
-        android:gravity="center"
-        android:layout_alignParentRight="true"
-        android:id="@+id/daysLayout"
-        android:background="@drawable/widget_days_bg_study">
-    
-    <TextView
-        android:id="@+id/days"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dip"
-        android:layout_alignParentLeft="true"
-        style="@style/widgetDaysText"/>
-    
-    <TextView
-        android:id="@+id/days_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/days"
-        android:layout_alignBaseline="@+id/days"
-        android:text="@string/days"
-        style="@style/widgetDaysLabelText"/>
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:padding="10dip"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:id="@+id/daysLayout"
+            android:background="@drawable/widget_days_bg_study">
+
+        <TextView
+                android:id="@+id/days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dip"
+                android:layout_alignParentLeft="true"
+                style="@style/widgetDaysText"/>
+
+        <TextView
+                android:id="@+id/days_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/days"
+                android:layout_alignBaseline="@+id/days"
+                android:text="@string/days"
+                style="@style/widgetDaysLabelText"/>
     </RelativeLayout>
-    
+
 
     <TextView
-        android:id="@+id/itemLeftDayStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_toLeftOf="@id/daysLayout"
-        android:gravity="center"
-        android:paddingLeft="5dip"
-        android:paddingRight="5dip"
-        style="@style/listItemText.widget.leftStatus"/>
+            android:id="@+id/itemLeftDayStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_toLeftOf="@id/daysLayout"
+            android:gravity="center"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            style="@style/listItemText.widget.leftStatus"/>
 </RelativeLayout>

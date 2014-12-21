@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView 
+        android:id="@+id/confirmTitle"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="10dip"
+        android:text="@string/remind_setting_title"
+        android:gravity="center"
+        style="@style/dialogTitle"/>
+
+    <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:padding="15dp"
+            android:layout_marginLeft="20dp"
+            android:text="@string/remind_label1"/>
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@drawable/gray">
+    </View>
+
+    <EditText
+            android:id="@+id/remind_day"
+            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:inputType="number"
+            android:text="@string/default_remind_day"/>
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@drawable/gray">
+    </View>
+    <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:padding="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/days"/>
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@drawable/gray">
+    </View>
+
+    <LinearLayout
+            android:id="@+id/remind_hour_layout"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:background="@drawable/remind_setting_bg_selector">
+        <TextView
+                android:id="@+id/remind_hour_show_text"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:padding="15dp"
+                android:layout_marginLeft="20dp"/>
+        <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:padding="8dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/remind_hour_hint"/>
+        <TextView
+                android:id="@+id/remind_hour"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/default_remind_hour"
+                android:visibility="gone"/>
+    </LinearLayout>
+
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@drawable/gray">
+    </View>
+    <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:padding="15dp"
+            android:layout_marginLeft="20dp"
+            android:text="@string/remind_by_notification"/>
+
+</LinearLayout>

@@ -123,7 +123,9 @@ public class UpdateWidgetService extends Service {
         // Schedule the alarm!
 		long l = SystemClock.elapsedRealtime();
         AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);
+        //firstly, cancel the old alarm
         am.cancel(sender);
+        //secondly, create a new one
         am.setRepeating(AlarmManager.RTC_WAKEUP,
         		l, AlarmManager.INTERVAL_DAY, sender);
 	}

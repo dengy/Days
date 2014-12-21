@@ -47,7 +47,7 @@
      -->
     <string name="operationSuccess">操作成功!</string>
     <string name="deleteError">删除数据失败!</string>
-    <string name="days">&#160;天&#160;</string>
+    <string name="days">天</string>
     <!-- 
     <string name="hours">时</string>
     <string name="minutes">分</string>
@@ -92,6 +92,7 @@
     <string name="help_hint3">3.编辑页面可分享事件至微信,QQ</string>
     <string name="noDataForWidget">提示:没有正在运行的任务!</string>
     <string name="top_label">置顶</string>
+    <string name="remind_label">提醒</string>
     <string name="drawer_open">打开导航抽屉</string>
     <string name="drawer_close">关闭导航抽屉</string>
     <string name="action_add">添加</string>
@@ -131,6 +132,7 @@
     <string name="init_data_title">新年</string>
     <string name="days_status_left">还有</string>
     <string name="days_status_passed">已经</string>
+    <string name="days_status_passed_detail">已经过了</string>
     
     <string name="delete_task_confirm">确定删除此事件?</string>
     <string name="delete_type_with_tasks_confirm">该分类有关联事件，删除后，事件将保留，分类被置为:生活，是否继续?</string>
@@ -145,4 +147,28 @@
 
     <string name="share_succ">分享成功</string>
     <string name="share_fail">分享失败</string>
+    <string name="share_from">来自</string>
+
+    <string name="sort_end_date_asc">排序:即将发生</string>
+    <string name="sort_update_date_desc">排序:最新创建</string>
+
+    <!--remind相关 start-->
+    <string name="remind_default">无提醒</string>
+
+    <string name="remind_setting_title">提醒设置</string>
+    <string name="remind_label1">提前</string>
+    <string name="remind_label2">天,于</string>
+    <string name="remind_label3">点通知</string>
+    <string name="notification_from">来自闪亮的日子应用</string>
+    <string name="remind_by_notification">通过通知提醒</string>
+    <string name="default_remind_day">1</string>
+    <string name="default_remind_hour">9:00</string>
+    <string name="at_remind_hour">于</string>
+    <string name="remind_hour_hint">(点击此处修改)</string>
+
+    <string name="select_hour_dialog">提醒时间</string>
+    <!--remind相关 end-->
+
+    <string name="is_today">就是今天</string>
+    <string name="widget_textview_maxems">7</string>
 </resources>

@@ -5,57 +5,38 @@
     android:background="@drawable/list_item_bg_selector"
     android:padding="1dip">
     <TextView
-        android:id="@+id/itemLeftDayLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dip"
-        android:text="@string/leftDayLabel"
-        style="@style/listItemText"/>
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_toRightOf="@id/itemLeftDayLabel"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dip"
-        android:text="@string/app_label"
-        android:maxLines="1"
-        android:ellipsize="end"
-        style="@style/listItemText"/>
-    
-    <!-- <CheckBox android:id="@+id/finish"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:focusable="false"
-            android:visibility="gone"/>
-
-	<ImageView
-	        android:id="@+id/remindBellImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/alarm"
-            android:layout_below="@id/title"
             android:layout_alignParentLeft="true"
-            android:visibility="gone"/>
+            android:id="@+id/itemLeftDayLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="5dip"
+            android:layout_centerVertical="true"
+            android:text="@string/leftDayLabel"
+            style="@style/listItemText"
+            />
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@+id/itemLeftDayLabel"
+            android:layout_marginLeft="5dip"
+            android:layout_centerVertical="true">
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:maxLines="1"
+                android:maxEms="8"
+                android:ellipsize="end"
+                style="@style/listItemText"/>
 
-    <TextView
-        android:id="@+id/enddate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_label"
-        android:layout_alignParentRight="true"
-        android:visibility="gone"/> -->
+    </LinearLayout>
     
     <LinearLayout 
     android:id="@+id/countdownLayout"
     android:layout_width="wrap_content" 
     android:layout_height="fill_parent"
     android:orientation="horizontal"
-    android:layout_alignParentRight="true">  
+    android:layout_alignParentRight="true">
     <!-- 
     <TextView
         android:layout_width="wrap_content"
@@ -88,57 +69,7 @@
         android:text="@string/days"
         android:gravity="center"
         style="@style/listItemLeftDayLabel"/>
-    
-    <!-- 
-    
-    <TextView
-        android:id="@+id/hours"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        style="@style/timeTextForList"/>
-    
-    <TextView
-        android:id="@+id/hours_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hours"
-        android:visibility="gone"
-        style="@style/micro"/>
-    
-    <TextView
-        android:id="@+id/minutes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        style="@style/timeTextForList"/>
-    
-    <TextView
-        android:id="@+id/minutes_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/minutes"
-        android:visibility="gone"
-        style="@style/micro"/> -->
         
     </LinearLayout>
-    
-    <!-- 
-    <TextView
-        android:id="@+id/itemLeftDayStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_toLeftOf="@id/countdownLayout"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="5dip"
-        style="@style/listItemText"/>
-    -->
-    <!-- <TextView
-        android:id="@+id/expire"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/finish"
-        android:layout_below="@id/title"
-        android:visibility="gone"
-        style="@style/expireText"/> -->
+
 </RelativeLayout>

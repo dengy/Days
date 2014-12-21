@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/sort_update_date_desc"
+          android:title="@string/sort_update_date_desc"
+          android:showAsAction="ifRoom|withText"
+          android:icon="@drawable/umeng_socialize_oauth_check_on"/>
+    <item android:id="@+id/sort_end_date_asc"
+          android:title="@string/sort_end_date_asc"
+          android:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_setting"
+          android:title="@string/menu_more_title"
+          android:showAsAction="ifRoom|withText"/>
+</menu>

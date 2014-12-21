@@ -1,17 +1,13 @@
 package com.inde.shiningdays;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
+import android.app.*;
 import android.appwidget.AppWidgetManager;
-import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,6 +40,7 @@ import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
+import org.w3c.dom.Text;
 
 public class CountDownEdit extends Activity implements OnClickListener {
 	
@@ -77,7 +74,9 @@ public class CountDownEdit extends Activity implements OnClickListener {
     private TextView endDateTextView;
 //    private TextView endTimeTextView;
 //    private TextView remindDateTextView;
-//    private TextView reminderTextView;
+	private TextView remindSettingTextView;
+	private TextView remindSettingShowTextView;
+	private View remindSettingDialog;
     private TextView remarkEditText;
     private Switch topSwitch;
     private int topSwitchText;
@@ -156,15 +155,16 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		titleTextView = (TextView)findViewById(R.id.title);
 		titleTextView.setOnClickListener(this);
 		priorityTextView = (TextView)findViewById(R.id.priority);
-		priorityTextView.setOnClickListener(this);
+		//priorityTextView.setOnClickListener(this);
 		endDateTextView = (TextView)findViewById(R.id.enddate);
-		endDateTextView.setOnClickListener(this);
+		//endDateTextView.setOnClickListener(this);
 		//endTimeTextView = (TextView)findViewById(R.id.endtime);
 		//endTimeTextView.setOnClickListener(this);
 		//remindDateTextView = (TextView)findViewById(R.id.remindFromDate);
 		//remindDateTextView.setOnClickListener(this);
-		//reminderTextView = (TextView)findViewById(R.id.reminder);
-		//reminderTextView.setOnClickListener(this);
+		remindSettingTextView = (TextView)findViewById(R.id.remind_setting);
+		remindSettingShowTextView = (TextView)findViewById(R.id.remind_setting_show);
+		//remindTextView.setOnClickListener(this);
 		remarkEditText = (EditText)findViewById(R.id.remark);
 		topSwitch = (Switch)findViewById(R.id.topSwitch);
 		
@@ -194,8 +194,9 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		findViewById(R.id.title_row).setOnClickListener(this);
 		findViewById(R.id.type_row).setOnClickListener(this);
 		findViewById(R.id.enddate_row).setOnClickListener(this);
+		findViewById(R.id.remind_setting_row).setOnClickListener(this);
 		
-     //参数1为当前Activity， 参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
+     //????1????Activity?? ????2?????????QQ?????????APP ID??????3?????????QQ?????????APP kEY.
 //       UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "100424468",
 //                       "c7394704798a158208a74ab60104f0ba");
 //       qqSsoHandler.addToSocialSDK();  
@@ -257,6 +258,16 @@ public class CountDownEdit extends Activity implements OnClickListener {
                 } else {
                 	topSwitch.setChecked(false);
                 }
+
+				String remindSetting = mCursor.getString(mCursor.getColumnIndex(CountDown.REMIND_DATE));
+				if(remindSetting != null) {
+					String[] arr = remindSetting.split(";");
+					if(arr.length == 2) {
+						remindSettingTextView.setText(remindSetting);
+						remindSettingShowTextView.setText(getRemindSettingShowText(arr[0], arr[1]));
+					}
+
+				}
             }
         } else {
         	Toast.makeText(getApplicationContext(), R.string.loadDataError, Toast.LENGTH_SHORT).show();
@@ -378,6 +389,114 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		d.setCanceledOnTouchOutside(true);//cancel window when touch outside
 		d.show();
 	}
+
+	private void remindSettingDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// Get the layout inflater
+		LayoutInflater inflater = this.getLayoutInflater();
+		remindSettingDialog = inflater.inflate(R.layout.remind_setting_dialog, null);
+		String remindSetting = remindSettingTextView.getText().toString();
+		final EditText remindDayEditText = (EditText)remindSettingDialog.findViewById(R.id.remind_day);
+		final TextView remindHourTextView = (TextView)remindSettingDialog.findViewById(R.id.remind_hour);
+		final TextView remindHourShowText = (TextView)remindSettingDialog.findViewById(R.id.remind_hour_show_text);
+		remindHourShowText.setText(this.getRemindHourShowText(this, getResources().
+				getString(R.string.default_remind_hour).toString()));
+		if(remindSetting != null && !"".equals(remindSetting)) {
+			String[] arr = remindSetting.split(";");
+			if(arr.length == 2) {
+				remindDayEditText.setText(arr[0]);
+				remindHourTextView.setText(arr[1]);
+				remindHourShowText.setText(this.getRemindHourShowText(this, arr[1]));
+			}
+		}
+		remindSettingDialog.findViewById(R.id.remind_hour_layout).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				timePicker(remindHourTextView, remindHourShowText);
+				remindDayEditText.clearFocus();
+			}
+		});
+		builder.setView(remindSettingDialog).setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				if (remindDayEditText.getText() == null || "".equals(remindDayEditText.getText().toString())) {
+					remindDayEditText.setText(getResources().getString(R.string.default_remind_day));//default = 1
+				}
+				remindSettingTextView.setText(remindDayEditText.getText() + ";" + remindHourTextView.getText());
+				remindSettingShowTextView.setText(getRemindSettingShowText(remindDayEditText.getText().toString(),
+						remindHourTextView.getText().toString()));
+
+			}
+		}).setNegativeButton(R.string.go_back_label, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
+
+		Dialog d = builder.create();
+		d.setCanceledOnTouchOutside(false);
+		d.show();
+	}
+
+	/**
+	private void showHourDialog() {
+		int checkedIndex = 0;
+		final String[] hours = getResources().getStringArray(R.array.remind_hours_array);
+
+		LayoutInflater inflater = this.getLayoutInflater();
+		final View layout = inflater.inflate(R.layout.remind_setting_dialog, null);
+		final TextView remindHourTextView = (TextView)layout.findViewById(R.id.remind_hour);
+		final TextView remindHourShowText = (TextView)layout.findViewById(R.id.remind_hour_show_text);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.select_hour_dialog).
+				setSingleChoiceItems(hours, checkedIndex, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						priorityTextView.setText(hours[which]);
+
+						dialog.dismiss();
+					}
+				});
+
+		Dialog d = builder.create();
+		d.setCanceledOnTouchOutside(true);//cancel window when touch outside
+		d.show();
+	}**/
+
+	private String getRemindSettingShowText(String day, String hour) {
+		return getResources().getString(R.string.remind_label1) + day +
+				getResources().getString(R.string.remind_label2)+ hour +
+				getResources().getString(R.string.remind_label3);
+	}
+
+
+	/**
+	private void remindDialog() {
+		String currentRemind = remindTextView.getText().toString();
+		final String[] remindArray = this.getResources().getStringArray(R.array.remind);
+		int checkedIndex = 0;
+		for (int i = 0; i < remindArray.length; i++) {
+			if(currentRemind != null && currentRemind.equals(remindArray[i])) {
+				checkedIndex = i;
+				break;
+			}
+		}
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.select_type_dialog).
+				setSingleChoiceItems(remindArray, checkedIndex, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						remindTextView.setText(remindArray[which]);
+						dialog.dismiss();
+					}
+				});
+
+		Dialog d = builder.create();
+		d.setCanceledOnTouchOutside(true);//cancel window when touch outside
+		d.show();
+	}**/
 	
 //	private void bellDialog() {
 //		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -528,39 +647,27 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	/**
 	 * show timepicker dialog, unused 
 	 */
-	private void timePicker(int id) {
-		String endDate = endDateTextView.getText().toString();
-		if(endDate == null || "".equals(endDate)) {
-			//Toast.makeText(getApplicationContext(), R.string.endTimeWithoutEndDate, Toast.LENGTH_SHORT).show();
-			return;
-		}
+	private void timePicker(final TextView remindHourTextView, final TextView remindHourShowText) {
+		//LayoutInflater inflater = this.getLayoutInflater();
+		 //inflater.inflate(R.layout.remind_setting_dialog, null);
+		//final TextView remindHourTextView = (TextView)remindSettingDialog.findViewById(R.id.remind_hour);
+		//final TextView remindHourShowText = (TextView)remindSettingDialog.findViewById(R.id.remind_hour_show_text);
+
 		// Use the current time as the default values for the picker
 		int hour = 0;
 		int minute = 0;
 		
-		final TextView timeTextView = (TextView)findViewById(id);
-		String time = timeTextView.getText().toString();
+		//final TextView timeTextView = (TextView)findViewById(id);
+		String time = remindHourTextView.getText().toString();
 		
 		boolean flag = false;//time has some wrong,then choose current time
 		if(time != null && !"".equals(time)) {
-			/*String[] str1 = time.split(" ");
-			if(str1.length != 2) {
+			String[] arr = time.split(":");
+			if(arr.length != 2) {
 				flag = true;
 			} else {
-				String[] str2 = str1[0].split(":");
-				if(str2.length != 2) {
-					flag = true;
-				} else {
-					hour = Integer.parseInt(str2[0]);
-					minute = Integer.parseInt(str2[1]);
-				}
-			}*/
-			String[] str2 = time.split(":");
-			if(str2.length != 2) {
-				flag = true;
-			} else {
-				hour = Integer.parseInt(str2[0]);
-				minute = Integer.parseInt(str2[1]);
+				hour = Integer.parseInt(arr[0]);
+				minute = Integer.parseInt(arr[1]);
 			}
 		} else {
 			flag = true;
@@ -578,16 +685,8 @@ public class CountDownEdit extends Activity implements OnClickListener {
 //		final DateFormat df3 = DateFormat.getTimeInstance(DateFormat.LONG);
         // Create a new instance of TimePickerDialog and return it
         new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-
 			@Override
 			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//				Calendar cal = Calendar.getInstance();
-//				cal .set(Calendar.HOUR_OF_DAY , hourOfDay);
-//				cal .set(Calendar.MINUTE , minute);
-				//update enddate textview
-				
-//				String d1 = df1.format(cal.getTime());
-//				String
 				StringBuilder sb = new StringBuilder();
 				sb.append(hourOfDay).append(":");
 				if(minute < 10) {
@@ -595,11 +694,16 @@ public class CountDownEdit extends Activity implements OnClickListener {
 				} else {
 					sb.append(minute);
 				}
-				
-				timeTextView.setText(sb.toString());
+
+				remindHourTextView.setText(sb.toString());
+				remindHourShowText.setText(getRemindHourShowText(view.getContext(), sb.toString()));
 			}
         	
         }, hour, minute,true).show();
+	}
+
+	private String getRemindHourShowText(Context context, String content) {
+		return context.getResources().getString(R.string.at_remind_hour) + content;
 	}
 	
 	
@@ -636,7 +740,12 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			values.put(CountDown.PRIORITY, priorityTextView.getText().toString());
 			values.put(CountDown.END_DATE, endDate);
 //			values.put(CountDown.END_TIME, StringUtil.underLineFilter(endTimeTextView.getText().toString()));
-//			values.put(CountDown.REMIND_DATE, StringUtil.underLineFilter(remindDateTextView.getText().toString()));
+			String remindSetting = remindSettingTextView.getText().toString();
+			String remindSettingShowText = remindSettingShowTextView.getText().toString();
+			if(remindSetting != null && !"".equals(remindSetting) &&
+					!getResources().getString(R.string.remind_default).equals(remindSettingShowText)) {
+				values.put(CountDown.REMIND_DATE, remindSetting);
+			}
 //			values.put(CountDown.REMIND_BELL, reminderTextView.getText().toString());
 			values.put(CountDown.TOP_INDEX, topSwitchText);
 			if(Constant.TOP_SWITCH_ON.equals(topSwitchText)) {
@@ -646,18 +755,14 @@ public class CountDownEdit extends Activity implements OnClickListener {
 				//first, update all the data topindex with value:0, then update current data topindex with value:1
 				updateAllData(contentValues2);
 			}
-//			if(remindBellSlipButton.isChecked()) {
-//				values.put(CountDown.REMIND_BELL, CountDown.DEFAUL_BELL);
-//			} else {
-//				values.put(CountDown.REMIND_BELL, "");
-//			}
+
 			values.put(CountDown.REMARK, remarkEditText.getText().toString());
 			values.put(CountDown.CREATED_DATE, System.currentTimeMillis());//created time
 			
 			int count = getContentResolver().update(mUri, values, null, null);
 			if(count == 1) {
 	            //set countdown reminder
-//	            setCountDownReminder();
+	            setCountDownReminder();
 	            
 	            if(mState == STATE_EDIT) {
 	            	//update widget 
@@ -674,6 +779,36 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			
 		}
 		
+	}
+
+	private String getRemindDate(String remindSetting, String endDate) {
+		String[] arr = remindSetting.split(";");
+		String result = null;
+		if(arr.length == 2) {
+			try{
+				int day = Integer.parseInt(arr[0]);
+				String[] hourArr = arr[1].split(":");
+				int hour = 0;
+				int minute = 0;
+				if(hourArr.length == 2) {
+					hour = Integer.parseInt(hourArr[0]);
+					minute = Integer.parseInt(hourArr[1]);
+				}
+
+				Calendar cal = Calendar.getInstance();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				cal.setTime(sdf.parse(endDate));
+				cal.add(Calendar.DATE, -day);
+				long time = cal.getTimeInMillis() + hour * 60 * 60 * 1000 + minute * 60 * 1000;
+				cal.setTimeInMillis(time);
+				Date dateBefore = cal.getTime();
+				sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				result = sdf.format(dateBefore);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
 	}
 	
 	/**
@@ -752,6 +887,10 @@ public class CountDownEdit extends Activity implements OnClickListener {
 					this.sendBroadcast(intent);
 				}
 			}
+
+			//cancel relative remind
+			Integer id = cursor.getInt(cursor.getColumnIndex(CountDown._ID));
+			deleteAlarmDataAndCancelAlarm(this , id);
 		}
 		
 		return result;
@@ -770,129 +909,98 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	/**
 	 * set countdown reminder
 	 */
-//	private void setCountDownReminder() {
-//		if(mCursor != null && mCursor.moveToFirst()) {
-//			Integer _ID = Integer.parseInt(mCursor.getString(mCursor.getColumnIndex(CountDown._ID)));
-////			Integer _ID = mCursor.getInt(mCursor.getColumnIndex(CountDown._ID));
-//			String title = titleTextView.getText().toString();
-//			String endDate = endDateTextView.getText().toString();
-//			String endTime = StringUtil.underLineFilter(endTimeTextView.getText().toString());
-//			String remindDate = StringUtil.underLineFilter(remindDateTextView.getText().toString());
-//			String reminder = reminderTextView.getText().toString();
-//			
-//		    Calendar calendar = Calendar.getInstance();
-//		    if(endDate != null && !"".equals(endDate)) {
-//		    	
-//		    	String[] date = endDate.split("-");
-//		    	if(date.length == 3) {
-//		    		if(endTime != null && !"".equals(endTime)) {
-//				    	String[] time = endTime.split(":");
-//				    	if(time.length == 2) {
-//			    			calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]),
-//			        				Integer.parseInt(time[0]), Integer.parseInt(time[1]));
-//			    		}
-//
-//				  } else {
-////					    calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]),
-////		        				0, 0);
-//					    calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
-//				  }
-//		    	}			    	
-//		    	 
-////		    	//set countdown reminder
-////
-////				Intent intent = new Intent(this, AlarmReceiver.class);
-////				
-////				//transfer data to receiver
-////				Bundle extras = new Bundle();
-////				extras.putInt(CountDown._ID, _ID);
-////				extras.putString(CountDown.TITLE, title);
-////				extras.putString(CountDown.REMIND_BELL, reminder);
-////				extras.putString(CountDown.END_DATE, endDate);
-////				
-////				intent.putExtras(extras);
-//				
-//		        PendingIntent sender = PendingIntent.getBroadcast(this,
-//		        		_ID, setIntentForAlarm(this, _ID, title, reminder ,endDate), 
-//		        		PendingIntent.FLAG_UPDATE_CURRENT);
-//		        // Schedule the alarm!
-//		        AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
-//		        long firstTime = 0;//remind time
-//		        if(remindDate == null || "".equals(remindDate)) {
-//		        	 firstTime = calendar.getTimeInMillis();
-//		        	 am.set(AlarmManager.RTC_WAKEUP, firstTime, sender);
-//		        } else {
-//		        	String[] str = remindDate.split("-");
-//		        	if(str.length == 3) {
-//		        		Calendar remind = Calendar.getInstance();
-//		        		remind.set(Integer.parseInt(str[0]), Integer.parseInt(str[1]) -1, Integer.parseInt(str[2]),
-//		        				11, 50, 0);
-//		        		
-//		        		System.out.println(remind.getTime().toLocaleString());
-//		        		System.out.println(calendar.getTime().toLocaleString());
-//		        		
-//		        		long currentTime = System.currentTimeMillis();
-//		        		long remindTime = remind.getTimeInMillis();
-//		        		long endDateTime = calendar.getTimeInMillis();
-//		        		
-//		        		if(endDateTime < remindTime) {
-////		        			firstTime = endDateTime - currentTime ;
-//		        			firstTime = endDateTime;
-//		        		}else {
-////		        			firstTime = remindTime - currentTime ;
-//		        			firstTime = remindTime;
-//		        		}
-//		        		
-//		        		//remind every day from remindDate to endDate
-//			            am.setRepeating(AlarmManager.RTC_WAKEUP,
-//			            		firstTime, AlarmManager.INTERVAL_DAY, sender);
-//			            
-//		        	}
-//		        }
-//		        
-//		        //save alarm data for boot_up
-//		        saveAlarmData(_ID, true, firstTime, title, reminder, endDate);
-//
-//		    }
-//		}
-//		
-//	}
-	
-//	public static Intent setIntentForAlarm(Context context , int _ID, String title, String reminder, String endDate) {
-//		Intent intent = new Intent(context, AlarmReceiver.class);
-//		
-//		//transfer data to receiver
-//		Bundle extras = new Bundle();
-//		extras.putInt(CountDown._ID, _ID);
-//		extras.putString(CountDown.TITLE, title);
-//		extras.putString(CountDown.REMIND_BELL, reminder);
-//		extras.putString(CountDown.END_DATE, endDate);
-//		
-//		intent.putExtras(extras);
-//		
-//		return intent;
-//	} 
+	private void setCountDownReminder() {
+		if(mCursor != null && mCursor.moveToFirst()) {
+			String remindSetting = remindSettingTextView.getText().toString();
+			if(remindSetting == null || "".equals(remindSetting)) {
+				return;
+			}
+			Integer _ID = Integer.parseInt(mCursor.getString(mCursor.getColumnIndex(CountDown._ID)));
+			String title = titleTextView.getText().toString();
+			String endDate = endDateTextView.getText().toString();
+			String remindDate = getRemindDate(remindSetting, endDate);
+			if(remindDate == null || "".equals(remindDate)) {
+				return;
+			}
+
+			//set alarm
+			PendingIntent sender = PendingIntent.getBroadcast(this,
+					_ID, setIntentForAlarm(this, _ID, title, endDate),
+					PendingIntent.FLAG_UPDATE_CURRENT);
+			AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+			//firstly, cancel the old one
+			am.cancel(sender);
+			//secondly, create a new one
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Date d = sdf.parse(remindDate);
+				long triggerTime = sdf.parse(remindDate).getTime();
+				am.set(AlarmManager.RTC_WAKEUP, triggerTime, sender);
+				//am.setExact(AlarmManager.RTC_WAKEUP, triggerTime, sender);
+
+				//save alarm data for recreate alarms after rebooted
+				saveAlarmData(_ID, triggerTime, title, endDate);
+			} catch (ParseException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+
+	public static Intent setIntentForAlarm(Context context , int _ID, String title, String endDate) {
+		Intent intent = new Intent(Constant.SEND_NOTIFICATION);
+		intent.setClass(context, CommonReceiver.class);
+
+		//transfer data to receiver
+		Bundle extras = new Bundle();
+		extras.putInt(CountDown._ID, _ID);
+		extras.putString(CountDown.TITLE, title);
+		extras.putString(CountDown.END_DATE, endDate);
+
+		intent.putExtras(extras);
+		return intent;
+	}
 	
 	/**
 	 * save alarm data for system boot-up
 	 * @param _ID
-	 * @param remindDate
-	 * @param firstTime
+	 * @param triggerTime
+	 * @param title
+	 * @param endDate
 	 */
-	/**private void saveAlarmData(int _ID, boolean remindDate, long firstTime,
-			String title, String reminder, String endDate) {
+	private void saveAlarmData(int _ID , long triggerTime,
+			String title , String endDate) {
 		SharedPreferences.Editor prefs = this.getSharedPreferences(Constant.ALARM_DATA_FILE, Context.MODE_PRIVATE).edit();
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(_ID).append(Constant.SPLIT_SEMICOLON).append(remindDate).
-		append(Constant.SPLIT_SEMICOLON).append(firstTime).append(Constant.SPLIT_SEMICOLON);
-		sb.append(title).append(Constant.SPLIT_SEMICOLON).append(reminder).
-		append(Constant.SPLIT_SEMICOLON).append(endDate);
+		sb.append(_ID).append(Constant.SPLIT_SEMICOLON).
+				append(triggerTime).append(Constant.SPLIT_SEMICOLON).
+				append(title).append(Constant.SPLIT_SEMICOLON).append(endDate);
 		
-		prefs.putString(StringUtil.appendAppWidgetId(CountDown._ID, _ID), sb.toString());
-		
+		prefs.putString(Utils.appendAppWidgetId(CountDown._ID, _ID), sb.toString());
 		prefs.commit();
-	}**/
+	}
+
+	 public static void deleteAlarmDataAndCancelAlarm(Context context, int id) {
+		//delete alarm data
+		SharedPreferences prefs = context.getSharedPreferences(Constant.ALARM_DATA_FILE,
+				Context.MODE_PRIVATE);
+		String title = prefs.getString(CountDown.TITLE, "");
+		String endDate = prefs.getString(CountDown.END_DATE, "");
+		//remove
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.remove(Utils.appendAppWidgetId(CountDown._ID, id));
+		editor.commit();
+
+		//cancel alarm
+		PendingIntent sender = PendingIntent.getBroadcast(context,
+				id, setIntentForAlarm(context, id, title, endDate),
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		AlarmManager am = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
+		am.cancel(sender);
+
+
+
+	}
 	
 	/**
 	 * sync the data in the prefs file with the updated data (for widgets)
@@ -935,94 +1043,95 @@ public class CountDownEdit extends Activity implements OnClickListener {
 	}
 	
 	private void shareAction () {
-		// 首先在您的Activity中添加如下成员变量
+		// ?????????Activity???????????????
         mController = UMServiceFactory.getUMSocialService("com.umeng.share");
-       // 设置分享内容
+       // ???锟斤拷???????
         StringBuilder shareContent = new StringBuilder();
         int topLeftDays = CountDownAppWidgetProvider.getDayDiff(endDateTextView.getText() + "");
 		if(topLeftDays < 0) {
 			topLeftDays*=-1;
-			shareContent.append(titleTextView.getText()).append("  ");
-			shareContent.append(getResources().getString(R.string.days_status_passed));
+			shareContent.append(titleTextView.getText()).append(" ");
+			shareContent.append(getResources().getString(R.string.days_status_passed_detail));
 		} else {
-			shareContent.append(getResources().getString(R.string.leftDayLabel));
-			shareContent.append(titleTextView.getText()).append("  ");
+			shareContent.append(getResources().getString(R.string.leftDayLabel)).append(" ");
+			shareContent.append(titleTextView.getText()).append(" ");
 			shareContent.append(getResources().getString(R.string.days_status_left));
 		}
 		shareContent.append(topLeftDays).append(getResources().getString(R.string.days));
 		
         //mController.setShareContent(shareContent.toString());
-       // 设置分享图片, 参数2为图片的url地址
+       // ???锟斤拷?????, ????2?????url???
 		UMImage umimage = new UMImage(this, R.drawable.ic_launcher);
-		String shareTitle = "来自" + getResources().getString(R.string.app_label) + "应用";
+		String shareTitle = getResources().getString(R.string.share_from) +
+				getResources().getString(R.string.app_label);
 		String targetUrl = "http://app.mi.com/detail/71268";
         //mController.setShareMedia(umimage);
        
-	   //############分享到QQ空间 开始#################
-	   //参数1为当前Activity， 参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
+	   //############????QQ??? ???#################
+	   //????1????Activity?? ????2?????????QQ?????????APP ID??????3?????????QQ?????????APP kEY.
        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this, "1102297892","OatpCSNxVdJpCinS");
        QZoneShareContent qzone = new QZoneShareContent();
-       //设置分享文字
+       //???锟斤拷???????
        qzone.setShareContent(shareTitle);
-       //设置点击消息的跳转URL
+       //??????????????URL
        qzone.setTargetUrl(targetUrl);
-       //设置分享内容的标题
+       //???锟斤拷???????????
        qzone.setTitle(shareContent.toString());
-       //设置分享图片
+       //???锟斤拷?????
        qzone.setShareImage(umimage);
        mController.setShareMedia(qzone);
        qZoneSsoHandler.addToSocialSDK();
-       //############分享到QQ空间 结束#################
+       //############????QQ??? ????#################
        
-      //############分享到微信朋友圈 开始#################
+      //############???????????? ???#################
        String appID = "wx4486dace47a3bd5b";
        String appSecret = "5a4ab424eb39b4b20dbc950c455a88b2";
-    // 添加微信平台
+    // ????????
        UMWXHandler wxHandler = new UMWXHandler(this ,appID,appSecret);
        wxHandler.addToSocialSDK();
        
-       //设置微信好友分享内容
+       //?????????????????
        WeiXinShareContent weixinContent = new WeiXinShareContent();
-       //设置分享文字
+       //???锟斤拷???????
        weixinContent.setShareContent(shareTitle);
-       //设置title
+       //????title
        weixinContent.setTitle(shareContent.toString());
-       //设置分享内容跳转URL
+       //???锟斤拷??????????URL
        weixinContent.setTargetUrl(targetUrl);
-       //设置分享图片
+       //???锟斤拷?????
        weixinContent.setShareImage(umimage);
        mController.setShareMedia(weixinContent);
        
-       //设置分享内容
-       // 支持微信朋友圈
+       //???锟斤拷???????
+       // ???????????
        UMWXHandler wxCircleHandler = new UMWXHandler(this ,appID,appSecret);
        wxCircleHandler.setToCircle(true);
        wxCircleHandler.addToSocialSDK();
 
        CircleShareContent circleMedia = new CircleShareContent();
        circleMedia.setShareContent(shareTitle);
-       //设置朋友圈title
+       //?????????title
        circleMedia.setTitle(shareContent.toString());
        circleMedia.setShareImage(umimage);
        circleMedia.setTargetUrl(targetUrl);
        mController.setShareMedia(circleMedia);
-     //############分享到微信朋友圈 结束#################
+     //############???????????? ????#################
        
-     //############分享到qq 开始#################
-     //参数1为当前Activity， 参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
+     //############????qq ???#################
+     //????1????Activity?? ????2?????????QQ?????????APP ID??????3?????????QQ?????????APP kEY.
        UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "1102297892","OatpCSNxVdJpCinS");
        QQShareContent qqShareContent = new QQShareContent();
-       //设置分享文字
+       //???锟斤拷???????
        qqShareContent.setShareContent(shareTitle);
-       //设置分享title
+       //???锟斤拷???title
        qqShareContent.setTitle(shareContent.toString());
-       //设置分享图片
+       //???锟斤拷?????
        qqShareContent.setShareImage(umimage);
-       //设置点击分享内容的跳转链接
+       //??????????????????????
        qqShareContent.setTargetUrl(targetUrl);
        mController.setShareMedia(qqShareContent);
        qqSsoHandler.addToSocialSDK();  
-      //############分享到qq 结束#################
+      //############????qq ????#################
        
         mController.getConfig().removePlatform( SHARE_MEDIA.SINA, SHARE_MEDIA.TENCENT);
 		//mController.openShare(this, false);
@@ -1066,9 +1175,9 @@ public class CountDownEdit extends Activity implements OnClickListener {
 //		case R.id.remindFromDate:
 //			datePicker(R.id.remindFromDate);
 //			break;
-//		case R.id.reminder:
-//			bellDialog();
-//			break;
+		case R.id.remind_setting_row:
+			remindSettingDialog();
+			break;
 		case R.id.add_cancel:
 			cancel();
 			break;

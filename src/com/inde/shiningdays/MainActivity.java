@@ -42,9 +42,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.*;
 
 import com.inde.shiningdays.util.SharedPrefsUtil;
 import com.inde.shiningdays.util.Utils;
@@ -61,6 +59,7 @@ public class MainActivity extends Activity {
     private String[] mTypes;
     private View mEditType;
     private String currentType;
+    private int currentTypePosition;
     private ArrayList<Integer> rateCountList = new ArrayList<Integer>(Arrays.asList(30, 60, 90, 120, 150, 180, 210, 250, 300));
 
     @Override
@@ -123,7 +122,7 @@ public class MainActivity extends Activity {
         getActionBar().setHomeButtonEnabled(true);
 
         if (savedInstanceState == null) {
-            selectItem(0);
+            selectItem(0, CountDown.DEFAULT_SORT_ORDER);
         }
         //init drawer list
         initDrawerList();
@@ -330,23 +329,48 @@ public class MainActivity extends Activity {
 			startActivity(intent);
             return true;
         case R.id.action_menumore:
-        	intent = new Intent(this, MenuMore.class);
-			startActivity(intent);
+            showPopupMenu();
+        	//intent = new Intent(this, MenuMore.class);
+			//startActivity(intent);
             return true;
         default:
             return super.onOptionsItemSelected(item);
         }
     }
 
+    private  void showPopupMenu() {
+        final View menuItemView = findViewById(R.id.action_menumore); // SAME ID AS MENU ID
+        PopupMenu popupMenu = new PopupMenu(this, menuItemView);
+        popupMenu.inflate(R.menu.more_popup_menu);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch(item.getItemId()) {
+                    case R.id.sort_end_date_asc:
+                        selectItem(currentTypePosition, CountDown.SORT_END_DATE_ASC);
+                        return true;
+                    case R.id.sort_update_date_desc:
+                        selectItem(currentTypePosition, CountDown.DEFAULT_SORT_ORDER);
+                        return true;
+                    case R.id.action_setting:
+                        Intent intent = new Intent(menuItemView.getContext(), MenuMore.class);
+                        startActivity(intent);
+                    default:
+                        return true;
+                }
+            }
+        });
+        popupMenu.show();
+    }
+
     /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
+            selectItem(position, CountDown.DEFAULT_SORT_ORDER);
         }
     }
 
-    private void selectItem(int position) {
+    private void selectItem(int position, String orderBy) {
         // update the main content by replacing fragments
         //Fragment fragment = new PlanetFragment();
 //    	Intent intent = this.getIntent();
@@ -359,11 +383,13 @@ public class MainActivity extends Activity {
     	if(position == mTypes.length) {
     		return;
     	}
-    	
+
+        currentTypePosition = position;
     	currentType = mTypes[position];
     	Fragment fragment = new ItemListFragment();
         Bundle args = new Bundle();
         args.putString(CountDown.PRIORITY, currentType);
+        args.putString(CountDown.ORDER_BY, orderBy);
         fragment.setArguments(args);
 
         FragmentManager fragmentManager = getFragmentManager();

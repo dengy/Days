@@ -7,26 +7,26 @@ public class Constant {
 	public static final String FINISH_WIDGET = "countdown.widget.FINISH";
 	public static final String SEND_NOTIFICATION = "countdown.remind.SEND_NOTIFICATION";
 
-//	public static final String EXPIRED = "ÒÑ¹ýÆÚ";
-//	public static final String FINISHED = "ÒÑÍê³É";
-//	public static final String INVALID_WIDGET = "²å¼þÎÞÐ§,½¨ÒéÉ¾³ý";
+//	public static final String EXPIRED = "ï¿½Ñ¹ï¿½ï¿½ï¿½";
+//	public static final String FINISHED = "ï¿½ï¿½ï¿½ï¿½ï¿½";
+//	public static final String INVALID_WIDGET = "ï¿½ï¿½ï¿½ï¿½ï¿½Ð§,ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½";
 	
 //	public static final String BELL1 = "R.raw.marimba";
 //	public static final String BELL2 = "R.raw.missing";
 //	public static final String BELL3 = "R.raw.marimba";
 	
-//	public static final String MAIL_TITLE = "ÉÁÁÁµÄÈÕ×Ó·´À¡";
-//	public static final String MAIL_SENDING = "ÇëÑ¡ÔñÒ»¸öÓÊ¼þ¿Í»§¶Ë:";
+//	public static final String MAIL_TITLE = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó·ï¿½ï¿½ï¿½";
+//	public static final String MAIL_SENDING = "ï¿½ï¿½Ñ¡ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Í»ï¿½ï¿½ï¿½:";
 	
-//	public static final String PRIORITY_H = "ÖØÒª";
-//	public static final String PRIORITY_M = "Ò»°ã";
-//	public static final String PRIORITY_L = "½ÏµÍ";
-//	public static final String ALL_TYPE = "È«²¿";
-//	public static final String DEFAULT_TYPE = "Éú»î";
-//	public static final String TYPE_LIFE = "Éú»î";
-//	public static final String TYPE_WORK = "¹¤×÷";
+//	public static final String PRIORITY_H = "ï¿½ï¿½Òª";
+//	public static final String PRIORITY_M = "Ò»ï¿½ï¿½";
+//	public static final String PRIORITY_L = "ï¿½Ïµï¿½";
+//	public static final String ALL_TYPE = "È«ï¿½ï¿½";
+//	public static final String DEFAULT_TYPE = "ï¿½ï¿½ï¿½";
+//	public static final String TYPE_LIFE = "ï¿½ï¿½ï¿½";
+//	public static final String TYPE_WORK = "ï¿½ï¿½ï¿½ï¿½";
 //	public static final String TYPE_STUDY = "Ñ§Ï°";
-//	public static final String TYPE_MEMORIAL_DAY = "¼ÍÄîÈÕ";
+//	public static final String TYPE_MEMORIAL_DAY = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
 	
 	public static final Integer INTERVAL_SEC = 1000;
 	public static final Integer INTERVAL_MIN = 60000;
@@ -40,7 +40,7 @@ public class Constant {
 	
 	public static final String END_DATE_TIME = "endDateTime";
 	
-	//µ¹¼ÆÊ±×´Ì¬
+	//ï¿½ï¿½ï¿½ï¿½Ê±×´Ì¬
 	public static final String TASK_STATE = "task_state";
 	public static final String RUNNING_STATE = "running";
 //	public static final String FINISHED_STATE = "finished";
@@ -56,21 +56,22 @@ public class Constant {
 	public static final String COUNT_DOWN_SETTING_PREF = "countDownSettingPref"; 
 	public static final String IS_FIRST_OPEN_APP = "isFirstOpenApp";
 	public static final String IS_OPEN_DRAWER_LIST = "isOpenDrawerList";
+    public static final String APP_CURRENT_SORT_RULE = "appCurrentSortRule";
 	
 	//Constant for rate dialog
 	public static final String APP_OPENED_COUNT = "appOpenedCount";//the app opened count
 	public static final String IS_OPEN_RATE_DIALOG = "isOpenRateDialog";
-//	public static final String INIT_TITLE = "ÐÂÄê";
+//	public static final String INIT_TITLE = "ï¿½ï¿½ï¿½ï¿½";
 //	public static final String INIT_END_DATE = "2014-07-26";
 	
-//	public static final String DAY_STATUS_LEFT = "»¹ÓÐ";
-//	public static final String DAY_STATUS_PASSED = "ÒÑ¾­";
+//	public static final String DAY_STATUS_LEFT = "ï¿½ï¿½ï¿½ï¿½";
+//	public static final String DAY_STATUS_PASSED = "ï¿½Ñ¾ï¿½";
 	
-//	public static final String DELETE_TASK_CONFIRM = "È·¶¨É¾³ý´ËÊÂ¼þ?";
-//	public static final String DELETE_TYPE_WITH_TASKS_CONFIRM = "µ±Ç°·ÖÀàÏÂÉÐÓÐÊÂ¼þ£¬ÊÇ·ñÒª¼ÌÐøÉ¾³ý?";
+//	public static final String DELETE_TASK_CONFIRM = "È·ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½Â¼ï¿½?";
+//	public static final String DELETE_TYPE_WITH_TASKS_CONFIRM = "ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Òªï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½?";
 	
-//	public static final String UN_NAMED_TITLE = "Î´ÃüÃûÊÂ¼þ";
-//	public static final String UN_NAMED_TYPE = "Î´ÃüÃû·ÖÀà";
+//	public static final String UN_NAMED_TITLE = "Î´ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½";
+//	public static final String UN_NAMED_TYPE = "Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
 
 
 			

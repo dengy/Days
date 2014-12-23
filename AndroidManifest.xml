@@ -13,7 +13,8 @@
 	<!-- 缓存资源优先存入SDcard -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_label" android:theme="@style/MyTheme">
+    <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_label"
+                 android:theme="@style/MyTheme">
         <provider android:authorities="com.inde.shiningdays.CountDown" android:name="com.inde.shiningdays.CountDownProvider"/>
 
         <activity android:label="@string/app_name" android:name="com.inde.shiningdays.MainActivity"

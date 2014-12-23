@@ -29,7 +29,8 @@ public class ItemListFragment extends Fragment{
 	private static final String TAG = "ItemList";
 	private ListView list;
 	private View rootView;
-	
+    private Cursor mCursor;
+
 	//Activity act = getActivity();
     private Activity act;
 	
@@ -44,7 +45,7 @@ public class ItemListFragment extends Fragment{
         rootView = inflater.inflate(R.layout.countdownlist, container, false);
         Bundle bundle = this.getArguments();
 		String mType = bundle.getString(CountDown.PRIORITY);
-		String orderBy = bundle.getString(CountDown.ORDER_BY);
+		//String orderBy = bundle.getString(CountDown.ORDER_BY);
 		//init views
         initViews(rootView, mType);
         
@@ -59,26 +60,8 @@ public class ItemListFragment extends Fragment{
         
         //initData
         initData();
-        
-        //show the list by type
-        Cursor cursor = getCursorByUri(CountDown.CONTENT_TYPE_URI, mType, orderBy);
-        
-        CustomCursorAdapter itemAdapter = new CustomCursorAdapter(act, R.layout.countdownlist_item, cursor);
-        list.setAdapter(itemAdapter);
-        list.setEmptyView(rootView.findViewById(android.R.id.empty));
-        
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-					long id) {
-				Uri uri = ContentUris.withAppendedId(act.getIntent().getData(), id);
-				Intent intent = new Intent(Intent.ACTION_EDIT, uri);
-				startActivity(intent);
-			}
-        	
-		});
-        
+
         return rootView;
     }
 	
@@ -87,6 +70,34 @@ public class ItemListFragment extends Fragment{
     	super.onResume();
     	//show the top countdown data
         showTheTopCountDown(rootView);
+
+
+        //showList
+        Bundle bundle = this.getArguments();
+        String mType = bundle.getString(CountDown.PRIORITY);
+        String orderBy = bundle.getString(CountDown.ORDER_BY);
+        this.showList(mType, orderBy);
+    }
+
+    private void showList(String mType, String orderBy) {
+        //show the list by type
+        mCursor = getCursorByUri(CountDown.CONTENT_TYPE_URI, mType, orderBy);
+
+        CustomCursorAdapter itemAdapter = new CustomCursorAdapter(act, R.layout.countdownlist_item, mCursor);
+        list.setAdapter(itemAdapter);
+        list.setEmptyView(rootView.findViewById(android.R.id.empty));
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+                                    long id) {
+                Uri uri = ContentUris.withAppendedId(act.getIntent().getData(), id);
+                Intent intent = new Intent(Intent.ACTION_EDIT, uri);
+                startActivity(intent);
+            }
+
+        });
     }
 	
 	private void initViews(View rootView, final String mType) {
@@ -138,12 +149,14 @@ public class ItemListFragment extends Fragment{
 		String title = null;
 		int topLeftDays = 0;
 		
-		Cursor cursor = act.managedQuery(CountDown.CONTENT_URI, new String[] {CountDown._ID, CountDown.TITLE, 
+		Cursor cursor = act.getContentResolver().query(CountDown.CONTENT_URI, new String[] {CountDown._ID, CountDown.TITLE,
 	        	CountDown.END_DATE, CountDown.PRIORITY, CountDown.WIDGET_IDS}, null, null, CountDown.TOP_SORT_ORDER);
 		boolean hasData = cursor.moveToFirst();
 		if(hasData) {
 			endDate = cursor.getString(cursor.getColumnIndex(CountDown.END_DATE));
 			title = cursor.getString(cursor.getColumnIndex(CountDown.TITLE));
+
+            cursor.close();
 		}
 		 
 		if(endDate != null && title != null) {
@@ -215,10 +228,10 @@ public class ItemListFragment extends Fragment{
 		//uri = Uri.withAppendedPath(uri, mType);
 		Cursor cursor = null;
 		if(getResources().getString(R.string.type_all).equals(mType)) {
-			cursor = act.managedQuery(uri, new String[] {CountDown._ID, CountDown.TITLE, CountDown.END_DATE, CountDown.PRIORITY, CountDown.WIDGET_IDS}, 
+			cursor = act.getContentResolver().query(uri, new String[] {CountDown._ID, CountDown.TITLE, CountDown.END_DATE, CountDown.PRIORITY, CountDown.WIDGET_IDS},
 					null, null,orderBy);
 		} else {
-			cursor = act.managedQuery(uri, new String[] {CountDown._ID, CountDown.TITLE, CountDown.END_DATE, CountDown.PRIORITY, CountDown.WIDGET_IDS}, 
+			cursor = act.getContentResolver().query(uri, new String[] {CountDown._ID, CountDown.TITLE, CountDown.END_DATE, CountDown.PRIORITY, CountDown.WIDGET_IDS},
 					CountDown.PRIORITY + "=?", new String[]{mType},
 					orderBy);
 		}
@@ -301,7 +314,6 @@ public class ItemListFragment extends Fragment{
 			    	//createCountDownTimer(endDate, endTime, viewHolder, id);
 			    	showCountDown(endDate, viewHolder);
 			    }
-			    
 			}
 			
 		}
@@ -402,5 +414,14 @@ public class ItemListFragment extends Fragment{
 //				
 //			}
 //		}
+
 	}
+
+    @Override
+    public void onDestroyView () {
+        super.onDestroyView();
+        if(mCursor != null) {
+            mCursor.close();
+        }
+    }
 }

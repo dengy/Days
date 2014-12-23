@@ -122,7 +122,7 @@ public class MainActivity extends Activity {
         getActionBar().setHomeButtonEnabled(true);
 
         if (savedInstanceState == null) {
-            selectItem(0, CountDown.DEFAULT_SORT_ORDER);
+            selectItem(0, this.getCurrentSortRule());
         }
         //init drawer list
         initDrawerList();
@@ -342,14 +342,28 @@ public class MainActivity extends Activity {
         final View menuItemView = findViewById(R.id.action_menumore); // SAME ID AS MENU ID
         PopupMenu popupMenu = new PopupMenu(this, menuItemView);
         popupMenu.inflate(R.menu.more_popup_menu);
+
+        String currentSortRule = getCurrentSortRule();
+        if(CountDown.SORT_END_DATE_ASC.equals(currentSortRule)) {
+            popupMenu.getMenu().findItem(R.id.sort_end_date_asc).setChecked(true);
+        } else if(CountDown.DEFAULT_SORT_ORDER.equals(currentSortRule)) {
+            popupMenu.getMenu().findItem(R.id.sort_update_date_desc).setChecked(true);
+        }
+
+
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
+                String rule = "";
                 switch(item.getItemId()) {
                     case R.id.sort_end_date_asc:
-                        selectItem(currentTypePosition, CountDown.SORT_END_DATE_ASC);
+                        rule = CountDown.SORT_END_DATE_ASC;
+                        updateCurrentSortRule(rule);
+                        selectItem(currentTypePosition, rule);
                         return true;
                     case R.id.sort_update_date_desc:
-                        selectItem(currentTypePosition, CountDown.DEFAULT_SORT_ORDER);
+                        rule = CountDown.DEFAULT_SORT_ORDER;
+                        updateCurrentSortRule(rule);
+                        selectItem(currentTypePosition, rule);
                         return true;
                     case R.id.action_setting:
                         Intent intent = new Intent(menuItemView.getContext(), MenuMore.class);
@@ -362,11 +376,23 @@ public class MainActivity extends Activity {
         popupMenu.show();
     }
 
+    private String getCurrentSortRule() {
+        SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(this, Constant.COUNT_DOWN_SETTING_PREF);
+        return prefs.getString(Constant.APP_CURRENT_SORT_RULE, CountDown.SORT_END_DATE_ASC);//default SORT_END_DATE_ASC
+    }
+
+    private void updateCurrentSortRule(String sortRule) {
+        SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(this, Constant.COUNT_DOWN_SETTING_PREF);
+        Editor editor = prefs.edit();
+        editor.putString(Constant.APP_CURRENT_SORT_RULE, sortRule);
+        editor.commit();
+    }
+
     /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position, CountDown.DEFAULT_SORT_ORDER);
+            selectItem(position, getCurrentSortRule());
         }
     }
 

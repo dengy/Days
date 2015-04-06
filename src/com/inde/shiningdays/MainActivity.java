@@ -44,11 +44,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 
+import com.adsmogo.interstitial.AdsMogoInterstitialListener;
+import com.adsmogo.interstitial.AdsMogoInterstitialManager;
+import com.inde.shiningdays.util.BaseActivity;
 import com.inde.shiningdays.util.SharedPrefsUtil;
 import com.inde.shiningdays.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private View mDrawerLeft;
@@ -129,7 +132,7 @@ public class MainActivity extends Activity {
         //show rate dialog
         showRateDialog();
     }
-    
+
     private void firstOpenAppDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    // Get the layout inflater
@@ -147,6 +150,22 @@ public class MainActivity extends Activity {
 		d.setCanceledOnTouchOutside(false);
 		d.show();
 	}
+
+    /**
+     * 初始化全插屏对象
+     * 初始化之前必须设置默认的AppKey和Activity
+     */
+    public void initInterstitial(){
+        //设置AppKey
+        //AdsMogoInterstitialManager.setDefaultInitAppKey(Constant.MONGO_ID);
+        //设置当前Activity对象
+        //AdsMogoInterstitialManager.setInitActivity(this);
+        //初始化(必须先设置默认的AppKey和Activity对象才能通过此方法初始化SDK)
+        //AdsMogoInterstitialManager.shareInstance().initDefaultInterstitial();
+        //设置回调
+        /*AdsMogoInterstitialManager.shareInstance().defaultInterstitial()
+                .setAdsMogoInterstitialListener(this);*/
+    }
     
     /**
      * whether to open the rate dialog
@@ -427,7 +446,6 @@ public class MainActivity extends Activity {
         title.append(getResources().getString(R.string.app_name)).append(".").append(currentType);
         setTitle(title.toString());
         mDrawerLayout.closeDrawer(mDrawerLeft);
-        
     }
 
     @Override

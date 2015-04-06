@@ -2,9 +2,13 @@ package com.inde.shiningdays.util;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.inde.shiningdays.Constant;
 import com.inde.shiningdays.R;
@@ -75,5 +79,48 @@ public class Utils {
 	public static void cancelAlarmManager() {
 
 	}
+
+    /*public static boolean isEmailValid(String email) {
+        boolean isValid = false;
+
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        CharSequence inputStr = email;
+
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        return isValid;
+    }*/
+
+    public static boolean isNeedLockPwd (Context context) {
+        SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(context, Constant.COUNT_DOWN_SETTING_PREF);
+        String lockPwd = prefs.getString(Constant.LOCK_PWD,"");
+        if("".equals(lockPwd)) {
+            return false;
+        }
+        return true;
+    }
+
+    public static void sendEmail(Context context, String email, String title, String content) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+
+        //mail address
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]
+                {email});
+        //mail title
+        intent.putExtra(Intent.EXTRA_SUBJECT, title);
+
+        //mail content
+        intent.putExtra(Intent.EXTRA_TEXT, content);
+
+        try {
+            context.startActivity(Intent.createChooser(intent, context.getResources().getString(R.string.select_email_client)));
+        }catch(android.content.ActivityNotFoundException ex) {
+            Toast.makeText(context, R.string.no_email_app_installed, Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }

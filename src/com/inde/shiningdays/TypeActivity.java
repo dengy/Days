@@ -30,11 +30,12 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.inde.shiningdays.util.BaseActivity;
 import com.inde.shiningdays.util.SharedPrefsUtil;
 import com.inde.shiningdays.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
-public class TypeActivity extends Activity implements OnClickListener{
+public class TypeActivity extends BaseActivity implements OnClickListener{
 	private ListView defaultTypeList;
 	private ListView customTypeList;
 	private View mAddType;
@@ -45,7 +46,6 @@ public class TypeActivity extends Activity implements OnClickListener{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.edit_type);
 		initViews();
-		
 	}
 	
 	@Override
@@ -264,7 +264,7 @@ public class TypeActivity extends Activity implements OnClickListener{
 	    confirmTitle.setText(title); 
 	    
 	    builder.setView(layout)
-	    .setPositiveButton("È·ÈÏÉ¾³ý", new DialogInterface.OnClickListener(){
+	    .setPositiveButton("È·ï¿½ï¿½É¾ï¿½ï¿½", new DialogInterface.OnClickListener(){
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -272,7 +272,7 @@ public class TypeActivity extends Activity implements OnClickListener{
 				delete(typeKey);
 			}
 			
-	    }).setNegativeButton("·ÅÆú", new DialogInterface.OnClickListener(){
+	    }).setNegativeButton("ï¿½ï¿½ï¿½ï¿½", new DialogInterface.OnClickListener(){
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

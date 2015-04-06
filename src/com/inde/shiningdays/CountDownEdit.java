@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import android.app.*;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
@@ -29,6 +28,7 @@ import android.widget.Toast;
 import com.android.internal.widget.chinesecalendar.calendar.CalendarDataElement;
 import com.android.internal.widget.chinesecalendar.view.DateSettingDialog;
 import com.android.internal.widget.chinesecalendar.view.OnRefreshElementsData;
+import com.inde.shiningdays.util.BaseActivity;
 import com.inde.shiningdays.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -46,7 +46,7 @@ import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
 import org.w3c.dom.Text;
 
-public class CountDownEdit extends Activity implements OnClickListener {
+public class CountDownEdit extends BaseActivity implements OnClickListener {
 	
 	/**
      * Standard projection for the interesting columns of a normal note.
@@ -141,9 +141,18 @@ public class CountDownEdit extends Activity implements OnClickListener {
 		if(Intent.ACTION_INSERT.equals(action)) {
 			titleDialog();
 		}
-		
-		
 	}
+
+    /**
+     *进入展示时机
+     *当应用需要展示全屏广告调用interstitialShow(boolean isWait);
+     *通知SDK进入展示时机,SDK会竭尽全力展示出广告,当然由于网络等问题不能立即展示
+     *广告的,您可以通过参数isWait来控制授权SDK在获得到广告后立即展示广告。
+     */
+    public void showInterstitial(){
+        //AdsMogoInterstitialManager.shareInstance().defaultInterstitialShow(true);
+    }
+
 	
 	private void startUpdateWidgetService() {
     	Intent i = new Intent();

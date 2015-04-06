@@ -21,3 +21,6 @@ local.properties
 
 # Mac OS X file
 .DS_Store
+
+#idea IDE
+.idea/

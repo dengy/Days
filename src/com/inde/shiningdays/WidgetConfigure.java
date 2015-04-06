@@ -74,7 +74,7 @@ public class WidgetConfigure extends Activity{
         CustomCursorAdapter adapter = new CustomCursorAdapter(this, R.layout.countdownlist_item_widget, cursor);
         list.setAdapter(adapter);    
         
-        //¸ø³ö¿Õ¼ÇÂ¼ÌáÊ¾
+        //ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½Â¼ï¿½ï¿½Ê¾
         if(adapter != null && adapter.getCount() == 0) {
         	Toast.makeText(getApplicationContext(), R.string.noDataForWidget, Toast.LENGTH_SHORT).show();
         } 
@@ -136,7 +136,7 @@ public class WidgetConfigure extends Activity{
 	}
 	
 	/**
-	 * ±£´æµÄ´´½¨widgetÏà¹ØµÄÊý¾Ýµ½preferenceÎÄ¼þÖÐ
+	 * ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½widgetï¿½ï¿½Øµï¿½ï¿½ï¿½Ýµï¿½preferenceï¿½Ä¼ï¿½ï¿½ï¿½
 	 * @param context
 	 * @param mAppWidgetId
 	 * @param _ID
@@ -167,7 +167,7 @@ public class WidgetConfigure extends Activity{
 		prefs.commit();
 	}
 	/**
-	 * ¸üÐÂremind taskµÄ×´Ì¬(running,deleted,finished)
+	 * ï¿½ï¿½ï¿½ï¿½remind taskï¿½ï¿½×´Ì¬(running,deleted,finished)
 	 * @param context
 	 * @param mAppWidgetId
 	 */
@@ -179,7 +179,7 @@ public class WidgetConfigure extends Activity{
 	}
 	
 	/**
-	 * É¾³ýpreferenceÎÄ¼þÖÐ±£´æµÄ´´½¨widgetÏà¹ØµÄÊý¾Ý
+	 * É¾ï¿½ï¿½preferenceï¿½Ä¼ï¿½ï¿½Ð±ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½widgetï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½
 	 * @param context
 	 * @param mAppWidgetId
 	 */

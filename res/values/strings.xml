@@ -6,6 +6,7 @@
     <string name="edit_title">编辑标题</string>
     <string name="edit_content">编辑內容</string>
     <string name="ok_label">保存</string>
+    <string name="confirm_label">确定</string>
     <string name="go_back_label">取消</string>
     <string name="title_label">标题</string>
     <string name="priority_label">分类</string>
@@ -90,6 +91,7 @@
     <string name="help_hint1">1.支持添加桌面小工具</string>
     <string name="help_hint2">2.为了保证桌面小工具能够自动刷新，需要将应用加入白名单(允许自启动)</string>
     <string name="help_hint3">3.编辑页面可分享事件至微信,QQ</string>
+    <string name="help_hint4">4.支持设置锁屏密码(更多内容界面)</string>
     <string name="noDataForWidget">提示:没有正在运行的任务!</string>
     <string name="top_label">置顶</string>
     <string name="remind_label">提醒</string>
@@ -454,4 +456,33 @@
     <string name="zzzzz_txt_cnstellation10">10月24日~11月22日-9-天蝎座</string>
     <string name="zzzzz_txt_cnstellation11">11月23日~12月21日-10-射手座</string>
     <string name="zzzzz_txt_cnstellation12">12月22日~1月19日-11-摩羯座</string>
+
+    <!--lock password start-->
+    <string name="other_setting">其他</string>
+    <string name="setting_lock_title">锁屏密码</string>
+    <string name="setting_lock_open">开启锁屏密码</string>
+    <string name="setting_lock_modify">修改锁屏密码</string>
+    <string name="setting_lock_email_modify">修改密保邮箱</string>
+    <string name="setting_lock_close">关闭锁屏密码</string>
+    <string name="new_lock_pwd_label">新密码</string>
+    <string name="new_lock_pwd_confirm_label">确认密码</string>
+    <string name="find_pwd_q_label">密保问题</string>
+    <string name="find_pwd_a_label">问题答案</string>
+    <string name="find_pwd_qa_hint">必填:密保问题用于找回密码</string>
+    <string name="find_pwd_qa_cannot_empty">请输入密保问题和答案!</string>
+    <string name="find_pwd_title">找回密码</string>
+    <string name="find_pwd_qa_incorrect">密保问题回答不正确!</string>
+    <string name="lock_pwd_hint">您的锁屏密码是:</string>
+
+    <string name="lock_pwd_cannot_empty">请输入4位数字锁屏密码!</string>
+    <string name="must_same_pwd">2次输入的密码不一致!</string>
+    <string name="lock_pwd_save_succ">密码设置成功!</string>
+    <string name="lock_pwd_forget">忘记密码?</string>
+    <string name="lock_screen_title">请输入4位数字锁屏密码</string>
+    <string name="lock_pwd_incorrect">锁屏密码不正确!</string>
+
+    <string name="close_lock_dialog_title">确认关闭锁屏密码?</string>
+    <!--lock password end-->
+
+
 </resources>

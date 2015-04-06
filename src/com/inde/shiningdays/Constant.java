@@ -73,6 +73,15 @@ public class Constant {
 //	public static final String UN_NAMED_TITLE = "δ�����¼�";
 //	public static final String UN_NAMED_TYPE = "δ�������";
 
+    public static final String MONGO_ID = "dcd76f57b3d247adb1f5fb739005876c";
+
+    public static final String LOCK_OPERATION = "lockOperation";
+    public static final String IS_NEED_LOCK_PWD = "isNeedLockPwd";
+    public static final String MODIFY_LOCK = "modifyLock";
+    public static final String CLOSE_LOCK = "closeLock";
+    public static final String LOCK_PWD = "lockPwd";
+    public static final String FIND_PWD_QUESTION = "findPwdQuestion";
+    public static final String FIND_PWD_ANSWER = "findPwdAnswer";
 
 			
 }

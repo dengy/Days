@@ -15,14 +15,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.ResourceCursorAdapter;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.adsmogo.adview.AdsMogoLayout;
 import com.inde.shiningdays.util.SharedPrefsUtil;
 
 public class ItemListFragment extends Fragment{
@@ -60,6 +63,18 @@ public class ItemListFragment extends Fragment{
         
         //initData
         initData();
+
+        /** 代码方式添加广告，如果您使用XML配置方式添加广告，不需要以下代码 **/
+        AdsMogoLayout adsMogoLayoutCode = new AdsMogoLayout(getActivity(), Constant.MONGO_ID);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT);
+        // 设置广告出现的位置(悬浮于底部)
+        params.bottomMargin = 5;
+        //adsMogoLayoutCode.setAdsMogoListener(this);
+        params.gravity = Gravity.BOTTOM;
+        getActivity().addContentView(adsMogoLayoutCode, params);
+        /*********************** 代码添加广告结束 ************************/
 
 
         return rootView;
@@ -151,7 +166,10 @@ public class ItemListFragment extends Fragment{
 		
 		Cursor cursor = act.getContentResolver().query(CountDown.CONTENT_URI, new String[] {CountDown._ID, CountDown.TITLE,
 	        	CountDown.END_DATE, CountDown.PRIORITY, CountDown.WIDGET_IDS}, null, null, CountDown.TOP_SORT_ORDER);
-		boolean hasData = cursor.moveToFirst();
+		if(cursor == null) {
+            return;
+        }
+        boolean hasData = cursor.moveToFirst();
 		if(hasData) {
 			endDate = cursor.getString(cursor.getColumnIndex(CountDown.END_DATE));
 			title = cursor.getString(cursor.getColumnIndex(CountDown.TITLE));

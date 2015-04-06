@@ -38,6 +38,14 @@
     	android:textSize="15sp"
     	android:text="@string/help_hint3"
         />
+
+    <TextView
+            android:layout_marginTop="5dip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/help_hint4"
+            />
     </LinearLayout>
     
     

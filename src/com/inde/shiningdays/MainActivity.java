@@ -44,11 +44,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 
+import com.adsmogo.interstitial.AdsMogoInterstitialListener;
+import com.adsmogo.interstitial.AdsMogoInterstitialManager;
+import com.inde.shiningdays.util.BaseActivity;
 import com.inde.shiningdays.util.SharedPrefsUtil;
 import com.inde.shiningdays.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private View mDrawerLeft;
@@ -122,14 +125,14 @@ public class MainActivity extends Activity {
         getActionBar().setHomeButtonEnabled(true);
 
         if (savedInstanceState == null) {
-            selectItem(0, CountDown.DEFAULT_SORT_ORDER);
+            selectItem(0, this.getCurrentSortRule());
         }
         //init drawer list
         initDrawerList();
         //show rate dialog
         showRateDialog();
     }
-    
+
     private void firstOpenAppDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    // Get the layout inflater
@@ -147,6 +150,22 @@ public class MainActivity extends Activity {
 		d.setCanceledOnTouchOutside(false);
 		d.show();
 	}
+
+    /**
+     * 初始化全插屏对象
+     * 初始化之前必须设置默认的AppKey和Activity
+     */
+    public void initInterstitial(){
+        //设置AppKey
+        //AdsMogoInterstitialManager.setDefaultInitAppKey(Constant.MONGO_ID);
+        //设置当前Activity对象
+        //AdsMogoInterstitialManager.setInitActivity(this);
+        //初始化(必须先设置默认的AppKey和Activity对象才能通过此方法初始化SDK)
+        //AdsMogoInterstitialManager.shareInstance().initDefaultInterstitial();
+        //设置回调
+        /*AdsMogoInterstitialManager.shareInstance().defaultInterstitial()
+                .setAdsMogoInterstitialListener(this);*/
+    }
     
     /**
      * whether to open the rate dialog
@@ -342,14 +361,28 @@ public class MainActivity extends Activity {
         final View menuItemView = findViewById(R.id.action_menumore); // SAME ID AS MENU ID
         PopupMenu popupMenu = new PopupMenu(this, menuItemView);
         popupMenu.inflate(R.menu.more_popup_menu);
+
+        String currentSortRule = getCurrentSortRule();
+        if(CountDown.SORT_END_DATE_ASC.equals(currentSortRule)) {
+            popupMenu.getMenu().findItem(R.id.sort_end_date_asc).setChecked(true);
+        } else if(CountDown.DEFAULT_SORT_ORDER.equals(currentSortRule)) {
+            popupMenu.getMenu().findItem(R.id.sort_update_date_desc).setChecked(true);
+        }
+
+
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
+                String rule = "";
                 switch(item.getItemId()) {
                     case R.id.sort_end_date_asc:
-                        selectItem(currentTypePosition, CountDown.SORT_END_DATE_ASC);
+                        rule = CountDown.SORT_END_DATE_ASC;
+                        updateCurrentSortRule(rule);
+                        selectItem(currentTypePosition, rule);
                         return true;
                     case R.id.sort_update_date_desc:
-                        selectItem(currentTypePosition, CountDown.DEFAULT_SORT_ORDER);
+                        rule = CountDown.DEFAULT_SORT_ORDER;
+                        updateCurrentSortRule(rule);
+                        selectItem(currentTypePosition, rule);
                         return true;
                     case R.id.action_setting:
                         Intent intent = new Intent(menuItemView.getContext(), MenuMore.class);
@@ -362,11 +395,23 @@ public class MainActivity extends Activity {
         popupMenu.show();
     }
 
+    private String getCurrentSortRule() {
+        SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(this, Constant.COUNT_DOWN_SETTING_PREF);
+        return prefs.getString(Constant.APP_CURRENT_SORT_RULE, CountDown.SORT_END_DATE_ASC);//default SORT_END_DATE_ASC
+    }
+
+    private void updateCurrentSortRule(String sortRule) {
+        SharedPreferences prefs = SharedPrefsUtil.getSharedPrefs(this, Constant.COUNT_DOWN_SETTING_PREF);
+        Editor editor = prefs.edit();
+        editor.putString(Constant.APP_CURRENT_SORT_RULE, sortRule);
+        editor.commit();
+    }
+
     /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position, CountDown.DEFAULT_SORT_ORDER);
+            selectItem(position, getCurrentSortRule());
         }
     }
 
@@ -401,7 +446,6 @@ public class MainActivity extends Activity {
         title.append(getResources().getString(R.string.app_name)).append(".").append(currentType);
         setTitle(title.toString());
         mDrawerLayout.closeDrawer(mDrawerLeft);
-        
     }
 
     @Override

@@ -23,7 +23,123 @@
         android:gravity="center"
         android:layout_centerVertical="true"
         style="@style/actionbarText"/>    
-    </RelativeLayout>   
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="12dip"
+        android:paddingBottom="12dip"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/edit_item_bg_middle_selector">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_lock_title"
+            style="@style/widgetListItem"
+            android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="12dip"
+        android:paddingBottom="12dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/edit_item_bg_middle_selector"
+        android:id="@+id/open_lock">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_lock_open"
+            android:layout_alignParentLeft="true"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/p_arrow_r"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="12dip"
+        android:paddingBottom="12dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/edit_item_bg_middle_selector"
+        android:id="@+id/modify_lock"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/setting_lock_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_lock_modify"
+            android:layout_alignParentLeft="true"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/p_arrow_r"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="12dip"
+        android:paddingBottom="12dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/edit_item_bg_middle_selector"
+        android:id="@+id/close_lock"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_lock_close"
+            android:layout_alignParentLeft="true"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/p_arrow_r"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/gray">
+    </View>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="12dip"
+        android:paddingBottom="12dip"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/edit_item_bg_middle_selector">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/other_setting"
+            style="@style/widgetListItem"
+            android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
     <RelativeLayout 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -32,7 +148,6 @@
     android:paddingRight="10dip"
     android:paddingTop="12dip"
     android:paddingBottom="12dip"
-    android:layout_marginTop="10dip"
     android:layout_marginLeft="10dip"
     android:layout_marginRight="10dip"
     android:background="@drawable/edit_item_bg_middle_selector"

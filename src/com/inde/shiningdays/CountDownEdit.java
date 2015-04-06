@@ -2,9 +2,9 @@ package com.inde.shiningdays;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import android.app.*;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
@@ -25,6 +25,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.internal.widget.chinesecalendar.calendar.CalendarDataElement;
+import com.android.internal.widget.chinesecalendar.view.DateSettingDialog;
+import com.android.internal.widget.chinesecalendar.view.OnRefreshElementsData;
+import com.inde.shiningdays.util.BaseActivity;
 import com.inde.shiningdays.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -42,7 +46,7 @@ import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
 import org.w3c.dom.Text;
 
-public class CountDownEdit extends Activity implements OnClickListener {
+public class CountDownEdit extends BaseActivity implements OnClickListener {
 	
 	/**
      * Standard projection for the interesting columns of a normal note.
@@ -131,15 +135,24 @@ public class CountDownEdit extends Activity implements OnClickListener {
         }
 		
 		// Get the countdown!
-        mCursor = managedQuery(mUri, PROJECTION, null, null, null);
+        mCursor = getContentResolver().query(mUri, PROJECTION, null, null, null);
 		
 		//alert title dialog
 		if(Intent.ACTION_INSERT.equals(action)) {
 			titleDialog();
 		}
-		
-		
 	}
+
+    /**
+     *进入展示时机
+     *当应用需要展示全屏广告调用interstitialShow(boolean isWait);
+     *通知SDK进入展示时机,SDK会竭尽全力展示出广告,当然由于网络等问题不能立即展示
+     *广告的,您可以通过参数isWait来控制授权SDK在获得到广告后立即展示广告。
+     */
+    public void showInterstitial(){
+        //AdsMogoInterstitialManager.shareInstance().defaultInterstitialShow(true);
+    }
+
 	
 	private void startUpdateWidgetService() {
     	Intent i = new Intent();
@@ -643,6 +656,52 @@ public class CountDownEdit extends Activity implements OnClickListener {
         	
         }, year, month, day).show();
 	}
+
+    private void showDatePicker() {
+        String currentEndDate = null;
+        if(endDateTextView.getText() != null &&
+                !"".equals(endDateTextView.getText())) {
+            currentEndDate = endDateTextView.getText().toString();
+        }
+        DateSettingDialog mDateSettingDialog =
+                //new DateSettingDialog(this, android.R.style.Theme_Holo_Dialog);
+                new DateSettingDialog(this, currentEndDate);
+        mDateSettingDialog.setRefreshListener(new OnRefreshElementsData() {
+
+            @Override
+            public void onSetPostion(int position) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onSetBottomHeight(int dataSize) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onSelectRow(ArrayList<CalendarDataElement> curCalList, int position) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onReturnDayElement(CalendarDataElement element) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onReturnData(int year, int month, int date) {
+                // TODO Auto-generated method stub
+                //dateTextView.setText(year + "-" + (month + 1) + "-" +date);
+                endDateTextView.setText(year + "-" + (month + 1) + "-" +date);
+                System.out.println("year:" + year + " month:" + month + " date:" + date);
+            }
+        });
+        mDateSettingDialog.show();
+    }
 	
 	/**
 	 * show timepicker dialog, unused 
@@ -1167,7 +1226,8 @@ public class CountDownEdit extends Activity implements OnClickListener {
 			priorityDialog();
 			break;
 		case R.id.enddate_row:
-			datePicker(R.id.enddate);
+			//datePicker(R.id.enddate);
+            showDatePicker();
 			break;
 //		case R.id.endtime:
 //			timePicker(R.id.endtime);

@@ -1,6 +1,9 @@
 package com.inde.shiningdays.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -121,6 +124,19 @@ public class Utils {
         }catch(android.content.ActivityNotFoundException ex) {
             Toast.makeText(context, R.string.no_email_app_installed, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static long convertDateStringToTime(String sourceDate) {
+        long time = 0l;
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            cal.setTime(sdf.parse(sourceDate));
+            time = cal.getTimeInMillis();
+        }catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return time;
     }
 
 }

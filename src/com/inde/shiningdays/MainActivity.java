@@ -50,6 +50,7 @@ import com.inde.shiningdays.util.BaseActivity;
 import com.inde.shiningdays.util.SharedPrefsUtil;
 import com.inde.shiningdays.util.Utils;
 import com.umeng.analytics.MobclickAgent;
+import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
@@ -63,7 +64,7 @@ public class MainActivity extends BaseActivity {
     private View mEditType;
     private String currentType;
     private int currentTypePosition;
-    private ArrayList<Integer> rateCountList = new ArrayList<Integer>(Arrays.asList(30, 60, 90, 120, 150, 180, 210, 250, 300));
+    private ArrayList<Integer> rateCountList = new ArrayList<Integer>(Arrays.asList(15, 30, 45, 70, 90, 110, 130));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +150,9 @@ public class MainActivity extends BaseActivity {
 	    Dialog d = builder.create();
 		d.setCanceledOnTouchOutside(false);
 		d.show();
+
+        //xiaomi upgrade remind service
+        XiaomiUpdateAgent.update(this);
 	}
 
     /**

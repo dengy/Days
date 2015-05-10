@@ -33,6 +33,7 @@ public class ItemListFragment extends Fragment{
 	private ListView list;
 	private View rootView;
     private Cursor mCursor;
+    private AdsMogoLayout adsMogoLayoutCode;
 
 	//Activity act = getActivity();
     private Activity act;
@@ -65,7 +66,7 @@ public class ItemListFragment extends Fragment{
         initData();
 
         /** 代码方式添加广告，如果您使用XML配置方式添加广告，不需要以下代码 **/
-        AdsMogoLayout adsMogoLayoutCode = new AdsMogoLayout(getActivity(), Constant.MONGO_ID);
+        adsMogoLayoutCode = new AdsMogoLayout(getActivity(), Constant.MONGO_ID);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT);
@@ -96,6 +97,14 @@ public class ItemListFragment extends Fragment{
 
     private void showList(String mType, String orderBy) {
         //show the list by type
+        if(mCursor != null) {
+            try{
+                mCursor.close();
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
+
+        }
         mCursor = getCursorByUri(CountDown.CONTENT_TYPE_URI, mType, orderBy);
 
         CustomCursorAdapter itemAdapter = new CustomCursorAdapter(act, R.layout.countdownlist_item, mCursor);
@@ -173,10 +182,11 @@ public class ItemListFragment extends Fragment{
 		if(hasData) {
 			endDate = cursor.getString(cursor.getColumnIndex(CountDown.END_DATE));
 			title = cursor.getString(cursor.getColumnIndex(CountDown.TITLE));
-
-            cursor.close();
 		}
-		 
+
+        //close cursor
+        cursor.close();
+
 		if(endDate != null && title != null) {
 			topLeftDays = CountDownAppWidgetProvider.getDayDiff(endDate);
 			TextView dayStatus = (TextView)rootView.findViewById(R.id.dayStatus);
@@ -440,6 +450,12 @@ public class ItemListFragment extends Fragment{
         super.onDestroyView();
         if(mCursor != null) {
             mCursor.close();
+        }
+
+        AdsMogoLayout.clear();
+// 清除 adsMogoLayout 实例 所产生用于多线程缓冲机制的线程池
+        if(adsMogoLayoutCode != null) {
+            adsMogoLayoutCode.clearThread();
         }
     }
 }

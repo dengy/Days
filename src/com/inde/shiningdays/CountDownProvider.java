@@ -18,12 +18,13 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+import com.inde.shiningdays.util.Utils;
 
 public class CountDownProvider extends ContentProvider {
 	private static final String TAG = "ContentProvider";
 
 	private static final String DATABASE_NAME = "count_down.db";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     
     private static final int COUNTDOWN = 1;
     private static final int COUNTDOWN_ID = 2;
@@ -59,7 +60,8 @@ public class CountDownProvider extends ContentProvider {
                     + CountDown.STATE + " TEXT,"
                     + CountDown.CREATED_DATE + " INTEGER,"
                     + CountDown.WIDGET_IDS + " TEXT,"
-                    + CountDown.TOP_INDEX + " INTEGER"
+                    + CountDown.TOP_INDEX + " INTEGER,"
+                    + CountDown.END_DATE_TIME + " INTEGER"
                     + ");");
 
 		}
@@ -68,8 +70,27 @@ public class CountDownProvider extends ContentProvider {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS " + COUNTDOWN_TABLE_NAME);
-            onCreate(db);
+
+            //Backward compatibility the old version database
+            if(newVersion == 8) {
+                db.execSQL("ALTER TABLE " + COUNTDOWN_TABLE_NAME+ " ADD COLUMN " +
+                        CountDown.END_DATE_TIME + " Integer");
+                Cursor cr = db.rawQuery("select * from " + COUNTDOWN_TABLE_NAME, null);
+                while (cr != null && cr.moveToNext()) {
+                    String endDate = cr.getString(cr.getColumnIndex(CountDown.END_DATE));
+                    long endDateTime = Utils.convertDateStringToTime(endDate);
+                    int countdownId = cr.getInt(cr.getColumnIndex(CountDown._ID));
+
+                    StringBuilder sql = new StringBuilder();
+                    sql.append("update ").append(COUNTDOWN_TABLE_NAME).append(" set ").append(CountDown.END_DATE_TIME).
+                            append("=").append(endDateTime).append(" where ").append(CountDown._ID).
+                            append("=").append(countdownId);
+                    db.execSQL(sql.toString());
+                }
+
+            }
+            //db.execSQL("DROP TABLE IF EXISTS " + COUNTDOWN_TABLE_NAME);
+            //onCreate(db);
 		}
     	
     }
@@ -176,9 +197,11 @@ public class CountDownProvider extends ContentProvider {
         if (values.containsKey(CountDown.STARRED) == false) {
             values.put(CountDown.STARRED,  0);
         }
-        
-        if (values.containsKey(CountDown.END_DATE) == false) {
-            values.put(CountDown.END_DATE,  "");
+
+        //auto set endDateTime
+        if (values.containsKey(CountDown.END_DATE)) {
+            values.put(CountDown.END_DATE_TIME,
+                    Utils.convertDateStringToTime(values.getAsString(CountDown.END_DATE)));
         }
         
         if (values.containsKey(CountDown.END_TIME) == false) {
@@ -273,6 +296,12 @@ public class CountDownProvider extends ContentProvider {
 		if(values == null) {
 			return -1;
 		}
+
+        //auto set endDateTime
+        if (values.containsKey(CountDown.END_DATE)) {
+            values.put(CountDown.END_DATE_TIME,
+                    Utils.convertDateStringToTime(values.getAsString(CountDown.END_DATE)));
+        }
 		
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		int count = 0;

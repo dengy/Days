@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="6" android:versionName="1.4" package="com.inde.shiningdays">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="7" android:versionName="1.5" package="com.inde.shiningdays">
 
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="19"/>
 
@@ -16,6 +16,8 @@
     <!--permissions for MoGo Advertisement-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
             />
+    <!--permissions for xiaomi upgrade remind service-->
+    <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
 
     <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_label"
                  android:theme="@style/MyTheme">
@@ -114,6 +116,13 @@
 
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget"/>
         </receiver>
+
+        <!--receiver for xiaomi upgrade remind service-->
+        <receiver android:name="com.xiaomi.market.sdk.DownloadCompleteReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
         
         <service android:name="com.inde.shiningdays.UpdateWidgetService" android:process=".updateWidgetService">
         </service>
@@ -153,6 +162,12 @@
             </activity>
         <activity android:name=".FindLockPwd" />
         <!-- ###################友盟社会化分享 组件结束###################### -->
+
+        <!-- 添加百度应用详情Activity -->
+        <!-- 注册AppActivity -->
+        <activity
+            android:name="com.baidu.mobads.AppActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation" />
 </application>
 
 

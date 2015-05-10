@@ -30,7 +30,7 @@ public final class CountDown implements BaseColumns{
      */
     public static final String ORDER_BY = "orderby";
     public static final String DEFAULT_SORT_ORDER = "created DESC";
-    public static final String SORT_END_DATE_ASC = "enddate ASC";
+    public static final String SORT_END_DATE_ASC = "endDateTime ASC";
     
     
     public static final String TITLE = "title";
@@ -38,6 +38,7 @@ public final class CountDown implements BaseColumns{
     public static final String REMARK = "remark";
     
     public static final String END_DATE = "enddate";
+    public static final String END_DATE_TIME = "endDateTime";
     public static final String END_TIME = "endtime";
     public static final String REMIND_DATE = "reminddate";
     public static final String REMIND_BELL = "remindbell";

@@ -70,9 +70,11 @@ public class CountDownEdit extends BaseActivity implements OnClickListener {
     private static final int STATE_EDIT = 0;
     private static final int STATE_INSERT = 1;
 
+    private int countDownId;
+    private String widgetIds;
     private int mState;
     private Uri mUri;
-    private Cursor mCursor;
+    //private Cursor mCursor;
     private TextView titleTextView;
     private TextView priorityTextView;
     private TextView endDateTextView;
@@ -135,7 +137,15 @@ public class CountDownEdit extends BaseActivity implements OnClickListener {
         }
 		
 		// Get the countdown!
-        mCursor = getContentResolver().query(mUri, PROJECTION, null, null, null);
+
+        Cursor mCursor = getContentResolver().query(mUri, PROJECTION, null, null, null);
+
+        initData(mCursor);
+
+        //close cursor
+        if(mCursor != null) {
+            mCursor.close();
+        }
 		
 		//alert title dialog
 		if(Intent.ACTION_INSERT.equals(action)) {
@@ -208,84 +218,84 @@ public class CountDownEdit extends BaseActivity implements OnClickListener {
 		findViewById(R.id.type_row).setOnClickListener(this);
 		findViewById(R.id.enddate_row).setOnClickListener(this);
 		findViewById(R.id.remind_setting_row).setOnClickListener(this);
-		
-     //????1????Activity?? ????2?????????QQ?????????APP ID??????3?????????QQ?????????APP kEY.
-//       UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "100424468",
-//                       "c7394704798a158208a74ab60104f0ba");
-//       qqSsoHandler.addToSocialSDK();  
 				
 	}
-	
-	@Override
-    protected void onResume() {
-        super.onResume();
-        //umeng sdk
-        MobclickAgent.onResume(this);
-        
+
+    private void initData(Cursor mCursor) {
         // The activity has become visible (it is now "resumed").
         if(mCursor != null) {
-        	if(mState == STATE_INSERT) {
-        		Intent intent = this.getIntent();
-        		Bundle bundle = intent.getExtras();
-        		if(bundle != null) {
-        			String mType = bundle.getString(CountDown.PRIORITY);
-        			if(mType != null && !"".equals(mType) && !getResources().getString(R.string.type_all).equals(mType)) {
-        				priorityTextView.setText(mType);
-        			}
-        		}
-        	} else if(mState == STATE_EDIT) {
-            	// Make sure we are at the one and only row in the cursor.
+            if(mState == STATE_INSERT) {
+                Intent intent = this.getIntent();
+                Bundle bundle = intent.getExtras();
+                if(bundle != null) {
+                    String mType = bundle.getString(CountDown.PRIORITY);
+                    if(mType != null && !"".equals(mType) && !getResources().getString(R.string.type_all).equals(mType)) {
+                        priorityTextView.setText(mType);
+                    }
+                }
+            } else if(mState == STATE_EDIT) {
+                // Make sure we are at the one and only row in the cursor.
                 mCursor.moveToFirst();
-                
+                countDownId = mCursor.getInt(mCursor.getColumnIndex(CountDown._ID));
+
+                widgetIds = mCursor.getString(mCursor.getColumnIndex(CountDown.WIDGET_IDS));
+
                 titleTextView.setText(mCursor.getString(mCursor.getColumnIndex(CountDown.TITLE)));
                 priorityTextView.setText(mCursor.getString(mCursor.getColumnIndex(CountDown.PRIORITY)));
                 String endDate = mCursor.getString(mCursor.getColumnIndex(CountDown.END_DATE));
                 if(endDate != null && !"".equals(endDate)) {
-                	endDateTextView.setText(endDate);
+                    endDateTextView.setText(endDate);
                 }
-                
+
                 /**
-                String endTime = mCursor.getString(mCursor.getColumnIndex(CountDown.END_TIME));
-                if(endTime != null && !"".equals(endTime)) {
-                	endTimeTextView.setText(endTime);
-                }
-                String remindDate = mCursor.getString(mCursor.getColumnIndex(CountDown.REMIND_DATE));
-                if(remindDate != null && !"".equals(remindDate)) {
-                	remindDateTextView.setText(remindDate);
-                }
-                
-                String reminder = mCursor.getString(mCursor.getColumnIndex(CountDown.REMIND_BELL));
-                if(reminder != null && !"".equals(reminder)) {
-                	reminderTextView.setText(reminder);
-                }**/
+                 String endTime = mCursor.getString(mCursor.getColumnIndex(CountDown.END_TIME));
+                 if(endTime != null && !"".equals(endTime)) {
+                 endTimeTextView.setText(endTime);
+                 }
+                 String remindDate = mCursor.getString(mCursor.getColumnIndex(CountDown.REMIND_DATE));
+                 if(remindDate != null && !"".equals(remindDate)) {
+                 remindDateTextView.setText(remindDate);
+                 }
+
+                 String reminder = mCursor.getString(mCursor.getColumnIndex(CountDown.REMIND_BELL));
+                 if(reminder != null && !"".equals(reminder)) {
+                 reminderTextView.setText(reminder);
+                 }**/
 //                if(CountDown.DEFAUL_BELL.equals(mCursor.getString(mCursor.getColumnIndex(CountDown.REMIND_BELL)))) {
 //                	remindBellSlipButton.setCheck(true);
 //                } else {
 //                	remindBellSlipButton.setCheck(false);
 //                }
                 remarkEditText.setText(mCursor.getString(mCursor.getColumnIndex(CountDown.REMARK)));
-                
+
                 int topIndex = mCursor.getInt(mCursor.getColumnIndex(CountDown.TOP_INDEX));
                 if(Constant.TOP_SWITCH_ON == topIndex) {
-                	topSwitch.setChecked(true);
+                    topSwitch.setChecked(true);
                 } else {
-                	topSwitch.setChecked(false);
+                    topSwitch.setChecked(false);
                 }
 
-				String remindSetting = mCursor.getString(mCursor.getColumnIndex(CountDown.REMIND_DATE));
-				if(remindSetting != null) {
-					String[] arr = remindSetting.split(";");
-					if(arr.length == 2) {
-						remindSettingTextView.setText(remindSetting);
-						remindSettingShowTextView.setText(getRemindSettingShowText(arr[0], arr[1]));
-					}
+                String remindSetting = mCursor.getString(mCursor.getColumnIndex(CountDown.REMIND_DATE));
+                if(remindSetting != null) {
+                    String[] arr = remindSetting.split(";");
+                    if(arr.length == 2) {
+                        remindSettingTextView.setText(remindSetting);
+                        remindSettingShowTextView.setText(getRemindSettingShowText(arr[0], arr[1]));
+                    }
 
-				}
+                }
             }
         } else {
-        	Toast.makeText(getApplicationContext(), R.string.loadDataError, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.loadDataError, Toast.LENGTH_SHORT).show();
         }
-        
+    }
+
+	
+	@Override
+    protected void onResume() {
+        super.onResume();
+        //umeng sdk
+        MobclickAgent.onResume(this);
     }
 	
 	@Override
@@ -293,7 +303,6 @@ public class CountDownEdit extends BaseActivity implements OnClickListener {
         super.onPause();
         //umeng sdk
         MobclickAgent.onPause(this);
-        cancel();
 	}
 	
 	/**
@@ -778,7 +787,7 @@ public class CountDownEdit extends BaseActivity implements OnClickListener {
 	 * add or modify a countdown record
 	 */
 	private void save() {
-		if(mCursor != null) {
+		//if(mCursor != null) {
 			//title must not be null or empty
 			String title = titleTextView.getText().toString();
 			if(title == null || "".equals(title)) {
@@ -794,7 +803,7 @@ public class CountDownEdit extends BaseActivity implements OnClickListener {
 			}
 			// Get out updates into the provider.
 			ContentValues values = new ContentValues();
-			
+
 			values.put(CountDown.TITLE, title);
 			values.put(CountDown.PRIORITY, priorityTextView.getText().toString());
 			values.put(CountDown.END_DATE, endDate);
@@ -829,14 +838,15 @@ public class CountDownEdit extends BaseActivity implements OnClickListener {
 	            }
 	            
 				Toast.makeText(getApplicationContext(), R.string.save_successfully, Toast.LENGTH_SHORT).show();
-				mCursor.close();
-				mCursor = null;
-				
+
+				//mCursor.close();
+				//mCursor = null;
+
 				//return to main page
 				toMainActivity();
 			}
 			
-		}
+		//}
 		
 	}
 
@@ -891,12 +901,10 @@ public class CountDownEdit extends BaseActivity implements OnClickListener {
 	 * cancel modify
 	 */
 	private void cancel() {
-		if(mCursor != null) {
-			if (mState == STATE_EDIT) {
-			} else if(mState == STATE_INSERT) {
-				deleteRecord();
-			}
-		}
+        if (mState == STATE_EDIT) {
+        } else if(mState == STATE_INSERT) {
+            deleteRecord();
+        }
 		
 		toMainActivity();
 	}
@@ -918,7 +926,7 @@ public class CountDownEdit extends BaseActivity implements OnClickListener {
 	 * delete action
 	 */
 	private void deleteAction() {
-		if(deleteRecordAndWidgets(mCursor) > 0) {
+		if(deleteRecordAndWidgets() > 0) {
 			toMainActivity();
 			Toast.makeText(this, R.string.operationSuccess, Toast.LENGTH_SHORT).show();
 		} else {
@@ -930,12 +938,10 @@ public class CountDownEdit extends BaseActivity implements OnClickListener {
 	/**
 	 * delete countdown record
 	 */
-	private int deleteRecordAndWidgets(Cursor cursor) {
+	private int deleteRecordAndWidgets() {
 		int result = getContentResolver().delete(mUri, null, null);
 		if(result > 0) {
 			//notice widget to delete itself
-			String widgetIds = cursor.getString(cursor.getColumnIndex(CountDown.WIDGET_IDS));
-			
 			if(widgetIds != null && !"".equals(widgetIds)) {
 				String[] appWidgetIds = widgetIds.split(",");
 				for(String mAppWidgetId : appWidgetIds) {
@@ -948,8 +954,7 @@ public class CountDownEdit extends BaseActivity implements OnClickListener {
 			}
 
 			//cancel relative remind
-			Integer id = cursor.getInt(cursor.getColumnIndex(CountDown._ID));
-			deleteAlarmDataAndCancelAlarm(this , id);
+			deleteAlarmDataAndCancelAlarm(this , countDownId);
 		}
 		
 		return result;
@@ -959,50 +964,45 @@ public class CountDownEdit extends BaseActivity implements OnClickListener {
 	 * delete countdown record
 	 */
 	private int deleteRecord() {
-		if (mCursor != null) {
-            return getContentResolver().delete(mUri, null, null);
-        }
-		return -1;
+        return getContentResolver().delete(mUri, null, null);
 	}
 	
 	/**
 	 * set countdown reminder
 	 */
 	private void setCountDownReminder() {
-		if(mCursor != null && mCursor.moveToFirst()) {
-			String remindSetting = remindSettingTextView.getText().toString();
-			if(remindSetting == null || "".equals(remindSetting)) {
-				return;
-			}
-			Integer _ID = Integer.parseInt(mCursor.getString(mCursor.getColumnIndex(CountDown._ID)));
-			String title = titleTextView.getText().toString();
-			String endDate = endDateTextView.getText().toString();
-			String remindDate = getRemindDate(remindSetting, endDate);
-			if(remindDate == null || "".equals(remindDate)) {
-				return;
-			}
+        String remindSetting = remindSettingTextView.getText().toString();
+        if(remindSetting == null || "".equals(remindSetting)) {
+            return;
+        }
+        Integer _ID = countDownId;
+        String title = titleTextView.getText().toString();
+        String endDate = endDateTextView.getText().toString();
+        String remindDate = getRemindDate(remindSetting, endDate);
+        if(remindDate == null || "".equals(remindDate)) {
+            return;
+        }
 
-			//set alarm
-			PendingIntent sender = PendingIntent.getBroadcast(this,
-					_ID, setIntentForAlarm(this, _ID, title, endDate),
-					PendingIntent.FLAG_UPDATE_CURRENT);
-			AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-			//firstly, cancel the old one
-			am.cancel(sender);
-			//secondly, create a new one
-			try {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				Date d = sdf.parse(remindDate);
-				long triggerTime = sdf.parse(remindDate).getTime();
-				am.set(AlarmManager.RTC_WAKEUP, triggerTime, sender);
-				//am.setExact(AlarmManager.RTC_WAKEUP, triggerTime, sender);
+        //set alarm
+        PendingIntent sender = PendingIntent.getBroadcast(this,
+                _ID, setIntentForAlarm(this, _ID, title, endDate),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        //firstly, cancel the old one
+        am.cancel(sender);
+        //secondly, create a new one
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date d = sdf.parse(remindDate);
+            long triggerTime = sdf.parse(remindDate).getTime();
+            am.set(AlarmManager.RTC_WAKEUP, triggerTime, sender);
+            //am.setExact(AlarmManager.RTC_WAKEUP, triggerTime, sender);
 
-				//save alarm data for recreate alarms after rebooted
-				saveAlarmData(_ID, triggerTime, title, endDate);
-			} catch (ParseException ex) {
-				ex.printStackTrace();
-			}
-		}
+            //save alarm data for recreate alarms after rebooted
+            saveAlarmData(_ID, triggerTime, title, endDate);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
 	}
 
 	public static Intent setIntentForAlarm(Context context , int _ID, String title, String endDate) {
@@ -1065,40 +1065,36 @@ public class CountDownEdit extends BaseActivity implements OnClickListener {
 	 * sync the data in the prefs file with the updated data (for widgets)
 	 */
 	private void updateWidgets() {
-		if(mCursor != null) {
-			//save update data
-			String widgetIds = mCursor.getString(mCursor.getColumnIndex(CountDown.WIDGET_IDS));
-			if(widgetIds == null || "".equals(widgetIds)) {
-				return;
-			} 
-			
-			String[] appWidgetIds = widgetIds.split(",");
-			int[] intWidgetIds = new int[appWidgetIds.length];
-			
-			int _ID = mCursor.getInt(mCursor.getColumnIndex(CountDown._ID));
-			int index = 0;
-			for(String mAppWidgetId : appWidgetIds) {
-				try{
-					intWidgetIds[index] = Integer.parseInt(mAppWidgetId);
-					index++;
-				} catch(Exception e) {
-					return;
-				}
-				String title = titleTextView.getText().toString();
-				String priority = priorityTextView.getText().toString();
-				String endDate = endDateTextView.getText().toString();
-				//String endTime = StringUtil.underLineFilter(endTimeTextView.getText().toString());
-				//save data for widget update
-				WidgetConfigure.saveToPreference(this.getApplicationContext(), Integer.parseInt(mAppWidgetId), _ID, title, null, endDate, priority);
-			}
-			
-			//create broadcast to update widget
-			Intent intent = new Intent(Constant.UPDATE_WIDGET);
-			Bundle extras = new Bundle();
-			extras.putIntArray(AppWidgetManager.EXTRA_APPWIDGET_ID, intWidgetIds);
-			intent.putExtras(extras);
-			this.sendBroadcast(intent);
-		}
+        //save update data
+        if(widgetIds == null || "".equals(widgetIds)) {
+            return;
+        }
+
+        String[] appWidgetIds = widgetIds.split(",");
+        int[] intWidgetIds = new int[appWidgetIds.length];
+
+        int index = 0;
+        for(String mAppWidgetId : appWidgetIds) {
+            try{
+                intWidgetIds[index] = Integer.parseInt(mAppWidgetId);
+                index++;
+            } catch(Exception e) {
+                return;
+            }
+            String title = titleTextView.getText().toString();
+            String priority = priorityTextView.getText().toString();
+            String endDate = endDateTextView.getText().toString();
+            //String endTime = StringUtil.underLineFilter(endTimeTextView.getText().toString());
+            //save data for widget update
+            WidgetConfigure.saveToPreference(this.getApplicationContext(), Integer.parseInt(mAppWidgetId), countDownId, title, null, endDate, priority);
+        }
+
+        //create broadcast to update widget
+        Intent intent = new Intent(Constant.UPDATE_WIDGET);
+        Bundle extras = new Bundle();
+        extras.putIntArray(AppWidgetManager.EXTRA_APPWIDGET_ID, intWidgetIds);
+        intent.putExtras(extras);
+        this.sendBroadcast(intent);
 	}
 	
 	private void shareAction () {

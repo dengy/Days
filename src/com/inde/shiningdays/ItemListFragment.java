@@ -25,10 +25,13 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.adsmogo.adapters.AdsMogoAdapter;
+import com.adsmogo.adapters.AdsMogoCustomEventPlatformEnum;
 import com.adsmogo.adview.AdsMogoLayout;
+import com.adsmogo.controller.listener.AdsMogoListener;
 import com.inde.shiningdays.util.SharedPrefsUtil;
 
-public class ItemListFragment extends Fragment{
+public class ItemListFragment extends Fragment {
 	private static final String TAG = "ItemList";
 	private ListView list;
 	private View rootView;
@@ -72,7 +75,6 @@ public class ItemListFragment extends Fragment{
                 FrameLayout.LayoutParams.WRAP_CONTENT);
         // 设置广告出现的位置(悬浮于底部)
         params.bottomMargin = 5;
-        //adsMogoLayoutCode.setAdsMogoListener(this);
         params.gravity = Gravity.BOTTOM;
         getActivity().addContentView(adsMogoLayoutCode, params);
         /*********************** 代码添加广告结束 ************************/
@@ -266,8 +268,8 @@ public class ItemListFragment extends Fragment{
 
 		return cursor;
 	}
-	
-	class CustomCursorAdapter extends ResourceCursorAdapter {
+
+    class CustomCursorAdapter extends ResourceCursorAdapter {
 //		private HashMap<Integer, MyCountDownTimer> timerHashMap 
 //		= new HashMap<Integer, MyCountDownTimer>();
 		

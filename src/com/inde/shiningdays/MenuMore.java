@@ -34,6 +34,7 @@ public class MenuMore extends BaseActivity implements OnClickListener{
 	private View feedback;
 	private View about;
     private boolean isNeedLockPwd;
+    private AdsMogoLayout adsMogoLayoutCode;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class MenuMore extends BaseActivity implements OnClickListener{
 		initViews();
 
         /** 代码方式添加广告，如果您使用XML配置方式添加广告，不需要以下代码 **/
-        AdsMogoLayout adsMogoLayoutCode = new AdsMogoLayout(this, Constant.MONGO_ID);
+        adsMogoLayoutCode = new AdsMogoLayout(this, Constant.MONGO_ID);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT);
@@ -240,4 +241,15 @@ public class MenuMore extends BaseActivity implements OnClickListener{
 		}
 		
 	}
+
+    @Override
+    protected void onDestroy() {
+        AdsMogoLayout.clear();
+// 清除 adsMogoLayout 实例 所产生用于多线程缓冲机制的线程池
+        if(adsMogoLayoutCode != null) {
+            adsMogoLayoutCode.clearThread();
+        }
+
+        super.onDestroy();
+    }
 }

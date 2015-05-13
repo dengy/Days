@@ -7,15 +7,18 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <!-- <uses-permission android:name="android.permission.WAKE_LOCK" /> -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-	<uses-permission android:name="android.permission.INTERNET"/>
-	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-	<!-- 缓存资源优先存入SDcard -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!-- 缓存资源优先存入SDcard -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!--permissions for MoGo Advertisement-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-            />
+        />
+    <!--permission for MoGo Baidu-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <!--permissions for xiaomi upgrade remind service-->
     <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
 

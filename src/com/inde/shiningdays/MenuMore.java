@@ -23,8 +23,10 @@ import com.adsmogo.util.AdsMogoTargeting;
 import com.inde.shiningdays.util.BaseActivity;
 import com.inde.shiningdays.util.Utils;
 import com.umeng.analytics.MobclickAgent;
-
-
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
 
 
 public class MenuMore extends BaseActivity implements OnClickListener{
@@ -32,7 +34,8 @@ public class MenuMore extends BaseActivity implements OnClickListener{
 	private View rate;
 	private View functions;
 	private View feedback;
-	private View about;
+	//private View about;
+    private View checkUpdate;
     private boolean isNeedLockPwd;
     private AdsMogoLayout adsMogoLayoutCode;
 	
@@ -60,15 +63,20 @@ public class MenuMore extends BaseActivity implements OnClickListener{
 		rate = findViewById(R.id.rate);
 		functions = findViewById(R.id.functions);
 		feedback = findViewById(R.id.feedback);
-		about = findViewById(R.id.about);
+		//about = findViewById(R.id.about);
         openLock = findViewById(R.id.open_lock);
+        checkUpdate = findViewById(R.id.check_update);
 
 		rate.setOnClickListener(this);
 		functions.setOnClickListener(this);
 		feedback.setOnClickListener(this);
-		about.setOnClickListener(this);
+		//about.setOnClickListener(this);
         openLock.setOnClickListener(this);
+        checkUpdate.setOnClickListener(this);
 		findViewById(R.id.more_back).setOnClickListener(this);
+        String currentVersion = getVersionName();
+        ((TextView)findViewById(R.id.currentVersion)).
+                setText(getResources().getString(R.string.update_setting) + currentVersion);
 	}
 
     private void initLockPwdViews() {
@@ -114,7 +122,7 @@ public class MenuMore extends BaseActivity implements OnClickListener{
 	}
 	
 	
-	private void showAboutDialog() {
+	/*private void showAboutDialog() {
 		//AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		AlertDialog.Builder builder = 
 				new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlarmDialogTheme));
@@ -130,7 +138,7 @@ public class MenuMore extends BaseActivity implements OnClickListener{
 	    Dialog d = builder.create();
 		d.setCanceledOnTouchOutside(true);//cancel window when touch outside
 		d.show();
-	}
+	}*/
 	
 	private void showFunctionDialog() {
 		AlertDialog.Builder builder = 
@@ -198,14 +206,38 @@ public class MenuMore extends BaseActivity implements OnClickListener{
                 getResources().getString(R.string.email_title),
                 content);
 	}
+
+    private void checkUpdate() {
+        UmengUpdateAgent.setUpdateAutoPopup(false);
+        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+            @Override
+            public void onUpdateReturned(int updateStatus,UpdateResponse updateInfo) {
+                switch (updateStatus) {
+                    case UpdateStatus.Yes: // has update
+                        UmengUpdateAgent.showUpdateDialog(MenuMore.this, updateInfo);
+                        break;
+                    case UpdateStatus.No: // has no update
+                        Toast.makeText(MenuMore.this, R.string.check_update_no, Toast.LENGTH_SHORT).show();
+                        break;
+                    case UpdateStatus.NoneWifi: // none wifi
+                        //Toast.makeText(MenuMore.this, R.string.check_update_not_wifi, Toast.LENGTH_SHORT).show();
+                        break;
+                    case UpdateStatus.Timeout: // time out
+                        Toast.makeText(MenuMore.this, R.string.check_update_timeout, Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
+        UmengUpdateAgent.forceUpdate(this);
+    }
 	
 	@Override
 	public void onClick(View v) {
         Intent intent;
 		switch(v.getId()) {
-		case R.id.about:
+		/*case R.id.about:
 			showAboutDialog();
-			break;
+			break;*/
 		case R.id.functions:
 			showFunctionDialog();
 			break;
@@ -236,6 +268,9 @@ public class MenuMore extends BaseActivity implements OnClickListener{
 //			Intent intent = new Intent(this, MainActivity.class);
 //			startActivity(intent);
 			break;
+        case R.id.check_update:
+            checkUpdate();
+            break;
 		default:
 			break;
 		}

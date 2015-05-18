@@ -17,5 +17,12 @@
         android:gravity="top"
         android:minLines="4"
    	    android:maxLines="7"
-        android:lines="4"/>  
+        android:lines="4"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/contact"
+        android:padding="10dip"
+        style="@style/small" />
     </LinearLayout>

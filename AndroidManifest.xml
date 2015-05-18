@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="7" android:versionName="1.5" package="com.inde.shiningdays">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="8" android:versionName="1.5.1" package="com.inde.shiningdays">
 
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="19"/>
 
@@ -18,9 +18,6 @@
         />
     <!--permission for MoGo Baidu-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <!--permissions for xiaomi upgrade remind service-->
-    <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
 
     <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_label"
                  android:theme="@style/MyTheme">
@@ -119,13 +116,6 @@
 
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget"/>
         </receiver>
-
-        <!--receiver for xiaomi upgrade remind service-->
-        <receiver android:name="com.xiaomi.market.sdk.DownloadCompleteReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
-            </intent-filter>
-        </receiver>
         
         <service android:name="com.inde.shiningdays.UpdateWidgetService" android:process=".updateWidgetService">
         </service>
@@ -171,6 +161,16 @@
         <activity
             android:name="com.baidu.mobads.AppActivity"
             android:configChanges="keyboard|keyboardHidden|orientation" />
+
+        <!--友盟更新服务-->
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
 </application>
 
 

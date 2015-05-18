@@ -214,30 +214,6 @@
         android:layout_alignParentRight="true"/> 
       </RelativeLayout>
 
-      
-      <RelativeLayout 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:paddingLeft="10dip"
-    android:paddingRight="10dip"
-    android:paddingTop="12dip"
-    android:paddingBottom="12dip"
-    android:layout_marginLeft="10dip"
-    android:layout_marginRight="10dip"
-    android:background="@drawable/edit_item_bg_middle_selector"
-    android:id="@+id/about">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/setting_about"
-        android:layout_alignParentLeft="true"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/p_arrow_r"
-        android:layout_alignParentRight="true"/> 
-      </RelativeLayout>
       <View
     android:layout_width="fill_parent"
     android:layout_height="1dip"
@@ -245,6 +221,56 @@
     android:layout_marginRight="10dip"
     android:background="@drawable/gray">
     </View>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="12dip"
+        android:paddingBottom="12dip"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/edit_item_bg_middle_selector">
+        <TextView
+            android:id="@+id/currentVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/widgetListItem"
+            android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="12dip"
+        android:paddingBottom="12dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/edit_item_bg_middle_selector"
+        android:id="@+id/check_update">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_update"
+            android:layout_alignParentLeft="true"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/p_arrow_r"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/gray">
+    </View>
+
 
 </LinearLayout>
 

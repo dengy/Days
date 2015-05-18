@@ -50,7 +50,7 @@ import com.inde.shiningdays.util.BaseActivity;
 import com.inde.shiningdays.util.SharedPrefsUtil;
 import com.inde.shiningdays.util.Utils;
 import com.umeng.analytics.MobclickAgent;
-import com.xiaomi.market.sdk.XiaomiUpdateAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
@@ -132,6 +132,18 @@ public class MainActivity extends BaseActivity {
         initDrawerList();
         //show rate dialog
         showRateDialog();
+
+        //umeng update service
+        umengUpdateService();
+
+    }
+
+    private void umengUpdateService() {
+        //umeng update dialog
+        UmengUpdateAgent.update(this);
+
+        //auto download
+        //UmengUpdateAgent.silentUpdate(this);
     }
 
     private void firstOpenAppDialog() {
@@ -151,8 +163,6 @@ public class MainActivity extends BaseActivity {
 		d.setCanceledOnTouchOutside(false);
 		d.show();
 
-        //xiaomi upgrade remind service
-        XiaomiUpdateAgent.update(this);
 	}
 
     /**
@@ -391,8 +401,9 @@ public class MainActivity extends BaseActivity {
                     case R.id.action_setting:
                         Intent intent = new Intent(menuItemView.getContext(), MenuMore.class);
                         startActivity(intent);
-                    default:
                         return true;
+                    default:
+                        return false;
                 }
             }
         });
@@ -447,7 +458,7 @@ public class MainActivity extends BaseActivity {
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
         StringBuilder title = new StringBuilder();
-        title.append(getResources().getString(R.string.app_name)).append(".").append(currentType);
+        title.append(getResources().getString(R.string.app_title)).append(".").append(currentType);
         setTitle(title.toString());
         mDrawerLayout.closeDrawer(mDrawerLeft);
     }
